@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- These are the options displayed in the client > info > gender drop-down Spinner -->
+    <string-array name="array_gender_options">
+        <item>@string/gender_unknown</item>
+        <item>@string/gender_male</item>
+        <item>@string/gender_female</item>
+    </string-array>
+
+    <!-- These are the options displayed in the client > info > channel of acquisition drop-down Spinner -->
+    <string-array name="array_acquisition_options">
+        <item>@string/acquisition_unknown</item>
+        <item>@string/acquisition_wom</item>
+        <item>@string/acquisition_website</item>
+        <item>@string/acquisition_facebook</item>
+        <item>@string/acquisition_confrere</item>
+        <item>@string/acquisition_offline</item>
+    </string-array>
+</resources>

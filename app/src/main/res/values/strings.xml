@@ -1,0 +1,53 @@
+<resources>
+    <string name="app_name">Acpnctr</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="search_title">Search</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_client">Client file</string>
+    <string name="title_activity_session">Session</string>
+
+    <!-- Titles for Client activity menu -->
+    <string name="title_client_information">Information</string>
+    <string name="title_anamnesis">Anamnesis</string>
+    <string name="title_history">Sessions</string>
+
+    <!-- Titles for Session activity menu -->
+    <string name="title_four_steps">4 steps</string>
+    <string name="title_energetics_diagnosis">Diagnosis</string>
+    <string name="title_treatment">Treatment</string>
+
+    <!-- Session history list -->
+    <string name="session_item_prefix">Session of </string>
+
+    <!-- Client list -->
+    <string name="client_list_empty_view_title_text">You don\'t have any client yet</string>
+    <string name="client_list_empty_view_subtitle_text">Start creating one with the button below</string>
+
+    <!-- Categories for client information -->
+    <string name="client_information_category_overview">Overview</string>
+    <string name="client_information_category_gender">Gender</string>
+    <string name="client_information_category_acquisition">Acquisition</string>
+
+    <!-- Hint for input text for client information -->
+    <string name="hint_client_information_name">name</string>
+    <string name="hint_client_information_dob">date of birth</string>
+    <string name="hint_client_information_phone">phone</string>
+    <string name="hint_client_information_email">email</string>
+
+    <!-- Labels for gender dropdown menu -->
+    <string name="gender_unknown">Unknown</string>
+    <string name="gender_male">Male</string>
+    <string name="gender_female">Female</string>
+
+    <!-- Labels for acquisition dropdown menu -->
+    <string name="acquisition_unknown">Unknown</string>
+    <string name="acquisition_wom">Word of mouth</string>
+    <string name="acquisition_website">Website</string>
+    <string name="acquisition_facebook">Facebook</string>
+    <string name="acquisition_confrere">Confrere</string>
+    <string name="acquisition_offline">Offline</string>
+
+</resources>
