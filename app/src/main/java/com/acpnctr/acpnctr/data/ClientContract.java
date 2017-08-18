@@ -131,7 +131,7 @@ public final class ClientContract {
         /**
          * Possible values for the acquisition channel.
          */
-        public static final int ACQUI_UNKNOW = 0;
+        public static final int ACQUI_UNKNOWN = 0;
         public static final int ACQUI_WOM = 1; // Word of mouth
         public static final int ACQUI_WEBSITE = 2;
         public static final int ACQUI_FACEBOOK = 3;
@@ -153,7 +153,7 @@ public final class ClientContract {
          * Returns whether or not the given acquisition channel is one of the possible value
          */
         public static boolean isValidAcquiChannel(int acquiChannel) {
-            if (acquiChannel==ACQUI_UNKNOW || acquiChannel == ACQUI_WOM || acquiChannel == ACQUI_WEBSITE
+            if (acquiChannel == ACQUI_UNKNOWN || acquiChannel == ACQUI_WOM || acquiChannel == ACQUI_WEBSITE
                     || acquiChannel == ACQUI_FACEBOOK || acquiChannel == ACQUI_CONFRERE
                     || acquiChannel == ACQUI_OFFLINE) {
                 return true;

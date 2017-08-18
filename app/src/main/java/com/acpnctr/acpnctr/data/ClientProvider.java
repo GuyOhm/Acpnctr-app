@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.acpnctr.acpnctr.data.ClientContract.ClientEntry;
@@ -147,9 +148,9 @@ public class ClientProvider extends ContentProvider {
      * for that specific row in the database.
      */
     private Uri insertClient(Uri uri, ContentValues values) {
-        // Check that the NAME is not null
+        // Check that the NAME is not null or empty
         String name = values.getAsString(ClientEntry.COLUMN_CLIENT_NAME);
-        if (name == null) {
+        if (name == null || TextUtils.isEmpty(name)) {
             throw new IllegalArgumentException("Client requires a name");
         }
 
@@ -195,7 +196,66 @@ public class ClientProvider extends ContentProvider {
     }
 
     @Override
-    public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String s, @Nullable String[] strings) {
-        return 0;
+    public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String selection,
+                      @Nullable String[] selectionArgs) {
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case CLIENTS:
+                return updateClient(uri, contentValues, selection, selectionArgs);
+            case CLIENT_ID:
+                // For the CLIENT_ID code, extract out the ID from the URI,
+                // so we know which row to update. Selection will be "_id=?" and selection
+                // arguments will be a String array containing the actual ID.
+                selection = ClientEntry._ID + "=?";
+                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
+                return updateClient(uri, contentValues, selection, selectionArgs);
+            default:
+                throw new IllegalArgumentException("Update is not supported for " + uri);
+        }
+    }
+
+    /**
+     * Update clients in the database with the given content values.
+     *
+     * @return number of rows that were successfully updated.
+     */
+    private int updateClient(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+        // If the {@link ClientEntry#COLUMN_CLIENT_NAME} key is present,
+        // check that the name value is not null or empty
+        if (values.containsKey(ClientEntry.COLUMN_CLIENT_NAME)) {
+            String name = values.getAsString(ClientEntry.COLUMN_CLIENT_NAME);
+            if (name == null || TextUtils.isEmpty(name)) {
+                throw new IllegalArgumentException("Client requires a name");
+            }
+        }
+
+        // If the {@link ClientEntry#COLUMN_CLIENT_GENDER} key is present,
+        // check that the gender value is not null or not valid
+        if (values.containsKey(ClientEntry.COLUMN_CLIENT_GENDER)) {
+            Integer gender = values.getAsInteger(ClientEntry.COLUMN_CLIENT_GENDER);
+            if (gender == null || !ClientEntry.isValidGender(gender)) {
+                throw new IllegalArgumentException("Client requires a gender");
+            }
+        }
+
+        // If there are no values to update, then don't try to update the database
+        if (values.size() == 0) {
+            return 0;
+        }
+
+        // Otherwise, get writable database to update the data
+        SQLiteDatabase database = clientDbHelper.getWritableDatabase();
+
+        // Perform the update on the database and get the number of rows affected
+        int rowsUpdated = database.update(ClientEntry.TABLE_NAME, values, selection, selectionArgs);
+
+        // If 1 or more rows were updated, then notify all listeners that the data at the
+        // given URI has changed
+        if (rowsUpdated != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        // Return the number of rows updated
+        return rowsUpdated;
     }
 }

@@ -1,6 +1,7 @@
 package com.acpnctr.acpnctr;
 
 import android.app.LoaderManager;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -37,10 +38,14 @@ public class DashboardActivity extends AppCompatActivity
      */
     public static final String LOG_TAG = DashboardActivity.class.getSimpleName();
 
-    /** Identifier for the client data loader */
+    /**
+     * Identifier for the client data loader
+     */
     private static final int CLIENT_LOADER = 0;
 
-    /** CursorAdapter for the ListView */
+    /**
+     * CursorAdapter for the ListView
+     */
     ClientCursorAdapter clientCursorAdapter;
 
     @Override
@@ -73,6 +78,14 @@ public class DashboardActivity extends AppCompatActivity
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Create a new intent to open the {@link ClientActivity}
                 Intent clientIntent = new Intent(DashboardActivity.this, ClientActivity.class);
+
+                // Form the content URI that represents the specific client that was clicked on,
+                // by appending the "id" (passed as input to this method) onto the
+                // {@link ClientEntry#CONTENT_URI}.
+                Uri currentClientUri = ContentUris.withAppendedId(ClientEntry.CONTENT_URI, id);
+
+                // Set the URI on the data field of the intent
+                clientIntent.setData(currentClientUri);
 
                 // Start the new activity
                 startActivity(clientIntent);
@@ -205,7 +218,7 @@ public class DashboardActivity extends AppCompatActivity
         String[] projection = {
                 ClientEntry._ID,
                 ClientEntry.COLUMN_CLIENT_NAME,
-                ClientEntry.COLUMN_CLIENT_DATETIME };
+                ClientEntry.COLUMN_CLIENT_DATETIME};
 
         // TODO: sort data in the descendant order of datetime (eventually must be last session datetime)
         // This loader will execute the ContentProvider's query method on a background thread

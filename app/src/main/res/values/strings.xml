@@ -36,6 +36,9 @@
     <string name="hint_client_information_dob">date of birth</string>
     <string name="hint_client_information_phone">phone</string>
     <string name="hint_client_information_email">email</string>
+    
+    <!-- Title when adding a new client through the fab -->
+    <string name="add_client_activity_title">Add a client</string>
 
     <!-- Labels for gender dropdown menu -->
     <string name="gender_unknown">Unknown</string>
@@ -49,5 +52,25 @@
     <string name="acquisition_facebook">Facebook</string>
     <string name="acquisition_confrere">Confrere</string>
     <string name="acquisition_offline">Offline</string>
+
+    <!-- Action menu for client information screen -->
+    <string name="client_info_action_save">save</string>
+
+    <!-- Toast messages for client information manipulation-->
+    <string name="client_info_insert_failed">Error with saving client</string>
+    <string name="client_info_insert_successful">Client saved</string>
+    <string name="client_info_name_needed">Please enter a name</string>
+    <string name="client_info_gender_needed">Please choose a gender</string>
+    <string name="client_info_update_failed">Error with updating client</string>
+    <string name="client_info_update_successful">Client updated</string>
+
+    <!-- Dialog message when user is leaving editor but hasn't saved changes  -->
+    <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
+
+    <!-- Dialog button text for the option to discard a user's changes -->
+    <string name="discard">Discard</string>
+
+    <!-- Dialog button text for the option to keep editing the current client -->
+    <string name="keep_editing">Keep Editing</string>
 
 </resources>

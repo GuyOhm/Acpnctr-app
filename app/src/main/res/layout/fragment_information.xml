@@ -80,7 +80,7 @@
             <!-- Gender drop-down spinner -->
             <Spinner
                 android:id="@+id/spinner_client_gender"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:paddingRight="16dp"
                 android:spinnerMode="dropdown" />
@@ -110,7 +110,7 @@
             <!-- Acquisition drop-down spinner -->
             <Spinner
                 android:id="@+id/spinner_client_acquisition"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:paddingRight="16dp"
                 android:spinnerMode="dropdown" />
