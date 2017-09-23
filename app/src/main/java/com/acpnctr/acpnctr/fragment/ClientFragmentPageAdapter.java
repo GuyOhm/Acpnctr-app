@@ -1,23 +1,25 @@
-package com.acpnctr.acpnctr;
+package com.acpnctr.acpnctr.fragment;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.acpnctr.acpnctr.R;
+
 /**
  * Created by guiguette on 10/07/2017.
  *
- * Fragment page adapter to display different fragments of the session activity
+ * Fragment page adapter to display different fragments of the client file
  *
  */
 
-public class SessionFragmentPageAdapter extends FragmentPagerAdapter {
+public class ClientFragmentPageAdapter extends FragmentPagerAdapter {
 
     /** Context of the app */
     private Context mContext;
 
-    public SessionFragmentPageAdapter(Context context, FragmentManager fm) {
+    public ClientFragmentPageAdapter(Context context, FragmentManager fm) {
         super(fm);
         mContext = context;
     }
@@ -25,11 +27,11 @@ public class SessionFragmentPageAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return new FourStepsFragment();
+            return new InformationFragment();
         } else if (position == 1){
-            return new DiagnosisFragment();
+            return new AnamnesisFragment();
         } else {
-            return new TreatmentFragment();
+            return new HistoryFragment();
         }
     }
 
@@ -41,11 +43,11 @@ public class SessionFragmentPageAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         if (position == 0) {
-            return mContext.getString(R.string.title_four_steps);
+            return mContext.getString(R.string.title_client_information);
         } else if (position == 1) {
-            return mContext.getString(R.string.title_energetics_diagnosis);
+            return mContext.getString(R.string.title_anamnesis);
         } else {
-            return mContext.getString(R.string.title_treatment);
+            return mContext.getString(R.string.title_history);
         }
     }
 }

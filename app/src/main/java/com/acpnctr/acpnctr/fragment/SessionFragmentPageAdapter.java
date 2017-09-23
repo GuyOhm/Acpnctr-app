@@ -1,23 +1,25 @@
-package com.acpnctr.acpnctr;
+package com.acpnctr.acpnctr.fragment;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.acpnctr.acpnctr.R;
+
 /**
  * Created by guiguette on 10/07/2017.
  *
- * Fragment page adapter to display different fragments of the client file
+ * Fragment page adapter to display different fragments of the session activity
  *
  */
 
-public class ClientFragmentPageAdapter extends FragmentPagerAdapter {
+public class SessionFragmentPageAdapter extends FragmentPagerAdapter {
 
     /** Context of the app */
     private Context mContext;
 
-    public ClientFragmentPageAdapter(Context context, FragmentManager fm) {
+    public SessionFragmentPageAdapter(Context context, FragmentManager fm) {
         super(fm);
         mContext = context;
     }
@@ -25,11 +27,11 @@ public class ClientFragmentPageAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return new InformationFragment();
+            return new FourStepsFragment();
         } else if (position == 1){
-            return new AnamnesisFragment();
+            return new DiagnosisFragment();
         } else {
-            return new HistoryFragment();
+            return new TreatmentFragment();
         }
     }
 
@@ -41,11 +43,11 @@ public class ClientFragmentPageAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         if (position == 0) {
-            return mContext.getString(R.string.title_client_information);
+            return mContext.getString(R.string.title_four_steps);
         } else if (position == 1) {
-            return mContext.getString(R.string.title_anamnesis);
+            return mContext.getString(R.string.title_energetics_diagnosis);
         } else {
-            return mContext.getString(R.string.title_history);
+            return mContext.getString(R.string.title_treatment);
         }
     }
 }

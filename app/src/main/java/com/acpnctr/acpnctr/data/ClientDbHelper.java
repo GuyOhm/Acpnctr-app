@@ -24,6 +24,7 @@ public class ClientDbHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    // TODO: make DOB Unix time for better data processing and localization
     /**
      * This is called when the database is created for the first time.
      */

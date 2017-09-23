@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.acpnctr.acpnctr.data.ClientContract.ClientEntry;
 
+import java.text.DateFormat;
+
 /**
  * {@link ClientCursorAdapter} is an adapter for a list or grid view
  * that uses a {@link Cursor} of client data as its data source. This adapter knows
@@ -62,8 +64,9 @@ public class ClientCursorAdapter extends CursorAdapter {
 
         // Read the client attribute of the current client
         String clientName = cursor.getString(cursor.getColumnIndex(ClientEntry.COLUMN_CLIENT_NAME));
-        // TODO: make datetime human readable and make sure it's the more recent one
-        String clientLastSession = cursor.getString(cursor.getColumnIndex(ClientEntry.COLUMN_CLIENT_DATETIME));
+        // Format Unix time to localized date
+        long sessionDate = cursor.getLong(cursor.getColumnIndex(ClientEntry.COLUMN_CLIENT_DATETIME));
+        String clientLastSession = DateFormat.getDateInstance().format(sessionDate);
 
         // Update the TextViews with the attributes for the current client
         nameTextView.setText(clientName);

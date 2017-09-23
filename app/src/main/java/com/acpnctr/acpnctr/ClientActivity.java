@@ -13,7 +13,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import static com.acpnctr.acpnctr.InformationFragment.clientHasChanged;
+import com.acpnctr.acpnctr.fragment.ClientFragmentPageAdapter;
+
+import static com.acpnctr.acpnctr.fragment.InformationFragment.clientHasChanged;
 
 public class ClientActivity extends AppCompatActivity {
 

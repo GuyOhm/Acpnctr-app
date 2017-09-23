@@ -1,4 +1,4 @@
-package com.acpnctr.acpnctr;
+package com.acpnctr.acpnctr.fragment;
 
 
 import android.os.Bundle;
@@ -9,12 +9,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 /**
- * {@link Fragment} to display diagnosis of a session.
+ * {@link Fragment} to display the 4 steps of a session.
  */
-public class DiagnosisFragment extends Fragment {
+public class FourStepsFragment extends Fragment {
 
 
-    public DiagnosisFragment() {
+    public FourStepsFragment() {
         // Required empty public constructor
     }
 
@@ -23,7 +23,7 @@ public class DiagnosisFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         TextView textView = new TextView(getActivity());
-        textView.setText("Energetics diagnosis");
+        textView.setText("Four steps of the traditional diagnosis");
         return textView;
     }
 

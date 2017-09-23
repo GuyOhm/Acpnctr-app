@@ -60,7 +60,7 @@ public final class ClientContract {
         public final static String TABLE_NAME = "clients";
 
         /**
-         * Unique ID number for the pet (only for use in the database table).
+         * Unique ID number for the client (only for use in the database table).
          * <p>
          * Type: INTEGER
          */
@@ -160,5 +160,13 @@ public final class ClientContract {
             }
             return false;
         }
+    }
+
+    /**
+     * Inner class that defines constant values for the clients database table.
+     * Each entry in the table represents a single client.
+     */
+    public static final class AnamnesisEntry implements BaseColumns {
+
     }
 }

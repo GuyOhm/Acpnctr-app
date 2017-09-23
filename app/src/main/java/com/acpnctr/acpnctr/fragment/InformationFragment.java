@@ -1,4 +1,4 @@
-package com.acpnctr.acpnctr;
+package com.acpnctr.acpnctr.fragment;
 
 
 import android.app.LoaderManager;
@@ -23,6 +23,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.acpnctr.acpnctr.R;
 import com.acpnctr.acpnctr.data.ClientContract.ClientEntry;
 
 import java.util.Date;

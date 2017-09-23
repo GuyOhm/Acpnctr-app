@@ -1,4 +1,4 @@
-package com.acpnctr.acpnctr;
+package com.acpnctr.acpnctr.fragment;
 
 
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.acpnctr.acpnctr.R;
 
 /**
  * A {@link Fragment} to display the sessions history of a client.
