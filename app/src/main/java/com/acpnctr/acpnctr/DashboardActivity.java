@@ -31,6 +31,8 @@ import java.util.Date;
 public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, LoaderManager.LoaderCallbacks<Cursor> {
 
+    // VCS test for new branch with firebase implementation
+
     // TODO: implement search (SearchView?) client functionality
 
     /**
