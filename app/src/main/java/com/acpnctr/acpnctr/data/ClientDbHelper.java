@@ -30,7 +30,7 @@ public class ClientDbHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // create a String containing the SQL statement to create the Client table
+        // create a String containing the SQL statement to create the ClientInfo table
         String SQL_CREATE_CLIENT_TABLE = "CREATE TABLE " + ClientEntry.TABLE_NAME + " ("
                 + ClientEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + ClientEntry.COLUMN_CLIENT_NAME + " TEXT NOT NULL, "

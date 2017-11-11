@@ -1,17 +1,14 @@
 package com.acpnctr.acpnctr.fragment;
 
 
-import android.app.LoaderManager;
-import android.content.ContentValues;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -25,17 +22,45 @@ import android.widget.Toast;
 
 import com.acpnctr.acpnctr.R;
 import com.acpnctr.acpnctr.data.ClientContract.ClientEntry;
+import com.acpnctr.acpnctr.models.Client;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.acpnctr.acpnctr.data.ClientContract.ClientEntry.GENDER_UNKNOWN;
+import static com.acpnctr.acpnctr.models.Client.CLIENT_ACQUI_KEY;
+import static com.acpnctr.acpnctr.models.Client.CLIENT_DOB_KEY;
+import static com.acpnctr.acpnctr.models.Client.CLIENT_GENDER_KEY;
+import static com.acpnctr.acpnctr.models.Client.CLIENT_MAIL_KEY;
+import static com.acpnctr.acpnctr.models.Client.CLIENT_NAME_KEY;
+import static com.acpnctr.acpnctr.models.Client.CLIENT_PHONE_KEY;
 
 /**
  * {@link Fragment} to display client information.
  */
-public class InformationFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class InformationFragment extends Fragment {
 
-    private final static String LOG_TAG = InformationFragment.class.getSimpleName();
+    // Log for debugging purposes
+    private static final String LOG_TAG = InformationFragment.class.getSimpleName();
+    public static final String CLIENTS_COLLECTION = "clients";
+    public static final String NEW_CLIENT = "none";
+
+    // Document reference variable for the current client
+    private String clientDocRef;
+
+    // Firebase instance variables
+    // note: can be written FirebaseFirestore.getInstance().document("clients/client");
+    /*
+    private DocumentReference clientInfoDocRef = FirebaseFirestore.getInstance()
+            .collection("clients")
+            .document(clientDocRef);
+    */
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private String documentID = NEW_CLIENT;
 
     /**
      * EditText field to enter the client's information
@@ -101,17 +126,17 @@ public class InformationFragment extends Fragment implements LoaderManager.Loade
         Intent intent = getActivity().getIntent();
         currentClientUri = intent.getData();
 
-        // If the intent DOES NOT contain a client content URI, then we know that we are
+/*        // If the intent DOES NOT contain a client content URI, then we know that we are
         // creating a new client.
         if (currentClientUri == null) {
-            // This is a new pet, so change the app bar to say "Add a client"
+            // This is a new client, so change the app bar to say "Add a client"
             getActivity().setTitle(getString(R.string.add_client_activity_title));
 
         } else {
             // Initialize a loader to read the client data from the database
             // and display the current values in the editor
             getActivity().getLoaderManager().initLoader(EXISTING_CLIENT_LOADER, null, this);
-        }
+        }*/
 
         // Find views that we need to read input from
         clientNameEditText = (TextView) rootView.findViewById(R.id.edit_client_name);
@@ -134,6 +159,16 @@ public class InformationFragment extends Fragment implements LoaderManager.Loade
         clientAcquisitionSpinner.setOnTouchListener(touchListener);
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 
     /**
@@ -221,101 +256,6 @@ public class InformationFragment extends Fragment implements LoaderManager.Loade
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        // Define a projection that specifies columns we're interested in
-        String[] projection = {
-                ClientEntry._ID,
-                ClientEntry.COLUMN_CLIENT_NAME,
-                ClientEntry.COLUMN_CLIENT_DOB,
-                ClientEntry.COLUMN_CLIENT_PHONE,
-                ClientEntry.COLUMN_CLIENT_EMAIL,
-                ClientEntry.COLUMN_CLIENT_GENDER,
-                ClientEntry.COLUMN_CLIENT_ACQUISITION};
-
-        // This loader will execute the ContentProvider's query method on a background thread
-        return new CursorLoader(getContext(),   // Parent activity context
-                currentClientUri,               // Provider content URI to query
-                projection,                     // Columns to include in the resulting Cursor
-                null,                           // No selection clause
-                null,                           // No selection arguments
-                null);                          // Default sort order;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        // Bail early if the cursor is null or there is less than 1 row in the cursor
-        if (cursor == null || cursor.getCount() < 1) {
-            return;
-        }
-
-        // Move to the first row of the cursor and read data
-        if (cursor.moveToFirst()) {
-            // Extract data from the cursor
-            String name = cursor.getString(cursor.getColumnIndex(ClientEntry.COLUMN_CLIENT_NAME));
-            String dob = cursor.getString(cursor.getColumnIndex(ClientEntry.COLUMN_CLIENT_DOB));
-            String phone = cursor.getString(cursor.getColumnIndex(ClientEntry.COLUMN_CLIENT_PHONE));
-            String email = cursor.getString(cursor.getColumnIndex(ClientEntry.COLUMN_CLIENT_EMAIL));
-            int gender = cursor.getInt(cursor.getColumnIndex(ClientEntry.COLUMN_CLIENT_GENDER));
-            int acquisition = cursor.getInt(cursor.getColumnIndex(ClientEntry.COLUMN_CLIENT_ACQUISITION));
-
-            // Update the views
-            clientNameEditText.setText(name);
-            clientDobEditText.setText(dob);
-            clientPhoneEditText.setText(phone);
-            clientEmailEditText.setText(email);
-
-            // Map the constant value from the database into one of the dropdown options
-            // and set the selection of the gender spinner
-            switch (gender) {
-                case ClientEntry.GENDER_MALE:
-                    clientGenderSpinner.setSelection(1);
-                    break;
-                case ClientEntry.GENDER_FEMALE:
-                    clientGenderSpinner.setSelection(2);
-                    break;
-                default:
-                    clientGenderSpinner.setSelection(0);
-                    break;
-            }
-
-            // Map the constant value from the database into one of the dropdown options
-            // and set the selection of the acquisition spinner
-            switch (acquisition) {
-                case ClientEntry.ACQUI_WOM:
-                    clientAcquisitionSpinner.setSelection(1);
-                    break;
-                case ClientEntry.ACQUI_WEBSITE:
-                    clientAcquisitionSpinner.setSelection(2);
-                    break;
-                case ClientEntry.ACQUI_FACEBOOK:
-                    clientAcquisitionSpinner.setSelection(3);
-                    break;
-                case ClientEntry.ACQUI_CONFRERE:
-                    clientAcquisitionSpinner.setSelection(4);
-                    break;
-                case ClientEntry.ACQUI_OFFLINE:
-                    clientAcquisitionSpinner.setSelection(5);
-                    break;
-                default:
-                    clientAcquisitionSpinner.setSelection(0);
-                    break;
-            }
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        // If the loader is invalidated, clear out all the data from the input fields.
-        clientNameEditText.setText("");
-        clientDobEditText.setText("");
-        clientPhoneEditText.setText("");
-        clientEmailEditText.setText("");
-        clientGenderSpinner.setSelection(0); // Select "Unknown" gender
-        clientAcquisitionSpinner.setSelection(0); // Select "Unknown" acqui channel
-
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
@@ -349,49 +289,72 @@ public class InformationFragment extends Fragment implements LoaderManager.Loade
             return;
         }
 
-        // Create a ContentValues and store the data to be saved
-        ContentValues values = new ContentValues();
-        values.put(ClientEntry.COLUMN_CLIENT_NAME, name);
-        values.put(ClientEntry.COLUMN_CLIENT_DOB, dob);
-        values.put(ClientEntry.COLUMN_CLIENT_PHONE, phone);
-        values.put(ClientEntry.COLUMN_CLIENT_EMAIL, email);
-        values.put(ClientEntry.COLUMN_CLIENT_GENDER, clientGender);
-        values.put(ClientEntry.COLUMN_CLIENT_ACQUISITION, clientAcquisition);
+        // if it is a client file creation i.e. documentID = "none"
+        if (documentID.equals(NEW_CLIENT)) {
+            // get current timestamp
+            double timestamp = (double) System.currentTimeMillis()/1000;
 
-        // Determine if this is a new or existing client
-        if (currentClientUri == null) {
-            // Add creation datetime to the values
-            values.put(ClientEntry.COLUMN_CLIENT_DATETIME, new Date().getTime());
-            // This is a NEW client, so insert a new client into the provider,
-            // returning the content URI for the new client.
-            Uri newUri = getActivity().getContentResolver().insert(ClientEntry.CONTENT_URI, values);
+            // create a Client object with info fetched from the UI
+            Client clientInfo = new Client(name, dob, phone, email, String.valueOf(clientGender),
+                    String.valueOf(clientAcquisition), timestamp);
 
-            // Show a toast message depending on whether or not the insertion was successful.
-            if (newUri == null) {
-                // If the new content URI is null, then there was an error with insertion.
-                Toast.makeText(getActivity(), getString(R.string.client_info_insert_failed),
-                        Toast.LENGTH_SHORT).show();
-            } else {
-                // Otherwise, the insertion was successful and we can display a toast.
-                Toast.makeText(getActivity(), getString(R.string.client_info_insert_successful),
-                        Toast.LENGTH_SHORT).show();
-            }
-        } else if (clientHasChanged) {
-            // Otherwise this is an EXISTING client, so update the client with content URI: currentClientUri
-            int rowsAffected = getActivity().getContentResolver().update(currentClientUri, values, null, null);
+            // create a doc from the Client object to clients collection with auto-generated unique ID
+            db.collection(CLIENTS_COLLECTION)
+                    .add(clientInfo)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Log.d(LOG_TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                            Toast.makeText(getActivity(), getString(R.string.client_info_insert_successful),
+                                    Toast.LENGTH_SHORT).show();
+                            // update documentID
+                            documentID = documentReference.getId();
+                            // reinit clienHasChanged to false
+                            clientHasChanged = false;
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(LOG_TAG, "Error adding document", e);
+                            Toast.makeText(getActivity(), getString(R.string.client_info_insert_failed),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        } else if(clientHasChanged) {
+            // the client has already been created
+            // create the path to the document
+            DocumentReference clientDocReference = db.collection(CLIENTS_COLLECTION).document(documentID);
 
-            // Show a toast message depending on whether or not the update was successful.
-            if (rowsAffected == 0) {
-                // If no rows were affected, then there was an error with the update.
-                Toast.makeText(getActivity(), getString(R.string.client_info_update_failed),
-                        Toast.LENGTH_SHORT).show();
-            } else {
-                // Otherwise, the update was successful and we can display a toast.
-                Toast.makeText(getActivity(), getString(R.string.client_info_update_successful),
-                        Toast.LENGTH_SHORT).show();
-            }
+            Log.d(LOG_TAG, "documentID: " + documentID);
+
+            // create a hashmap with values fetched from the UI that may have been updated
+            Map<String, Object> updates = new HashMap<>();
+            updates.put(CLIENT_GENDER_KEY, clientGender);
+            updates.put(CLIENT_MAIL_KEY, email);
+            updates.put(CLIENT_DOB_KEY, dob);
+            updates.put(CLIENT_NAME_KEY, name);
+            updates.put(CLIENT_PHONE_KEY, phone);
+            updates.put(CLIENT_ACQUI_KEY, clientAcquisition);
+
+            // udpate the corresponding document in the firestore DB
+            clientDocReference
+                    .update(updates)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(getActivity(), getString(R.string.client_info_update_successful),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getActivity(), getString(R.string.client_info_update_failed),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
-        clientHasChanged = false;
     }
 
 

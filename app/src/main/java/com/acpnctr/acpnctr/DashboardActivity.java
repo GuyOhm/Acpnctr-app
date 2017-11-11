@@ -1,15 +1,8 @@
 package com.acpnctr.acpnctr;
 
-import android.app.LoaderManager;
-import android.content.ContentUris;
-import android.content.ContentValues;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
-import android.database.Cursor;
-import android.database.DatabaseUtils;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,78 +14,67 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.Toast;
 
-import com.acpnctr.acpnctr.data.ClientContract.ClientEntry;
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.ErrorCodes;
+import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.FirebaseUserMetadata;
 
-import java.util.Date;
+import java.util.Arrays;
 
 public class DashboardActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, LoaderManager.LoaderCallbacks<Cursor> {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
-    // VCS test for new branch with firebase implementation
+    // Firebase instance variables
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
 
-    // TODO: implement search (SearchView?) client functionality
+    private ClientsListAdapter clientsListAdapter;
 
     /**
      * Tag for the log messages
      */
     public static final String LOG_TAG = DashboardActivity.class.getSimpleName();
 
-    /**
-     * Identifier for the client data loader
-     */
-    private static final int CLIENT_LOADER = 0;
-
-    /**
-     * CursorAdapter for the ListView
-     */
-    ClientCursorAdapter clientCursorAdapter;
+    // declare an arbitrary request code value for authUI
+    public static final int RC_SIGN_IN = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard_activity);
 
+        // initialize Firebase components
+        mAuth = FirebaseAuth.getInstance();
+
+/*        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                // check if the user is logged in
+                if (user != null) {
+                    // already signed in
+                    Toast.makeText(DashboardActivity.this, "user is signed in!", Toast.LENGTH_SHORT).show();
+                    // TODO: user is signed in then loadClientsList() -> to be written
+                } else {
+                    // not signed in
+                    Toast.makeText(DashboardActivity.this, "user is not signed in.", Toast.LENGTH_SHORT).show();
+                    // create a sign in intent using AuthUI.SignInIntentBuilder
+                    // a builder instance can be retrieved by calling createSignInIntentBuilder()
+                    // TODO: launch the sign in / up flow with authUI (email + google)
+                    // TODO: include a terms of service url
+                    launchSignInFlow();
+                }
+            }
+        };*/
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        // TEST: insert client into the database
-        // insertDummyClient();
-        // TEST: query client into the database
-        // testQueryClient();
-
-        // Find the {@link ListView} object which will be populated with the client data.
-        ListView listView = (ListView) findViewById(R.id.client_list);
-
-        // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
-        View emptyView = findViewById(R.id.client_list_empty_view);
-        listView.setEmptyView(emptyView);
-
-        // Create a {@link ClientCursorAdapter} and set it up onto the list view
-        clientCursorAdapter = new ClientCursorAdapter(this, null);
-        listView.setAdapter(clientCursorAdapter);
-
-        // set an ItemOnClickListener on to the client list to give access to file for each item
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Create a new intent to open the {@link ClientActivity}
-                Intent clientIntent = new Intent(DashboardActivity.this, ClientActivity.class);
-
-                // Form the content URI that represents the specific client that was clicked on,
-                // by appending the "id" (passed as input to this method) onto the
-                // {@link ClientEntry#CONTENT_URI}.
-                Uri currentClientUri = ContentUris.withAppendedId(ClientEntry.CONTENT_URI, id);
-
-                // Set the URI on the data field of the intent
-                clientIntent.setData(currentClientUri);
-
-                // Start the new activity
-                startActivity(clientIntent);
-            }
-        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add_client);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -114,62 +96,79 @@ public class DashboardActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        // Kick off the loader
-        getLoaderManager().initLoader(CLIENT_LOADER, null, this);
     }
 
-    private void testQueryClient() {
-        // Define a projection that specifies which columns from the database
-        // you will actually use after this query.
-        String[] projection = {
-                ClientEntry._ID,
-                ClientEntry.COLUMN_CLIENT_NAME,
-                ClientEntry.COLUMN_CLIENT_DATETIME,
-                ClientEntry.COLUMN_CLIENT_GENDER,
-                ClientEntry.COLUMN_CLIENT_DOB,
-                ClientEntry.COLUMN_CLIENT_EMAIL,
-                ClientEntry.COLUMN_CLIENT_PHONE,
-                ClientEntry.COLUMN_CLIENT_ACQUISITION};
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // check if the user is signed in (non-null)
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            // already signed in
+            Toast.makeText(DashboardActivity.this, "user is signed in!", Toast.LENGTH_SHORT).show();
+            // TODO: user is signed in then loadClientsList() -> to be written
+            // check user data
+            String uid = user.getUid();
+            String email = user.getEmail();
+            String name = user.getDisplayName();
+            FirebaseUserMetadata metadata = user.getMetadata();
+            long timestampCreated = metadata.getCreationTimestamp();
 
-        // Perform a query on the provider using the ContentResolver.
-        // Use the {@link ClientEntry#CONTENT_URI} to access the client data.
-        Cursor cursor = getContentResolver().query(
-                ClientEntry.CONTENT_URI,   // The content URI of the clients table
-                projection,             // The columns to return for each row
-                null,                   // Selection criteria
-                null,                   // Selection criteria
-                null);                  // The sort order for the returned rows
+            String info = "uid: " + uid + "\n";
+            info += "email: " + email + "\n";
+            info += "name: " + name + "\n";
+            info += "timestamp created: " + timestampCreated + "\n";
+            Log.v(LOG_TAG, info);
 
-        try {
-            // display cursor content to Logcat
-            DatabaseUtils.dumpCursor(cursor);
-        } finally {
-            // Always close the cursor when you're done reading from it. This releases all its
-            // resources and makes it invalid.
-            cursor.close();
+        } else {
+            // not signed in
+            Toast.makeText(DashboardActivity.this, "user is not signed in.", Toast.LENGTH_SHORT).show();
         }
-
     }
 
-    private void insertDummyClient() {
-        // create a ContentValues object with data associated to columns
-        ContentValues values = new ContentValues();
-        values.put(ClientEntry.COLUMN_CLIENT_NAME, "Roger Dupont");
-        values.put(ClientEntry.COLUMN_CLIENT_DATETIME, new Date().getTime());
-        values.put(ClientEntry.COLUMN_CLIENT_GENDER, ClientEntry.GENDER_MALE);
-        values.put(ClientEntry.COLUMN_CLIENT_DOB, "01/03/1967");
-        values.put(ClientEntry.COLUMN_CLIENT_EMAIL, "roger.dupont@gmail.com");
-        values.put(ClientEntry.COLUMN_CLIENT_PHONE, "06 07 45 78 08");
-        values.put(ClientEntry.COLUMN_CLIENT_ACQUISITION, ClientEntry.ACQUI_WEBSITE);
+    private void launchSignInFlow() {
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setIsSmartLockEnabled(false)
+                        .setAvailableProviders(
+                                Arrays.asList(
+                                        new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
+                                        new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
+                        .build(),
+                RC_SIGN_IN);
+    }
 
-        // Insert a new row for client into the provider using the ContentResolver.
-        // Use the {@link ClientEntry#CONTENT_URI} to indicate that we want to insert
-        // into the clients database table.
-        // Receive the new content URI that will allow us to access client's data in the future.
-        Uri newUri = getContentResolver().insert(ClientEntry.CONTENT_URI, values);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // TODO: insert idp response
+        if(requestCode == RC_SIGN_IN){
+            IdpResponse response = IdpResponse.fromResultIntent(data);
 
-        Log.v(LOG_TAG, "new uri: " + newUri);
+            // successfully signed in
+            if (resultCode == RESULT_OK){
+                Toast.makeText(DashboardActivity.this, "Signed in!", Toast.LENGTH_SHORT).show();
+            } else {
+                // signed in failed
+                if (response == null) {
+                    // user pressed back button hence cancelled sign in
+                    Toast.makeText(DashboardActivity.this, "Signed in cancelled", Toast.LENGTH_SHORT).show();
+                }
+
+                else if (response.getErrorCode() == ErrorCodes.NO_NETWORK) {
+                    Toast.makeText(DashboardActivity.this, "Couldn't connect to network", Toast.LENGTH_SHORT).show();
+                }
+
+                else if (response.getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
+                    Toast.makeText(DashboardActivity.this, "Something went wrong :/", Toast.LENGTH_SHORT).show();
+                }
+
+                else {
+                    Toast.makeText(DashboardActivity.this, "Ooops...", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
     }
 
     @Override
@@ -189,58 +188,66 @@ public class DashboardActivity extends AppCompatActivity
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id){
+            case R.id.action_logout:
+                logUserOut();
+                return true;
+            case R.id.action_signin:
+                launchSignInFlow();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void logUserOut() {
+        AuthUI.getInstance()
+                .signOut(this)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // user is signed out
+                        Toast.makeText(DashboardActivity.this, "You\'ve successfully signed out", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void onSignedInInitialize() {
+        // TODO : check if user exists in the database
+        // TODO: loadUserData() if user already in the database
+        // TODO: onFirstTimeSignIn() if user sign in for the first time => create user's data createUserData()
+    }
+
+    private void onSignedOutCleanup() {
+
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation_client view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        switch (id) {
+            case R.id.nav_camera:
+                break;
+            case R.id.nav_gallery:
+                break;
+            case R.id.nav_slideshow:
+                break;
+            case R.id.nav_manage:
+                break;
+            case R.id.nav_share:
+                break;
+            case R.id.nav_send:
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        // Define a projection that specifies columns we're interested in
-        String[] projection = {
-                ClientEntry._ID,
-                ClientEntry.COLUMN_CLIENT_NAME,
-                ClientEntry.COLUMN_CLIENT_DATETIME};
-
-        // TODO: sort data in the descendant order of datetime (eventually must be last session datetime)
-        // This loader will execute the ContentProvider's query method on a background thread
-        return new CursorLoader(this,   // Parent activity context
-                ClientEntry.CONTENT_URI,   // Provider content URI to query
-                projection,             // Columns to include in the resulting Cursor
-                null,                   // No selection clause
-                null,                   // No selection arguments
-                null);                  // Default sort order
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        // Update {@link ClientCursorAdapter} with this new cursor containing updated client data
-        clientCursorAdapter.swapCursor(cursor);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        // Callback called when the data needs to be deleted
-        clientCursorAdapter.swapCursor(null);
     }
 }

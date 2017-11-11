@@ -33,8 +33,9 @@ public class AnamnesisFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         TextView textView = new TextView(getActivity());
-        textView.setText("Client anamnesis");
+        textView.setText("ClientInfo anamnesis");
         return textView;
     }
 

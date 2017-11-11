@@ -6,10 +6,11 @@
 
     <string name="search_title">Search</string>
     <string name="action_settings">Settings</string>
+    <string name="action_create_data">Create data</string>
     <string name="title_activity_client">Client file</string>
     <string name="title_activity_session">Session</string>
 
-    <!-- Titles for Client activity menu -->
+    <!-- Titles for ClientInfo activity menu -->
     <string name="title_client_information">Information</string>
     <string name="title_anamnesis">Anamnesis</string>
     <string name="title_history">Sessions</string>
@@ -22,7 +23,7 @@
     <!-- Session history list -->
     <string name="session_item_prefix">Session of </string>
 
-    <!-- Client list -->
+    <!-- ClientInfo list -->
     <string name="client_list_empty_view_title_text">You don\'t have any client yet</string>
     <string name="client_list_empty_view_subtitle_text">Start creating one with the button below</string>
 
@@ -72,5 +73,9 @@
 
     <!-- Dialog button text for the option to keep editing the current client -->
     <string name="keep_editing">Keep Editing</string>
+    <string name="action_get_data">Get data</string>
+
+    <!-- sessions list -->
+    <string name="session_list_item">Session item</string>
 
 </resources>

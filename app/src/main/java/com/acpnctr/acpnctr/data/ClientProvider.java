@@ -151,25 +151,25 @@ public class ClientProvider extends ContentProvider {
         // Check that the NAME is not null or empty
         String name = values.getAsString(ClientEntry.COLUMN_CLIENT_NAME);
         if (name == null || TextUtils.isEmpty(name)) {
-            throw new IllegalArgumentException("Client requires a name");
+            throw new IllegalArgumentException("ClientInfo requires a name");
         }
 
         // Check that the GENDER is valid
         Integer gender = values.getAsInteger(ClientEntry.COLUMN_CLIENT_GENDER);
         if (gender == null || !ClientEntry.isValidGender(gender)) {
-            throw new IllegalArgumentException("Client requires valid gender");
+            throw new IllegalArgumentException("ClientInfo requires valid gender");
         }
 
         // Check that the ACQUISITION channel is valid
         Integer acquiChannel = values.getAsInteger(ClientEntry.COLUMN_CLIENT_ACQUISITION);
         if (!ClientEntry.isValidAcquiChannel(acquiChannel)) {
-            throw new IllegalArgumentException("Client requires valid acquisition channel");
+            throw new IllegalArgumentException("ClientInfo requires valid acquisition channel");
         }
 
         // Check that the datetime is not null
         Long datetime = values.getAsLong(ClientEntry.COLUMN_CLIENT_DATETIME);
         if (datetime == null) {
-            throw new IllegalArgumentException("Client requires a creation datetime");
+            throw new IllegalArgumentException("ClientInfo requires a creation datetime");
         }
 
         // Get writable database
@@ -225,7 +225,7 @@ public class ClientProvider extends ContentProvider {
         if (values.containsKey(ClientEntry.COLUMN_CLIENT_NAME)) {
             String name = values.getAsString(ClientEntry.COLUMN_CLIENT_NAME);
             if (name == null || TextUtils.isEmpty(name)) {
-                throw new IllegalArgumentException("Client requires a name");
+                throw new IllegalArgumentException("ClientInfo requires a name");
             }
         }
 
@@ -234,7 +234,7 @@ public class ClientProvider extends ContentProvider {
         if (values.containsKey(ClientEntry.COLUMN_CLIENT_GENDER)) {
             Integer gender = values.getAsInteger(ClientEntry.COLUMN_CLIENT_GENDER);
             if (gender == null || !ClientEntry.isValidGender(gender)) {
-                throw new IllegalArgumentException("Client requires a gender");
+                throw new IllegalArgumentException("ClientInfo requires a gender");
             }
         }
 

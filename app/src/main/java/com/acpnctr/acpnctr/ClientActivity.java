@@ -4,25 +4,46 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.acpnctr.acpnctr.fragment.ClientFragmentPageAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.acpnctr.acpnctr.fragment.InformationFragment.clientHasChanged;
 
 public class ClientActivity extends AppCompatActivity {
 
+    //Firebase instance
+    FirebaseFirestore db;
+
+    private final static String LOG_TAG = ClientActivity.class.getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client);
+
+        // Access a Cloud Firestore instance
+        db = FirebaseFirestore.getInstance();
 
         // Find the view pager that will allow the user to swipe between fragments
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager_client);
@@ -37,6 +58,7 @@ public class ClientActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.client_sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
 
+        // set up the FAB for creating a new session
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add_session);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +106,13 @@ public class ClientActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            // action menu in the app bar
+            case R.id.action_create_data:
+                addDummydata();
+                return true;
+            case R.id.action_get_data:
+                getDummyData();
+                return true;
             // Respond to a click on the "Up" arrow button in the app bar
             case android.R.id.home:
                 // If the client hasn't changed, continue with navigating up to parent activity
@@ -107,6 +136,47 @@ public class ClientActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void getDummyData() {
+        db.collection("users")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot document : task.getResult()) {
+                                Log.d(LOG_TAG, document.getId() + " => " + document.getData());
+                            }
+                        } else {
+                            Log.w(LOG_TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+    }
+
+    private void addDummydata() {
+        // Create a new user with a first and last name
+        Map<String, Object> user = new HashMap<>();
+        user.put("first", "Ada");
+        user.put("last", "Lovelace");
+        user.put("born", 1815);
+
+        // Add a new document with a generated ID
+        db.collection("users")
+                .add(user)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(LOG_TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(LOG_TAG, "Error adding document", e);
+                    }
+                });
     }
 
     /**
@@ -137,4 +207,6 @@ public class ClientActivity extends AppCompatActivity {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
+
+
 }

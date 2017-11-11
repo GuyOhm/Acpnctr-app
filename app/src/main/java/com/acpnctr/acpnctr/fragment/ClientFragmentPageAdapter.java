@@ -16,6 +16,8 @@ import com.acpnctr.acpnctr.R;
 
 public class ClientFragmentPageAdapter extends FragmentPagerAdapter {
 
+    // TODO: refactor using switch statement
+
     /** Context of the app */
     private Context mContext;
 
