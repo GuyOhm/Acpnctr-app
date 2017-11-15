@@ -16,16 +16,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.acpnctr.acpnctr.models.User;
 import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.ErrorCodes;
-import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.FirebaseUserMetadata;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.Arrays;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -33,16 +36,10 @@ public class DashboardActivity extends AppCompatActivity
     // Firebase instance variables
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    private ClientsListAdapter clientsListAdapter;
-
-    /**
-     * Tag for the log messages
-     */
+    // Tag for the log messages
     public static final String LOG_TAG = DashboardActivity.class.getSimpleName();
-
-    // declare an arbitrary request code value for authUI
-    public static final int RC_SIGN_IN = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,31 +49,33 @@ public class DashboardActivity extends AppCompatActivity
         // initialize Firebase components
         mAuth = FirebaseAuth.getInstance();
 
-/*        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+        // [ START - AuthStateListener ]
+        // Set up an {@link FirebaseAuth.AuthStateListener} to listen to authentication state and
+        // launch AuthenticationActivity if not signed in
+        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                // check if the user is logged in
+                FirebaseUser user = mAuth.getCurrentUser();
                 if (user != null) {
                     // already signed in
-                    Toast.makeText(DashboardActivity.this, "user is signed in!", Toast.LENGTH_SHORT).show();
+                    // logUserData(user);
                     // TODO: user is signed in then loadClientsList() -> to be written
                 } else {
                     // not signed in
-                    Toast.makeText(DashboardActivity.this, "user is not signed in.", Toast.LENGTH_SHORT).show();
-                    // create a sign in intent using AuthUI.SignInIntentBuilder
-                    // a builder instance can be retrieved by calling createSignInIntentBuilder()
-                    // TODO: launch the sign in / up flow with authUI (email + google)
-                    // TODO: include a terms of service url
-                    launchSignInFlow();
+                    launchAuthentication();
                 }
             }
-        };*/
+        };
+        // [ END - AuthStateListener ]
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        // [ START - Toolbar ]
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        // [ END - Toolbar ]
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add_client);
+        // [ START - FAB ]
+        // Set up a FAB to create a new client file, launching ClientActivity
+        FloatingActionButton fab = findViewById(R.id.fab_add_client);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,15 +86,64 @@ public class DashboardActivity extends AppCompatActivity
                 startActivity(clientIntent);
             }
         });
+        // [ END - FAB ]
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        // [ START - Side Navigation Drawer ]
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        // [ END - Side Navigation Drawer ]
+
+        // TODO: handle uid data within intent passed on by AuthenticationActivity
+        // if (uid exist in db)
+            // load clients list
+        // else
+            // createUserFirestoreDoc
+        FirebaseUser user = mAuth.getCurrentUser();
+        if(user != null) {
+            // get data from FirebaseAuth object
+            String uid = user.getUid();
+            String email = user.getEmail();
+            String fullname = user.getDisplayName();
+            List<String> authProvider = user.getProviders();
+            long timestampCreated = System.currentTimeMillis();
+
+            Date date = new Date(timestampCreated);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-YY");
+            String formattedDate = sdf.format(date);
+            Log.v(LOG_TAG, "date: " + formattedDate);
+
+            User userModel = new User(uid, fullname, email, authProvider != null ? authProvider.get(0) : null, timestampCreated);
+
+            // create the user document with the data
+            db.collection("users").document(uid)
+                    .set(userModel)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d(LOG_TAG, "DocumentSnapshot successfully written");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(LOG_TAG, "Error writing the document", e);
+                        }
+                    });
+        }
+    }
+
+    /**
+     * Starts AuthentificationActivity for authentication
+     */
+    private void launchAuthentication() {
+        Intent authIntent = new Intent(DashboardActivity.this, AuthenticationActivity.class);
+        startActivity(authIntent);
     }
 
     @Override
@@ -103,77 +151,47 @@ public class DashboardActivity extends AppCompatActivity
         super.onStart();
         // check if the user is signed in (non-null)
         FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null) {
-            // already signed in
-            Toast.makeText(DashboardActivity.this, "user is signed in!", Toast.LENGTH_SHORT).show();
-            // TODO: user is signed in then loadClientsList() -> to be written
-            // check user data
-            String uid = user.getUid();
-            String email = user.getEmail();
-            String name = user.getDisplayName();
-            FirebaseUserMetadata metadata = user.getMetadata();
-            long timestampCreated = metadata.getCreationTimestamp();
-
-            String info = "uid: " + uid + "\n";
-            info += "email: " + email + "\n";
-            info += "name: " + name + "\n";
-            info += "timestamp created: " + timestampCreated + "\n";
-            Log.v(LOG_TAG, info);
-
+        if(user != null) {
+            // logUserData(user);
         } else {
-            // not signed in
-            Toast.makeText(DashboardActivity.this, "user is not signed in.", Toast.LENGTH_SHORT).show();
+            launchAuthentication();
         }
-    }
-
-    private void launchSignInFlow() {
-        startActivityForResult(
-                AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setIsSmartLockEnabled(false)
-                        .setAvailableProviders(
-                                Arrays.asList(
-                                        new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
-                                        new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
-                        .build(),
-                RC_SIGN_IN);
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // TODO: insert idp response
-        if(requestCode == RC_SIGN_IN){
-            IdpResponse response = IdpResponse.fromResultIntent(data);
+    protected void onResume() {
+        super.onResume();
+        mAuth.addAuthStateListener(mAuthStateListener);
+    }
 
-            // successfully signed in
-            if (resultCode == RESULT_OK){
-                Toast.makeText(DashboardActivity.this, "Signed in!", Toast.LENGTH_SHORT).show();
-            } else {
-                // signed in failed
-                if (response == null) {
-                    // user pressed back button hence cancelled sign in
-                    Toast.makeText(DashboardActivity.this, "Signed in cancelled", Toast.LENGTH_SHORT).show();
-                }
-
-                else if (response.getErrorCode() == ErrorCodes.NO_NETWORK) {
-                    Toast.makeText(DashboardActivity.this, "Couldn't connect to network", Toast.LENGTH_SHORT).show();
-                }
-
-                else if (response.getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
-                    Toast.makeText(DashboardActivity.this, "Something went wrong :/", Toast.LENGTH_SHORT).show();
-                }
-
-                else {
-                    Toast.makeText(DashboardActivity.this, "Ooops...", Toast.LENGTH_SHORT).show();
-                }
-            }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mAuthStateListener != null){
+            mAuth.removeAuthStateListener(mAuthStateListener);
         }
+    }
+
+    private void logUserData(FirebaseUser user) {
+        // get and store user's data
+        String uid = user.getUid();
+        String email = user.getEmail();
+        String name = user.getDisplayName();
+        List<String> prov = user.getProviders();
+
+        // build string with data
+        String info = "uid: " + uid + "\n";
+        info += "email: " + email + "\n";
+        info += "name: " + name + "\n";
+        info += (prov != null ? prov.get(0) : null) + "\n";
+
+        // log data
+        Log.d(LOG_TAG, info);
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -188,22 +206,30 @@ public class DashboardActivity extends AppCompatActivity
         return true;
     }
 
+    /**
+     * Handles action bar menu navigation
+     * @param item that is clicked
+     * @return true when item is clicked
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id){
             case R.id.action_logout:
-                logUserOut();
+                signUserOut();
                 return true;
             case R.id.action_signin:
-                launchSignInFlow();
+                launchAuthentication();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void logUserOut() {
+    /**
+     * Signs the user out using FirebaseUI API
+     */
+    private void signUserOut() {
         AuthUI.getInstance()
                 .signOut(this)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -225,6 +251,12 @@ public class DashboardActivity extends AppCompatActivity
 
     }
 
+    /**
+     * Handles side drawer menu navigation
+     *
+     * @param item that is clicked from the nav menu
+     * @return true when item is clicked
+     */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -246,7 +278,7 @@ public class DashboardActivity extends AppCompatActivity
                 break;
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

@@ -1,4 +1,4 @@
-package com.acpnctr.acpnctr.Utils;
+package com.acpnctr.acpnctr.utils;
 
 /**
  * Created by guiguette on 28/09/2017.

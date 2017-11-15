@@ -37,7 +37,7 @@
     <string name="hint_client_information_dob">date of birth</string>
     <string name="hint_client_information_phone">phone</string>
     <string name="hint_client_information_email">email</string>
-    
+
     <!-- Title when adding a new client through the fab -->
     <string name="add_client_activity_title">Add a client</string>
 
