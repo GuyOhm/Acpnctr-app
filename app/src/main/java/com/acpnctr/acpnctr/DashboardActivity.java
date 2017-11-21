@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.acpnctr.acpnctr.models.User;
+import com.acpnctr.acpnctr.utils.Constants;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -24,7 +25,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -33,13 +37,17 @@ import java.util.List;
 public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    // Tag for the log messages
+    public static final String LOG_TAG = DashboardActivity.class.getSimpleName();
+
     // Firebase instance variables
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    // Tag for the log messages
-    public static final String LOG_TAG = DashboardActivity.class.getSimpleName();
+    // Flag that indicates if the user has already signed in hence has already a document in db
+    private static boolean isAlreadyInDatabase = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,16 +58,38 @@ public class DashboardActivity extends AppCompatActivity
         mAuth = FirebaseAuth.getInstance();
 
         // [ START - AuthStateListener ]
-        // Set up an {@link FirebaseAuth.AuthStateListener} to listen to authentication state and
-        // launch AuthenticationActivity if not signed in
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = mAuth.getCurrentUser();
+                final FirebaseUser user = mAuth.getCurrentUser();
                 if (user != null) {
-                    // already signed in
-                    // logUserData(user);
-                    // TODO: user is signed in then loadClientsList() -> to be written
+                    // if the user is signed in get the uid
+                    final String uid = user.getUid();
+
+                    if (!isAlreadyInDatabase) {
+                        // check whether or not uid exists in firestore db
+                        final DocumentReference userDoc = db.collection(Constants.FIRESTORE_COLLECTION_USERS).document(uid);
+                        userDoc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot snapshot = task.getResult();
+                                    if (snapshot.exists()) {
+                                        // the user already exists hence has a firestore document named by uid
+                                        Log.d(LOG_TAG, "user already exists in db: " + snapshot.getData());
+                                        isAlreadyInDatabase = true;
+                                    } else {
+                                        // the user signs in for the first time
+                                        Log.d(LOG_TAG, "uid: " + uid + " doesn't exist");
+                                        createUserDocument(user, uid, userDoc);
+                                    }
+                                } else {
+                                    Log.d(LOG_TAG, "get failed with ", task.getException());
+                                }
+                            }
+                        });
+                    }
+
                 } else {
                     // not signed in
                     launchAuthentication();
@@ -99,43 +129,50 @@ public class DashboardActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         // [ END - Side Navigation Drawer ]
 
-        // TODO: handle uid data within intent passed on by AuthenticationActivity
-        // if (uid exist in db)
-            // load clients list
-        // else
-            // createUserFirestoreDoc
-        FirebaseUser user = mAuth.getCurrentUser();
-        if(user != null) {
-            // get data from FirebaseAuth object
-            String uid = user.getUid();
-            String email = user.getEmail();
-            String fullname = user.getDisplayName();
-            List<String> authProvider = user.getProviders();
-            long timestampCreated = System.currentTimeMillis();
+    }
 
-            Date date = new Date(timestampCreated);
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-YY");
-            String formattedDate = sdf.format(date);
-            Log.v(LOG_TAG, "date: " + formattedDate);
+    /**
+     * This method creates a document named by the uid in Firestore db when he signs in for
+     * the first time
+     *
+     * @param user is the FirebaseUser recovered from FirebaseAuth
+     * @param uid is the unique id for the user created by FirebaseAuth
+     * @param userDoc is the reference to the path in Firestore db
+     */
+    private void createUserDocument(FirebaseUser user, String uid, DocumentReference userDoc) {
+        // collect user's data from the user and store them
+        String email = user.getEmail();
+        String fullname = user.getDisplayName();
+        List<String> authProvider = user.getProviders();
+        long timestampCreated = System.currentTimeMillis();
 
-            User userModel = new User(uid, fullname, email, authProvider != null ? authProvider.get(0) : null, timestampCreated);
+        // create document for the new user in firestore db
+        Log.d(LOG_TAG, "creating document............");
+        User userModel = new User(uid, fullname, email, authProvider != null ? authProvider.get(0) : null, timestampCreated);
+        userDoc
+                .set(userModel, SetOptions.merge())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(LOG_TAG, "DocumentSnapshot successfully written");
+                        isAlreadyInDatabase = true;
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(LOG_TAG, "Error writing the document", e);
+                    }
+                });
+    }
 
-            // create the user document with the data
-            db.collection("users").document(uid)
-                    .set(userModel)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Log.d(LOG_TAG, "DocumentSnapshot successfully written");
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.w(LOG_TAG, "Error writing the document", e);
-                        }
-                    });
-        }
+    private String convertTimeStampToString(long timestamp) {
+        // TODO: insert auto Locale recog for date pattern
+        Date date = new Date(timestamp);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-YY");
+        String formattedDate = sdf.format(date);
+        Log.v(LOG_TAG, "date: " + formattedDate);
+        return formattedDate;
     }
 
     /**
@@ -152,7 +189,7 @@ public class DashboardActivity extends AppCompatActivity
         // check if the user is signed in (non-null)
         FirebaseUser user = mAuth.getCurrentUser();
         if(user != null) {
-            // logUserData(user);
+            // TODO: update the ui accordingly
         } else {
             launchAuthentication();
         }
@@ -170,23 +207,6 @@ public class DashboardActivity extends AppCompatActivity
         if (mAuthStateListener != null){
             mAuth.removeAuthStateListener(mAuthStateListener);
         }
-    }
-
-    private void logUserData(FirebaseUser user) {
-        // get and store user's data
-        String uid = user.getUid();
-        String email = user.getEmail();
-        String name = user.getDisplayName();
-        List<String> prov = user.getProviders();
-
-        // build string with data
-        String info = "uid: " + uid + "\n";
-        info += "email: " + email + "\n";
-        info += "name: " + name + "\n";
-        info += (prov != null ? prov.get(0) : null) + "\n";
-
-        // log data
-        Log.d(LOG_TAG, info);
     }
 
     @Override
@@ -208,6 +228,7 @@ public class DashboardActivity extends AppCompatActivity
 
     /**
      * Handles action bar menu navigation
+     *
      * @param item that is clicked
      * @return true when item is clicked
      */
@@ -237,6 +258,7 @@ public class DashboardActivity extends AppCompatActivity
                     public void onComplete(@NonNull Task<Void> task) {
                         // user is signed out
                         Toast.makeText(DashboardActivity.this, "You\'ve successfully signed out", Toast.LENGTH_SHORT).show();
+                        isAlreadyInDatabase = false;
                     }
                 });
     }
