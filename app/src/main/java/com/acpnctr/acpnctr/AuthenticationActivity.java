@@ -59,6 +59,8 @@ public class AuthenticationActivity extends AppCompatActivity {
             // successfully signed in
             if (resultCode == RESULT_OK){
                 Toast.makeText(AuthenticationActivity.this, "Signed in!", Toast.LENGTH_SHORT).show();
+                Intent dashboardIntent = new Intent(AuthenticationActivity.this, DashboardActivity.class);
+                startActivity(dashboardIntent);
                 finish();
                 return;
             } else {
