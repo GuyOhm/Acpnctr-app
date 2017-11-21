@@ -3,15 +3,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|start"
+            android:layout_weight="1"
+            android:paddingTop="8dp"
+            android:textAppearance="?android:textAppearanceMedium"
+            tools:text="13 novembre 2017" />
+
+        <RatingBar
+            style="@style/Widget.AppCompat.RatingBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            android:rating="3" />
+
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/history_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        tools:text="Objectif: tendinite coude gauche" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        android:paddingLeft="8dp"
+        tools:text="Traitement: 5TR, 10TR, 8TR, 4GI, 34VB, 3F " />
+
+    <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/list_item_height"
-        android:gravity="center_vertical"
-        android:padding="@dimen/activity_vertical_margin"
-        android:textAppearance="?android:textAppearanceMedium"
-        tools:text="@string/session_list_item" />
+        android:layout_height="1dp"
+        android:background="#dadada"
+        android:paddingLeft="8dp" />
 
 </LinearLayout>
