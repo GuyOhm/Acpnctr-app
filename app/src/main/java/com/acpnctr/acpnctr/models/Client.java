@@ -22,13 +22,13 @@ public class Client {
     private String clientGender;
     private String clientAcquisition;
     // This var is not passed into the constructor as a param => to be handled during implementation
-    private double timestampCreated;
+    private long timestampCreated;
 
     // Empty constructor required by firebase firestore
     public Client() {}
 
     public Client(String clientName, String clientDOB, String clientPhone, String clientEmail,
-                  String clientGender, String clientAcquisition, double timestampCreated) {
+                  String clientGender, String clientAcquisition, long timestampCreated) {
         this.clientName = clientName;
         this.clientDOB = clientDOB;
         this.clientPhone = clientPhone;
@@ -97,11 +97,11 @@ public class Client {
         this.clientAcquisition = clientAcquisition;
     }
 
-    public double getTimestampCreated() {
+    public long getTimestampCreated() {
         return timestampCreated;
     }
 
-    public void setTimestampCreated(double timestampCreated) {
+    public void setTimestampCreated(long timestampCreated) {
         this.timestampCreated = timestampCreated;
     }
 }
