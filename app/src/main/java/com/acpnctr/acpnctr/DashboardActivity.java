@@ -9,30 +9,44 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.acpnctr.acpnctr.models.Client;
 import com.acpnctr.acpnctr.models.User;
-import com.acpnctr.acpnctr.utils.Constants;
 import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.SetOptions;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_CLIENTS;
+import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_USERS;
+import static com.acpnctr.acpnctr.utils.Constants.INTENT_EXTRA_UID;
 
 public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -44,15 +58,37 @@ public class DashboardActivity extends AppCompatActivity
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirestoreRecyclerAdapter adapter;
 
     // Flag that indicates if the user has already signed in hence has already a document in db
     private static boolean isAlreadyInDatabase = false;
+
+    // Member variable for uid
+    private String mUid;
+
+    // Recycler view variable to display the user's clients list
+    RecyclerView mClientsList;
+
+    // layout to display if the clients list is empty
+    RelativeLayout mEmptyListView;
+
+    // loading indicator
+    ProgressBar mLoadingIndicator;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard_activity);
+
+        // get the RecyclerView for clients list
+        mClientsList = findViewById(R.id.rv_clients_list);
+
+        // get the empty list view
+        mEmptyListView = findViewById(R.id.rl_client_list_empty_view);
+
+        // get the loading indicator
+        mLoadingIndicator = findViewById(R.id.pb_clients_list_loading_indicator);
 
         // initialize Firebase components
         mAuth = FirebaseAuth.getInstance();
@@ -64,11 +100,11 @@ public class DashboardActivity extends AppCompatActivity
                 final FirebaseUser user = mAuth.getCurrentUser();
                 if (user != null) {
                     // if the user is signed in get the uid
-                    final String uid = user.getUid();
+                    mUid = user.getUid();
 
                     if (!isAlreadyInDatabase) {
                         // check whether or not uid exists in firestore db
-                        final DocumentReference userDoc = db.collection(Constants.FIRESTORE_COLLECTION_USERS).document(uid);
+                        final DocumentReference userDoc = db.collection(FIRESTORE_COLLECTION_USERS).document(mUid);
                         userDoc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -78,17 +114,28 @@ public class DashboardActivity extends AppCompatActivity
                                         // the user already exists hence has a firestore document named by uid
                                         Log.d(LOG_TAG, "user already exists in db: " + snapshot.getData());
                                         isAlreadyInDatabase = true;
+
                                     } else {
                                         // the user signs in for the first time
-                                        Log.d(LOG_TAG, "uid: " + uid + " doesn't exist");
-                                        createUserDocument(user, uid, userDoc);
+                                        Log.d(LOG_TAG, "uid: " + mUid + " doesn't exist");
+                                        createUserDocument(user, userDoc);
                                     }
+
                                 } else {
                                     Log.d(LOG_TAG, "get failed with ", task.getException());
                                 }
                             }
                         });
                     }
+
+                    CollectionReference clientsCollection = db.collection(FIRESTORE_COLLECTION_USERS)
+                            .document(mUid)
+                            .collection(FIRESTORE_COLLECTION_CLIENTS);
+
+                    // show the loading indicator
+                    mLoadingIndicator.setVisibility(View.VISIBLE);
+
+                    loadClientsList(clientsCollection);
 
                 } else {
                     // not signed in
@@ -109,8 +156,9 @@ public class DashboardActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Create a new intent to open the {@link ClientActivity}
+                // Create a new intent to open the {@link ClientActivity} passing in uid
                 Intent clientIntent = new Intent(DashboardActivity.this, ClientActivity.class);
+                clientIntent.putExtra(INTENT_EXTRA_UID, mUid);
 
                 // Start the new activity
                 startActivity(clientIntent);
@@ -131,15 +179,61 @@ public class DashboardActivity extends AppCompatActivity
 
     }
 
+    private void loadClientsList(CollectionReference clientsCollection) {
+
+        // query firestore for the user's clients
+        Query query = clientsCollection
+                .orderBy("timestampCreated", Query.Direction.DESCENDING);
+
+        // configure recycler adapter options
+        FirestoreRecyclerOptions<Client> options = new FirestoreRecyclerOptions.Builder<Client>()
+                .setQuery(query, Client.class)
+                .build();
+
+        // create a FirestoreRecyclerAdapter
+        adapter = new FirestoreRecyclerAdapter<Client, ClientHolder>(options) {
+            @Override
+            protected void onBindViewHolder(ClientHolder holder, int position, Client model) {
+                // bind the Client object to the ClientHolder
+                holder.bind(model);
+            }
+
+            @Override
+            public ClientHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+                // Create a new instance of the ViewHolder using our custom layout for each item
+                View view = LayoutInflater.from(viewGroup.getContext())
+                        .inflate(R.layout.client_list_item, viewGroup, false);
+
+                return new ClientHolder(view);
+            }
+
+            @Override
+            public void onDataChanged() {
+                // hide the loading indicator
+                mLoadingIndicator.setVisibility(View.INVISIBLE);
+
+                // if there are no clients, show the empty_list screen
+                mEmptyListView.setVisibility(getItemCount() == 0 ? View.VISIBLE : View.GONE);
+            }
+
+            // TODO: add error management
+        };
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        mClientsList.setLayoutManager(layoutManager);
+        mClientsList.setHasFixedSize(true);
+        mClientsList.setAdapter(adapter);
+        adapter.startListening();
+    }
+
     /**
      * This method creates a document named by the uid in Firestore db when he signs in for
      * the first time
      *
      * @param user is the FirebaseUser recovered from FirebaseAuth
-     * @param uid is the unique id for the user created by FirebaseAuth
      * @param userDoc is the reference to the path in Firestore db
      */
-    private void createUserDocument(FirebaseUser user, String uid, DocumentReference userDoc) {
+    private void createUserDocument(FirebaseUser user, DocumentReference userDoc) {
         // collect user's data from the user and store them
         String email = user.getEmail();
         String fullname = user.getDisplayName();
@@ -147,8 +241,7 @@ public class DashboardActivity extends AppCompatActivity
         long timestampCreated = System.currentTimeMillis();
 
         // create document for the new user in firestore db
-        Log.d(LOG_TAG, "creating document............");
-        User userModel = new User(uid, fullname, email, authProvider != null ? authProvider.get(0) : null, timestampCreated);
+        User userModel = new User(mUid, fullname, email, authProvider != null ? authProvider.get(0) : null, timestampCreated);
         userDoc
                 .set(userModel, SetOptions.merge())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -189,7 +282,9 @@ public class DashboardActivity extends AppCompatActivity
         // check if the user is signed in (non-null)
         FirebaseUser user = mAuth.getCurrentUser();
         if(user != null) {
-            // TODO: update the ui accordingly
+            if(adapter != null){
+                adapter.startListening();
+            }
         } else {
             launchAuthentication();
         }
@@ -206,6 +301,14 @@ public class DashboardActivity extends AppCompatActivity
         super.onPause();
         if (mAuthStateListener != null){
             mAuth.removeAuthStateListener(mAuthStateListener);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(adapter != null){
+            adapter.stopListening();
         }
     }
 
