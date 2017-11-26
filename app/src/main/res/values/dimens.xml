@@ -8,4 +8,6 @@
     <dimen name="fab_margin">16dp</dimen>
     <!-- Height of each list item -->
     <dimen name="list_item_height">72dp</dimen>
+    <!-- loading indicator dimensions -->
+    <dimen name="loading_indicator">42dp</dimen>
 </resources>
