@@ -9,13 +9,15 @@ import com.acpnctr.acpnctr.fragment.SessionFragmentPageAdapter;
 
 public class SessionActivity extends AppCompatActivity {
 
+    private static final String LOG_TAG = SessionActivity.class.getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_session);
 
         // Find the view pager that will allow the user to swipe between fragments
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager_session);
+        ViewPager viewPager = findViewById(R.id.viewpager_session);
 
         // Create an adapter that knows which fragment should be shown on each page
         SessionFragmentPageAdapter adapter = new SessionFragmentPageAdapter(this, getSupportFragmentManager());
@@ -24,7 +26,7 @@ public class SessionActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
 
         // Give the TabLayout the ViewPager
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.session_sliding_tabs);
+        TabLayout tabLayout = findViewById(R.id.session_sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
     }
 
