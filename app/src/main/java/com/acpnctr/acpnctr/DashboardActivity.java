@@ -13,11 +13,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -37,6 +35,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.SetOptions;
 
@@ -46,10 +45,11 @@ import java.util.List;
 
 import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_CLIENTS;
 import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_USERS;
+import static com.acpnctr.acpnctr.utils.Constants.INTENT_CURRENT_CLIENT;
 import static com.acpnctr.acpnctr.utils.Constants.INTENT_EXTRA_UID;
 
 public class DashboardActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ClientAdapter.OnClientSelectedListener {
 
     // Tag for the log messages
     public static final String LOG_TAG = DashboardActivity.class.getSimpleName();
@@ -74,7 +74,6 @@ public class DashboardActivity extends AppCompatActivity
 
     // loading indicator
     ProgressBar mLoadingIndicator;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,11 +156,11 @@ public class DashboardActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 // Create a new intent to open the {@link ClientActivity} passing in uid
-                Intent clientIntent = new Intent(DashboardActivity.this, ClientActivity.class);
-                clientIntent.putExtra(INTENT_EXTRA_UID, mUid);
+                Intent newClientIntent = new Intent(DashboardActivity.this, ClientActivity.class);
+                newClientIntent.putExtra(INTENT_EXTRA_UID, mUid);
 
-                // Start the new activity
-                startActivity(clientIntent);
+                // Start the activity
+                startActivity(newClientIntent);
             }
         });
         // [ END - FAB ]
@@ -190,22 +189,7 @@ public class DashboardActivity extends AppCompatActivity
                 .setQuery(query, Client.class)
                 .build();
 
-        // create a FirestoreRecyclerAdapter
-        adapter = new FirestoreRecyclerAdapter<Client, ClientHolder>(options) {
-            @Override
-            protected void onBindViewHolder(ClientHolder holder, int position, Client model) {
-                // bind the Client object to the ClientHolder
-                holder.bind(model);
-            }
-
-            @Override
-            public ClientHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-                // Create a new instance of the ViewHolder using our custom layout for each item
-                View view = LayoutInflater.from(viewGroup.getContext())
-                        .inflate(R.layout.client_list_item, viewGroup, false);
-
-                return new ClientHolder(view);
-            }
+        adapter = new ClientAdapter(options, this){
 
             @Override
             public void onDataChanged() {
@@ -216,7 +200,12 @@ public class DashboardActivity extends AppCompatActivity
                 mEmptyListView.setVisibility(getItemCount() == 0 ? View.VISIBLE : View.GONE);
             }
 
-            // TODO: add error management
+            @Override
+            public void onError(FirebaseFirestoreException e) {
+                Log.d(LOG_TAG, "Error while loading data for clients list" + e);
+                Toast.makeText(DashboardActivity.this, getString(R.string.clients_list_error),
+                        Toast.LENGTH_SHORT).show();
+            }
         };
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -224,6 +213,18 @@ public class DashboardActivity extends AppCompatActivity
         mClientsList.setHasFixedSize(true);
         mClientsList.setAdapter(adapter);
         adapter.startListening();
+    }
+
+    // click handler of items of the clients list
+    @Override
+    public void onClientSelected(Client client) {
+        // Create a new intent to open the {@link ClientActivity} passing in uid and Client Object
+        Intent clientIntent = new Intent(DashboardActivity.this, ClientActivity.class);
+        clientIntent.putExtra(INTENT_EXTRA_UID, mUid);
+        clientIntent.putExtra(INTENT_CURRENT_CLIENT, client);
+
+        // start activity
+        startActivity(clientIntent);
     }
 
     /**
