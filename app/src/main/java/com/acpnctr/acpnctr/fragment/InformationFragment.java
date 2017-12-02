@@ -25,6 +25,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +33,7 @@ import java.util.Map;
 import static com.acpnctr.acpnctr.models.Client.CLIENT_ACQUI_KEY;
 import static com.acpnctr.acpnctr.models.Client.CLIENT_DOB_KEY;
 import static com.acpnctr.acpnctr.models.Client.CLIENT_GENDER_KEY;
+import static com.acpnctr.acpnctr.models.Client.CLIENT_ID_KEY;
 import static com.acpnctr.acpnctr.models.Client.CLIENT_MAIL_KEY;
 import static com.acpnctr.acpnctr.models.Client.CLIENT_NAME_KEY;
 import static com.acpnctr.acpnctr.models.Client.CLIENT_PHONE_KEY;
@@ -46,6 +48,7 @@ import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_USERS;
 import static com.acpnctr.acpnctr.utils.Constants.GENDER_FEMALE;
 import static com.acpnctr.acpnctr.utils.Constants.GENDER_MALE;
 import static com.acpnctr.acpnctr.utils.Constants.GENDER_UNKNOWN;
+import static com.acpnctr.acpnctr.utils.Constants.INTENT_CURRENT_CLIENT;
 import static com.acpnctr.acpnctr.utils.Constants.INTENT_EXTRA_UID;
 
 /**
@@ -58,7 +61,7 @@ public class InformationFragment extends Fragment {
 
     // flag to know whether or not this is a new client
     public static final String NEW_CLIENT = "none";
-    private String documentID = NEW_CLIENT;
+    private String mClientid = NEW_CLIENT;
 
     // Firebase instance variable
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -102,11 +105,6 @@ public class InformationFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         clientHasChanged = false;
-
-        Intent intent = getActivity().getIntent();
-        if (intent.hasExtra(INTENT_EXTRA_UID)){
-            mUid = intent.getStringExtra(INTENT_EXTRA_UID);
-        }
     }
 
     @Override
@@ -134,7 +132,55 @@ public class InformationFragment extends Fragment {
         clientGenderSpinner.setOnTouchListener(touchListener);
         clientAcquisitionSpinner.setOnTouchListener(touchListener);
 
+        // TODO: handle the 2 cases:
+        // 1. it's a new client, there's only mUid
+        // 2. it's an existing client, there's the Client object to recover (+ extract the clientid to build the path)
+        Intent intent = getActivity().getIntent();
+        if (intent.hasExtra(INTENT_EXTRA_UID)){
+            mUid = intent.getStringExtra(INTENT_EXTRA_UID);
+        }
+
+        // it is an existing client who has been selected from the list
+        if (intent.hasExtra(INTENT_CURRENT_CLIENT)){
+            Client selectedClient = intent.getParcelableExtra(INTENT_CURRENT_CLIENT);
+            onClientSelectedInitialize(selectedClient);
+        }
+
         return rootView;
+    }
+
+    private void onClientSelectedInitialize(Client selectedClient) {
+        mClientid = selectedClient.getClientid();
+        clientNameEditText.setText(selectedClient.getClientName());
+        clientDobEditText.setText(selectedClient.getClientDOB());
+        clientPhoneEditText.setText(selectedClient.getClientPhone());
+        clientEmailEditText.setText(selectedClient.getClientEmail());
+        clientGender = selectedClient.getClientGender();
+        clientAcquisition = selectedClient.getClientAcquisition();
+        // see the position in the arrays.xml
+        clientGenderSpinner.setSelection(getPositionInArray(R.array.array_gender_options, clientGender));
+        clientAcquisitionSpinner.setSelection(getPositionInArray(R.array.array_acquisition_options, clientAcquisition));
+    }
+
+    /**
+     * This method find the value in an array and returns its position
+     *
+     * @param resourceID
+     * @param value
+     * @return position of the value in the resource array
+     */
+    // TODO: make this work !!!
+    private int getPositionInArray(int resourceID, String value) {
+        String[] options = getResources().getStringArray(resourceID);
+        // Capitalize value to match with constants
+        String capValue = value.substring(0, 1).toUpperCase() + value.substring(1);
+        Log.d(LOG_TAG, "Cap value is: " + capValue);
+        for (int i = 0; i < options.length; i++){
+            if(capValue.equals(options[i])){
+                return i;
+            }
+        }
+        return 0;
     }
 
     @Override
@@ -252,7 +298,7 @@ public class InformationFragment extends Fragment {
         String email = clientEmailEditText.getText().toString().trim();
 
 
-        // If it's a new client check if name and gender has been edited
+        // Check if name and gender has been edited
         if (TextUtils.isEmpty(name)) {
             Toast.makeText(getActivity(), getString(R.string.client_info_name_needed), Toast.LENGTH_SHORT).show();
             // return early
@@ -263,8 +309,8 @@ public class InformationFragment extends Fragment {
             return;
         }
 
-        // if it is a client file creation i.e. documentID = "none"
-        if (documentID.equals(NEW_CLIENT)) {
+        // if it is a client file creation i.e. mClientid = "none"
+        if (mClientid.equals(NEW_CLIENT)) {
             // get current timestamp
             long timestamp = System.currentTimeMillis();
 
@@ -273,18 +319,20 @@ public class InformationFragment extends Fragment {
             createNewClientDocument(client);
 
 
-        } else if(clientHasChanged) {
+        } else if(!mClientid.equals(NEW_CLIENT) && clientHasChanged) {
             // the client has already been created
             updateClientDocument(name, dob, phone, email);
-
         }
     }
 
     private void updateClientDocument(String name, String dob, String phone, String email) {
         // create the path to the document
-        DocumentReference clientDocReference = db.collection(FIRESTORE_COLLECTION_CLIENTS).document(documentID);
+        DocumentReference clientDocReference = db.collection(FIRESTORE_COLLECTION_USERS)
+                .document(mUid)
+                .collection(FIRESTORE_COLLECTION_CLIENTS)
+                .document(mClientid);
 
-        Log.d(LOG_TAG, "documentID: " + documentID);
+        Log.d(LOG_TAG, "mClientid: " + mClientid);
 
         // create a hashmap with values fetched from the UI that may have been updated
         Map<String, Object> updates = new HashMap<>();
@@ -307,10 +355,13 @@ public class InformationFragment extends Fragment {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        Log.w(LOG_TAG, "error updating client: " + e);
                         Toast.makeText(getActivity(), getString(R.string.client_info_update_failed), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
+
+    // TODO: make sure clientid is created to the document or delete it
 
     private void createNewClientDocument(Client client) {
         // create a doc from the Client object to clients collection with auto-generated unique ID
@@ -323,8 +374,10 @@ public class InformationFragment extends Fragment {
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(LOG_TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
                         Toast.makeText(getActivity(), getString(R.string.client_info_insert_successful), Toast.LENGTH_SHORT).show();
-                        // update documentID
-                        documentID = documentReference.getId();
+                        // update mClientid
+                        mClientid = documentReference.getId();
+                        // add the clientid to the client document
+                        addClientidToDocument();
                         // reinit clienHasChanged to false
                         clientHasChanged = false;
                     }
@@ -334,6 +387,31 @@ public class InformationFragment extends Fragment {
                     public void onFailure(@NonNull Exception e) {
                         Log.w(LOG_TAG, "Error adding document", e);
                         Toast.makeText(getActivity(), getString(R.string.client_info_insert_failed), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void addClientidToDocument() {
+        // create a Hashmap with the appropriate key and the clientid
+        Map<String, Object> client = new HashMap<>();
+        client.put(CLIENT_ID_KEY, mClientid);
+
+        // add the data to firestore
+        db.collection(FIRESTORE_COLLECTION_USERS)
+                .document(mUid)
+                .collection(FIRESTORE_COLLECTION_CLIENTS)
+                .document(mClientid)
+                .set(client, SetOptions.merge())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(LOG_TAG, "clientid successfully added");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(LOG_TAG, "Error adding clientid", e);
                     }
                 });
     }
