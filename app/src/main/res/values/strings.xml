@@ -55,7 +55,7 @@
     <string name="acquisition_offline">Offline</string>
 
     <!-- Action menu for client information screen -->
-    <string name="client_info_action_save">save</string>
+    <string name="client_info_action_save">Save</string>
 
     <!-- Toast messages for client information manipulation-->
     <string name="client_info_insert_failed">Error with saving client</string>
@@ -77,5 +77,8 @@
 
     <!-- sessions list -->
     <string name="session_list_item">Session item</string>
+
+    <!-- Dashboard clients list -->
+    <string name="clients_list_error">Error while loading clients list</string>
 
 </resources>

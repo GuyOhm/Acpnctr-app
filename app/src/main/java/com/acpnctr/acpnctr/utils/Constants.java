@@ -17,7 +17,7 @@ public class Constants {
      * Constants for extra key passing to intent
      */
     public static final String INTENT_EXTRA_UID = "uid";
-    public static final String INTENT_EXTRA_CLIENTID = "clientid";
+    public static final String INTENT_CURRENT_CLIENT = "client";
 
     /**
      * Possible values for the gender of the client.
