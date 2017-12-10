@@ -18,10 +18,6 @@ import com.acpnctr.acpnctr.R;
  */
 public class HistoryFragment extends Fragment {
 
-    // TODO: implement loader manager to load sessions list in background thread
-    // TODO: create a cursor adapter to feed data from the cursor to the listview
-    // TODO: create a content provider to request data from DB to the cursor
-
     public HistoryFragment() {
         // Required empty public constructor
     }
