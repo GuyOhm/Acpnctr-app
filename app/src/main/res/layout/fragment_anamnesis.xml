@@ -9,7 +9,7 @@
         android:id="@+id/et_history_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="date"
+        android:hint="@string/date_hint"
         android:inputType="date"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin" />
@@ -18,7 +18,7 @@
         android:id="@+id/et_history_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="history"
+        android:hint="@string/history_hint"
         android:inputType="text"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin" />
@@ -29,23 +29,14 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:text="add" />
+        android:text="@string/btn_add" />
 
 
-    <ScrollView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_anamnesis_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:id="@+id/ll_history_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-        </LinearLayout>
-
-
-    </ScrollView>
+        android:layout_height="match_parent">
+    </android.support.v7.widget.RecyclerView>
 
 
 </LinearLayout>
