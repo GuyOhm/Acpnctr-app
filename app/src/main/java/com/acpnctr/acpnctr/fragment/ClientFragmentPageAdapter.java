@@ -33,7 +33,7 @@ public class ClientFragmentPageAdapter extends FragmentPagerAdapter {
         } else if (position == 1){
             return new AnamnesisFragment();
         } else {
-            return new HistoryFragment();
+            return new SessionsListFragment();
         }
     }
 
