@@ -34,7 +34,7 @@
 
     <!-- Hint for input text for client information -->
     <string name="hint_client_information_name">name</string>
-    <string name="hint_client_information_dob">date of birth</string>
+    <string name="hint_client_information_dob">date of birth (dd/mm/yyyy)</string>
     <string name="hint_client_information_phone">phone</string>
     <string name="hint_client_information_email">email</string>
 
@@ -57,7 +57,7 @@
     <!-- Action menu for client information screen -->
     <string name="client_info_action_save">Save</string>
 
-    <!-- Toast messages for client information manipulation-->
+    <!-- Toast messages for client data manipulation-->
     <string name="client_info_insert_failed">Error with saving client</string>
     <string name="client_info_insert_successful">Client saved</string>
     <string name="client_info_name_needed">Please enter a name</string>
@@ -65,6 +65,8 @@
     <string name="client_info_update_failed">Error with updating client</string>
     <string name="client_info_update_successful">Client updated</string>
     <string name="new_client_not_saved">Please save new client</string>
+    <string name="client_anam_no_history">Please enter a history</string>
+    <string name="generic_data_insert_failed">Error with adding data</string>
 
     <!-- Dialog message when user is leaving editor but hasn't saved changes  -->
     <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
