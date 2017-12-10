@@ -16,9 +16,9 @@ import com.acpnctr.acpnctr.R;
 /**
  * A {@link Fragment} to display the sessions history of a client.
  */
-public class HistoryFragment extends Fragment {
+public class SessionsListFragment extends Fragment {
 
-    public HistoryFragment() {
+    public SessionsListFragment() {
         // Required empty public constructor
     }
 
