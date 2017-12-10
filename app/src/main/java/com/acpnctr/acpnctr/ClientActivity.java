@@ -9,22 +9,61 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.acpnctr.acpnctr.fragment.ClientFragmentPageAdapter;
+import com.acpnctr.acpnctr.models.Client;
 
 import static com.acpnctr.acpnctr.fragment.InformationFragment.clientHasChanged;
+import static com.acpnctr.acpnctr.utils.Constants.INTENT_CURRENT_CLIENT;
+import static com.acpnctr.acpnctr.utils.Constants.INTENT_EXTRA_UID;
 
 public class ClientActivity extends AppCompatActivity {
 
     private final static String LOG_TAG = ClientActivity.class.getSimpleName();
 
+    // static member variables to be used by fragments
+    public static String mUid;
+    public static String mClientid;
+    public static boolean isNewClient;
+
+    // Final Strings to store state information
+    public static final String CLIENT_ID = "client_id";
+    public static final String IS_NEW_CLIENT = "is_new_client";
+    public static final String USER_ID = "user_id";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client);
+
+        if (savedInstanceState != null){
+            mUid = savedInstanceState.getString(USER_ID);
+            mClientid = savedInstanceState.getString(CLIENT_ID);
+            isNewClient = savedInstanceState.getBoolean(IS_NEW_CLIENT);
+        } else {
+            // Handles the 2 cases:
+            // 1. it's a new client, there's only mUid
+            // 2. it's an existing client, there's the Client object to recover
+            Intent intent = getIntent();
+            if (intent.hasExtra(INTENT_EXTRA_UID)){
+                mUid = intent.getStringExtra(INTENT_EXTRA_UID);
+                Log.d(LOG_TAG, "uid: " + mUid);
+            }
+
+            // it is an existing client who has been selected from the list
+            if (intent.hasExtra(INTENT_CURRENT_CLIENT)){
+                Client selectedClient = intent.getParcelableExtra(INTENT_CURRENT_CLIENT);
+                mClientid = selectedClient.getClientid();
+                isNewClient = false;
+            } else {
+                isNewClient = true;
+            }
+        }
 
         // Find the view pager that will allow the user to swipe between fragments
         ViewPager viewPager = findViewById(R.id.viewpager_client);
@@ -44,11 +83,15 @@ public class ClientActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Create a new intent to open the {@link ClientActivity}
-                Intent sessionIntent = new Intent(ClientActivity.this, SessionActivity.class);
+                if (isNewClient){
+                    Toast.makeText(ClientActivity.this, getString(R.string.new_client_not_saved), Toast.LENGTH_SHORT).show();
+                } else {
+                    // Create a new intent to open the {@link ClientActivity}
+                    Intent sessionIntent = new Intent(ClientActivity.this, SessionActivity.class);
 
-                // Start the new activity
-                startActivity(sessionIntent);
+                    // Start the new activity
+                    startActivity(sessionIntent);
+                }
             }
         });
     }
@@ -146,5 +189,11 @@ public class ClientActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-
+    @Override
+    protected void onSaveInstanceState(Bundle currentState) {
+        super.onSaveInstanceState(currentState);
+        currentState.putString(USER_ID, mUid);
+        currentState.putString(CLIENT_ID, mClientid);
+        currentState.putBoolean(IS_NEW_CLIENT, isNewClient);
+    }
 }
