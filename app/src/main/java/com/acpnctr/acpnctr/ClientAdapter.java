@@ -11,7 +11,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
 /**
- * Adapter to feed data from firestore to the RecyclerView via ViewHoler
+ * Adapter to feed data from firestore to the RecyclerView via ViewHolder
  */
 
 public class ClientAdapter extends FirestoreRecyclerAdapter<Client, ClientAdapter.ClientHolder> {
