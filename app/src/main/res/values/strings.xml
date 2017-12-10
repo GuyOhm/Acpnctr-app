@@ -64,6 +64,7 @@
     <string name="client_info_gender_needed">Please choose a gender</string>
     <string name="client_info_update_failed">Error with updating client</string>
     <string name="client_info_update_successful">Client updated</string>
+    <string name="new_client_not_saved">Please save new client</string>
 
     <!-- Dialog message when user is leaving editor but hasn't saved changes  -->
     <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
@@ -80,5 +81,8 @@
 
     <!-- Dashboard clients list -->
     <string name="clients_list_error">Error while loading clients list</string>
+    <string name="date_hint">date (dd/mm/yyyy)</string>
+    <string name="history_hint">history</string>
+    <string name="btn_add">add</string>
 
 </resources>
