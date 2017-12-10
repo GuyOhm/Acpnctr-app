@@ -1,6 +1,7 @@
 package com.acpnctr.acpnctr;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -16,8 +17,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.acpnctr.acpnctr.models.Client;
@@ -38,6 +41,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.SetOptions;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -67,13 +71,16 @@ public class DashboardActivity extends AppCompatActivity
     private String mUid;
 
     // Recycler view variable to display the user's clients list
-    RecyclerView mClientsList;
+    private RecyclerView mClientsList;
 
     // layout to display if the clients list is empty
-    RelativeLayout mEmptyListView;
+    private RelativeLayout mEmptyListView;
 
     // loading indicator
-    ProgressBar mLoadingIndicator;
+    private ProgressBar mLoadingIndicator;
+
+    // Drawer Navigation View
+    private NavigationView mNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,16 +133,17 @@ public class DashboardActivity extends AppCompatActivity
                             }
                         });
                     }
-
-                    CollectionReference clientsCollection = db.collection(FIRESTORE_COLLECTION_USERS)
-                            .document(mUid)
-                            .collection(FIRESTORE_COLLECTION_CLIENTS);
-
                     // show the loading indicator
                     mLoadingIndicator.setVisibility(View.VISIBLE);
 
+                    // fetch data from firestore and display clients list
+                    CollectionReference clientsCollection = db.collection(FIRESTORE_COLLECTION_USERS)
+                            .document(mUid)
+                            .collection(FIRESTORE_COLLECTION_CLIENTS);
                     loadClientsList(clientsCollection);
 
+                    // initialize user's data in the drawer's navigation header
+                    onSignedInInitializeNavHeader(user);
                 } else {
                     // not signed in
                     launchAuthentication();
@@ -172,10 +180,31 @@ public class DashboardActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        mNavigationView = findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
         // [ END - Side Navigation Drawer ]
+    }
 
+    private void onSignedInInitializeNavHeader(FirebaseUser user) {
+        // Collect data from FirebaseUser
+        Uri pictureUri = user.getPhotoUrl();
+        String name = user.getDisplayName();
+        String email = user.getEmail();
+        // initialize pic
+        View header = mNavigationView.getHeaderView(0);
+        ImageView pictureView = header.findViewById(R.id.iv_drawer_user_pic);
+        Picasso.with(DashboardActivity.this)
+                .load(pictureUri)
+                //.resize(50, 50)
+                //.centerCrop()
+                .placeholder(R.drawable.ic_account_circle_black_36dp)
+                .into(pictureView);
+        // name
+        TextView nameView = header.findViewById(R.id.tv_drawer_user_name);
+        nameView.setText(name);
+        // and email
+        TextView emailView = header.findViewById(R.id.tv_drawer_user_email);
+        emailView.setText(email);
     }
 
     private void loadClientsList(CollectionReference clientsCollection) {
@@ -365,16 +394,6 @@ public class DashboardActivity extends AppCompatActivity
                         isAlreadyInDatabase = false;
                     }
                 });
-    }
-
-    private void onSignedInInitialize() {
-        // TODO : check if user exists in the database
-        // TODO: loadUserData() if user already in the database
-        // TODO: onFirstTimeSignIn() if user sign in for the first time => create user's data createUserData()
-    }
-
-    private void onSignedOutCleanup() {
-
     }
 
     /**
