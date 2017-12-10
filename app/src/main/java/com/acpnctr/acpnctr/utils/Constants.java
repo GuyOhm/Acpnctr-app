@@ -12,6 +12,8 @@ public class Constants {
      */
     public static final String FIRESTORE_COLLECTION_USERS = "users";
     public static final String FIRESTORE_COLLECTION_CLIENTS = "clients";
+    public static final String FIRESTORE_COLLECTION_ANAMNESIS = "anamnesis";
+    public static final String FIRESTORE_COLLECTION_SESSIONS = "sessions";
 
     /**
      * Constants for extra key passing to intent
