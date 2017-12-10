@@ -30,6 +30,9 @@ import com.google.firebase.firestore.SetOptions;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.acpnctr.acpnctr.ClientActivity.isNewClient;
+import static com.acpnctr.acpnctr.ClientActivity.mClientid;
+import static com.acpnctr.acpnctr.ClientActivity.mUid;
 import static com.acpnctr.acpnctr.models.Client.CLIENT_ACQUI_KEY;
 import static com.acpnctr.acpnctr.models.Client.CLIENT_DOB_KEY;
 import static com.acpnctr.acpnctr.models.Client.CLIENT_GENDER_KEY;
@@ -49,7 +52,6 @@ import static com.acpnctr.acpnctr.utils.Constants.GENDER_FEMALE;
 import static com.acpnctr.acpnctr.utils.Constants.GENDER_MALE;
 import static com.acpnctr.acpnctr.utils.Constants.GENDER_UNKNOWN;
 import static com.acpnctr.acpnctr.utils.Constants.INTENT_CURRENT_CLIENT;
-import static com.acpnctr.acpnctr.utils.Constants.INTENT_EXTRA_UID;
 
 /**
  * {@link Fragment} to display client information.
@@ -59,9 +61,7 @@ public class InformationFragment extends Fragment {
     // Log for debugging purposes
     private static final String LOG_TAG = InformationFragment.class.getSimpleName();
 
-    // flag to know whether or not this is a new client
-    public static final String NEW_CLIENT = "none";
-    private String mClientid = NEW_CLIENT;
+    public static final String CLIENT_HAS_CHANGED = "client_has_changed";
 
     // Firebase instance variable
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -92,9 +92,6 @@ public class InformationFragment extends Fragment {
             return false;
         }
     };
-
-    // Member variable for the user id
-    private String mUid;
 
     public InformationFragment() {
         // Required empty public constructor
@@ -132,15 +129,8 @@ public class InformationFragment extends Fragment {
         clientGenderSpinner.setOnTouchListener(touchListener);
         clientAcquisitionSpinner.setOnTouchListener(touchListener);
 
-        // TODO: handle the 2 cases:
-        // 1. it's a new client, there's only mUid
-        // 2. it's an existing client, there's the Client object to recover (+ extract the clientid to build the path)
+        // it is an existing client who has been selected from the list recover the Client object
         Intent intent = getActivity().getIntent();
-        if (intent.hasExtra(INTENT_EXTRA_UID)){
-            mUid = intent.getStringExtra(INTENT_EXTRA_UID);
-        }
-
-        // it is an existing client who has been selected from the list
         if (intent.hasExtra(INTENT_CURRENT_CLIENT)){
             Client selectedClient = intent.getParcelableExtra(INTENT_CURRENT_CLIENT);
             onClientSelectedInitialize(selectedClient);
@@ -150,7 +140,6 @@ public class InformationFragment extends Fragment {
     }
 
     private void onClientSelectedInitialize(Client selectedClient) {
-        mClientid = selectedClient.getClientid();
         clientNameEditText.setText(selectedClient.getClientName());
         clientDobEditText.setText(selectedClient.getClientDOB());
         clientPhoneEditText.setText(selectedClient.getClientPhone());
@@ -163,18 +152,17 @@ public class InformationFragment extends Fragment {
     }
 
     /**
-     * This method find the value in an array and returns its position
+     * This method find the value in an array and returns its position. Used to set the right
+     * selection for the spinners.
      *
-     * @param resourceID
-     * @param value
+     * @param resourceID array containing the possible values
+     * @param value we are looking for in the array
      * @return position of the value in the resource array
      */
-    // TODO: make this work !!!
     private int getPositionInArray(int resourceID, String value) {
         String[] options = getResources().getStringArray(resourceID);
         // Capitalize value to match with constants
         String capValue = value.substring(0, 1).toUpperCase() + value.substring(1);
-        Log.d(LOG_TAG, "Cap value is: " + capValue);
         for (int i = 0; i < options.length; i++){
             if(capValue.equals(options[i])){
                 return i;
@@ -309,8 +297,8 @@ public class InformationFragment extends Fragment {
             return;
         }
 
-        // if it is a client file creation i.e. mClientid = "none"
-        if (mClientid.equals(NEW_CLIENT)) {
+        // if it is a client file creation
+        if (isNewClient) {
             // get current timestamp
             long timestamp = System.currentTimeMillis();
 
@@ -318,8 +306,8 @@ public class InformationFragment extends Fragment {
             Client client = new Client(name, dob, phone, email, clientGender, clientAcquisition, timestamp);
             createNewClientDocument(client);
 
-
-        } else if(!mClientid.equals(NEW_CLIENT) && clientHasChanged) {
+        // isNewClient == false
+        } else if(clientHasChanged) {
             // the client has already been created
             updateClientDocument(name, dob, phone, email);
         }
@@ -350,6 +338,8 @@ public class InformationFragment extends Fragment {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(getActivity(), getString(R.string.client_info_update_successful), Toast.LENGTH_SHORT).show();
+                        // reinit clienHasChanged to false
+                        clientHasChanged = false;
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -378,6 +368,7 @@ public class InformationFragment extends Fragment {
                         mClientid = documentReference.getId();
                         // add the clientid to the client document
                         addClientidToDocument();
+                        isNewClient = false;
                         // reinit clienHasChanged to false
                         clientHasChanged = false;
                     }
