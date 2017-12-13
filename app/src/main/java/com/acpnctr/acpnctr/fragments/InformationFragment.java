@@ -1,4 +1,4 @@
-package com.acpnctr.acpnctr.fragment;
+package com.acpnctr.acpnctr.fragments;
 
 
 import android.content.Intent;
