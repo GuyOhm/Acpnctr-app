@@ -1,4 +1,4 @@
-package com.acpnctr.acpnctr;
+package com.acpnctr.acpnctr.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,12 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.acpnctr.acpnctr.DashboardActivity;
+import com.acpnctr.acpnctr.R;
 import com.acpnctr.acpnctr.models.Client;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
 /**
  * Adapter to feed data from firestore to the RecyclerView via ViewHolder
+ * for the clients list in {@link DashboardActivity}
  */
 
 public class ClientAdapter extends FirestoreRecyclerAdapter<Client, ClientAdapter.ClientHolder> {
@@ -68,6 +71,7 @@ public class ClientAdapter extends FirestoreRecyclerAdapter<Client, ClientAdapte
         public ClientHolder(View itemView) {
             super(itemView);
 
+            // hook my views in the item view
             listItemClientName = itemView.findViewById(R.id.tv_client_list_name);
             listItemTimestampCreated = itemView.findViewById(R.id.tv_client_list_last_session);
         }

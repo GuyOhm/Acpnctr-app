@@ -1,4 +1,4 @@
-package com.acpnctr.acpnctr.fragment;
+package com.acpnctr.acpnctr.adapters;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
@@ -6,6 +6,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.acpnctr.acpnctr.R;
+import com.acpnctr.acpnctr.fragments.AnamnesisFragment;
+import com.acpnctr.acpnctr.fragments.InformationFragment;
+import com.acpnctr.acpnctr.fragments.SessionsListFragment;
 
 /**
  * Created by guiguette on 10/07/2017.
