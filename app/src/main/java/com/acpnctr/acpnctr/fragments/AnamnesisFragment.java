@@ -1,10 +1,12 @@
-package com.acpnctr.acpnctr.fragment;
+package com.acpnctr.acpnctr.fragments;
 
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,15 +16,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.acpnctr.acpnctr.R;
+import com.acpnctr.acpnctr.adapters.AnamnesisAdapter;
 import com.acpnctr.acpnctr.models.Anamnesis;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 
 import static com.acpnctr.acpnctr.ClientActivity.isNewClient;
 import static com.acpnctr.acpnctr.ClientActivity.mClientid;
@@ -45,6 +53,14 @@ public class AnamnesisFragment extends Fragment {
     private EditText editTextDate;
     private EditText editTextHistory;
 
+    private FirestoreRecyclerAdapter adapter;
+
+    // Recycler view variable to display the user's clients list
+    private RecyclerView mAnamnesisList;
+
+    // loading indicator
+    private ProgressBar mLoadingIndicator;
+
     public AnamnesisFragment() {
         // Required empty public constructor
     }
@@ -66,8 +82,10 @@ public class AnamnesisFragment extends Fragment {
         buttonAdd = rootView.findViewById(R.id.btn_add_history);
         editTextDate = rootView.findViewById(R.id.et_history_date);
         editTextHistory = rootView.findViewById(R.id.et_history_text);
+        mAnamnesisList = rootView.findViewById(R.id.rv_anamnesis_list);
+        mLoadingIndicator = rootView.findViewById(R.id.pb_anamnesis_loading_indicator);
 
-        // handle click on add button
+        // [START - handle click on add button ]
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,6 +109,8 @@ public class AnamnesisFragment extends Fragment {
 
                         addAnamnesisDocument(anamnesis, anamCollection);
 
+                        displayAnamnesisItems();
+
                     } else {
                         Toast.makeText(getActivity(), R.string.client_anam_no_history, Toast.LENGTH_SHORT).show();
                     }
@@ -100,8 +120,53 @@ public class AnamnesisFragment extends Fragment {
                 }
             }
         });
+        // [END - handle click on add button ]
+
+        // Display list of histories from firestore
+        if (!isNewClient) displayAnamnesisItems();
 
         return rootView;
+    }
+
+    private void displayAnamnesisItems() {
+
+        // build the firestore path
+        CollectionReference anamCollection = db.collection(FIRESTORE_COLLECTION_USERS)
+                .document(mUid)
+                .collection(FIRESTORE_COLLECTION_CLIENTS)
+                .document(mClientid)
+                .collection(FIRESTORE_COLLECTION_ANAMNESIS);
+
+        // query firestore for the client's anamesis
+        Query query = anamCollection
+                .orderBy("date", Query.Direction.ASCENDING);
+
+        // configure recycler adapter options
+        FirestoreRecyclerOptions<Anamnesis> options = new FirestoreRecyclerOptions.Builder<Anamnesis>()
+                .setQuery(query, Anamnesis.class)
+                .build();
+
+        adapter = new AnamnesisAdapter(options){
+
+            @Override
+            public void onDataChanged() {
+                // hide the loading indicator
+                mLoadingIndicator.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onError(FirebaseFirestoreException e) {
+                Log.d(LOG_TAG, "Error while loading data for clients list" + e);
+                Toast.makeText(getActivity(), getString(R.string.clients_list_error),
+                        Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        mAnamnesisList.setLayoutManager(layoutManager);
+        mAnamnesisList.setHasFixedSize(false);
+        mAnamnesisList.setAdapter(adapter);
+        adapter.startListening();
     }
 
     /**
@@ -119,6 +184,7 @@ public class AnamnesisFragment extends Fragment {
                         Log.d(LOG_TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
                         editTextDate.setText("");
                         editTextHistory.setText("");
+                        editTextHistory.clearFocus();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -135,5 +201,17 @@ public class AnamnesisFragment extends Fragment {
         super.onPrepareOptionsMenu(menu);
         MenuItem menuItem = menu.findItem(R.id.action_save);
         menuItem.setVisible(false);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (adapter != null) adapter.startListening();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (adapter != null) adapter.stopListening();
     }
 }
