@@ -34,7 +34,7 @@
 
     <!-- Hint for input text for client information -->
     <string name="hint_client_information_name">name</string>
-    <string name="hint_client_information_dob">date of birth (dd/mm/yyyy)</string>
+    <string name="hint_client_information_dob">dob (dd/mm/yyyy)</string>
     <string name="hint_client_information_phone">phone</string>
     <string name="hint_client_information_email">email</string>
 
@@ -86,5 +86,6 @@
     <string name="date_hint">date (dd/mm/yyyy)</string>
     <string name="history_hint">history</string>
     <string name="btn_add">add</string>
+    <string name="anam_empty_date">#</string>
 
 </resources>

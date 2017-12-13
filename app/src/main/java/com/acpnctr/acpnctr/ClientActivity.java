@@ -15,10 +15,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.acpnctr.acpnctr.fragment.ClientFragmentPageAdapter;
+import com.acpnctr.acpnctr.adapters.ClientFragmentPageAdapter;
 import com.acpnctr.acpnctr.models.Client;
 
-import static com.acpnctr.acpnctr.fragment.InformationFragment.clientHasChanged;
+import static com.acpnctr.acpnctr.fragments.InformationFragment.clientHasChanged;
 import static com.acpnctr.acpnctr.utils.Constants.INTENT_CURRENT_CLIENT;
 import static com.acpnctr.acpnctr.utils.Constants.INTENT_EXTRA_UID;
 
@@ -61,6 +61,7 @@ public class ClientActivity extends AppCompatActivity {
                 mClientid = selectedClient.getClientid();
                 isNewClient = false;
             } else {
+                mClientid = null;
                 isNewClient = true;
             }
         }

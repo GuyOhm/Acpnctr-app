@@ -5,7 +5,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
-import com.acpnctr.acpnctr.fragment.SessionFragmentPageAdapter;
+import com.acpnctr.acpnctr.adapters.SessionFragmentPageAdapter;
 
 public class SessionActivity extends AppCompatActivity {
 

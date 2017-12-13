@@ -32,11 +32,24 @@
         android:text="@string/btn_add" />
 
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_anamnesis_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </android.support.v7.widget.RecyclerView>
 
+    <!-- Loading indicator -->
+    <ProgressBar
+        android:id="@+id/pb_anamnesis_loading_indicator"
+        android:layout_width="@dimen/loading_indicator"
+        android:layout_height="@dimen/loading_indicator"
+        android:layout_centerInParent="true"
+        android:visibility="visible" />
+
+    </RelativeLayout>
 
 </LinearLayout>

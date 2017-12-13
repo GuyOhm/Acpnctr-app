@@ -23,6 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.acpnctr.acpnctr.adapters.ClientAdapter;
 import com.acpnctr.acpnctr.models.Client;
 import com.acpnctr.acpnctr.models.User;
 import com.firebase.ui.auth.AuthUI;
