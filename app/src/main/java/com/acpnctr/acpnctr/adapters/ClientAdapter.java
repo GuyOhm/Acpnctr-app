@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.acpnctr.acpnctr.DashboardActivity;
 import com.acpnctr.acpnctr.R;
 import com.acpnctr.acpnctr.models.Client;
+import com.acpnctr.acpnctr.utils.DateFormatUtil;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
@@ -21,7 +22,7 @@ public class ClientAdapter extends FirestoreRecyclerAdapter<Client, ClientAdapte
 
     // interface to manage how client are selected
     public interface OnClientSelectedListener {
-        void onClientSelected(Client client);
+        void onClientSelected(Client client, int position);
     }
 
     private OnClientSelectedListener mListener;
@@ -78,13 +79,14 @@ public class ClientAdapter extends FirestoreRecyclerAdapter<Client, ClientAdapte
 
         public void bind(final Client client, final OnClientSelectedListener listener){
             listItemClientName.setText(client.getClientName());
-            listItemTimestampCreated.setText(String.valueOf(client.getTimestampCreated()));
+            listItemTimestampCreated.setText(DateFormatUtil.convertTimestampToString(client.getTimestampCreated()));
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (listener != null) {
-                        listener.onClientSelected(client);
+                        int position = getAdapterPosition();
+                        listener.onClientSelected(client, position);
                     }
                 }
             });
