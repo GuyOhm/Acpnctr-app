@@ -53,7 +53,7 @@ public class AnamnesisFragment extends Fragment {
     private EditText editTextDate;
     private EditText editTextHistory;
 
-    private FirestoreRecyclerAdapter adapter;
+    private FirestoreRecyclerAdapter mAdapter;
 
     // Recycler view variable to display the user's clients list
     private RecyclerView mAnamnesisList;
@@ -123,7 +123,9 @@ public class AnamnesisFragment extends Fragment {
         // [END - handle click on add button ]
 
         // Display list of histories from firestore
-        if (!isNewClient) displayAnamnesisItems();
+        if (mClientid != null){
+            displayAnamnesisItems();
+        }
 
         return rootView;
     }
@@ -146,7 +148,7 @@ public class AnamnesisFragment extends Fragment {
                 .setQuery(query, Anamnesis.class)
                 .build();
 
-        adapter = new AnamnesisAdapter(options){
+        mAdapter = new AnamnesisAdapter(options){
 
             @Override
             public void onDataChanged() {
@@ -165,8 +167,8 @@ public class AnamnesisFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mAnamnesisList.setLayoutManager(layoutManager);
         mAnamnesisList.setHasFixedSize(false);
-        mAnamnesisList.setAdapter(adapter);
-        adapter.startListening();
+        mAnamnesisList.setAdapter(mAdapter);
+        mAdapter.startListening();
     }
 
     /**
@@ -206,12 +208,12 @@ public class AnamnesisFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        if (adapter != null) adapter.startListening();
+        if (mAdapter != null) mAdapter.startListening();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (adapter != null) adapter.stopListening();
+        if (mAdapter != null) mAdapter.stopListening();
     }
 }
