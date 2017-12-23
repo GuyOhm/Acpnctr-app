@@ -14,12 +14,14 @@ public class Constants {
     public static final String FIRESTORE_COLLECTION_CLIENTS = "clients";
     public static final String FIRESTORE_COLLECTION_ANAMNESIS = "anamnesis";
     public static final String FIRESTORE_COLLECTION_SESSIONS = "sessions";
+    public static final String FIRESTORE_COLLECTION_TREATMENT = "treatment";
 
     /**
      * Constants for extra key passing to intent
      */
     public static final String INTENT_EXTRA_UID = "uid";
-    public static final String INTENT_CURRENT_CLIENT = "client";
+    public static final String INTENT_SELECTED_CLIENT = "client";
+    public static final String INTENT_SELECTED_CLIENT_ID = "clientid";
 
     /**
      * Possible values for the gender of the client.
