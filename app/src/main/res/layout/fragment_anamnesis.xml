@@ -2,13 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
+    tools:context="fragments.AnamnesisFragment"
     android:padding="@dimen/activity_margin">
 
     <EditText
         android:id="@+id/et_history_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/FragmentEditorFieldStyle"
         android:hint="@string/date_hint"
         android:inputType="date"
         android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -16,8 +17,7 @@
 
     <EditText
         android:id="@+id/et_history_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/FragmentEditorFieldStyle"
         android:hint="@string/history_hint"
         android:inputType="text"
         android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -36,19 +36,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_anamnesis_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </android.support.v7.widget.RecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_anamnesis_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </android.support.v7.widget.RecyclerView>
 
-    <!-- Loading indicator -->
-    <ProgressBar
-        android:id="@+id/pb_anamnesis_loading_indicator"
-        android:layout_width="@dimen/loading_indicator"
-        android:layout_height="@dimen/loading_indicator"
-        android:layout_centerInParent="true"
-        android:visibility="visible" />
+        <!-- Loading indicator -->
+        <ProgressBar
+            android:id="@+id/pb_anamnesis_loading_indicator"
+            android:layout_width="@dimen/loading_indicator"
+            android:layout_height="@dimen/loading_indicator"
+            android:layout_centerInParent="true"
+            android:visibility="visible" />
 
     </RelativeLayout>
 

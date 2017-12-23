@@ -84,8 +84,13 @@
     <!-- Dashboard clients list -->
     <string name="clients_list_error">Error while loading clients list</string>
     <string name="date_hint">date (dd/mm/yyyy)</string>
+
     <string name="history_hint">history</string>
     <string name="btn_add">add</string>
     <string name="anam_empty_date">#</string>
+    <string name="session_saved">Session saved</string>
+    <string name="btn_session_date">Session date</string>
+    <string name="four_steps_category_information">Information</string>
+    <string name="hint_session_goal">session goal</string>
 
 </resources>
