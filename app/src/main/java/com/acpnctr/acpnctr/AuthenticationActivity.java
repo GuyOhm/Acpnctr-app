@@ -43,7 +43,7 @@ public class AuthenticationActivity extends AppCompatActivity {
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
-                        .setIsSmartLockEnabled(false)
+                        .setIsSmartLockEnabled(false) // TODO: change to true for production?
                         .setAvailableProviders(providers)
                         .setLogo(R.drawable.ic_account_circle_black_36dp)
                         .build(),
