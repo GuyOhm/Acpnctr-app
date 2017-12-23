@@ -26,6 +26,8 @@ import android.widget.Toast;
 import com.acpnctr.acpnctr.adapters.ClientAdapter;
 import com.acpnctr.acpnctr.models.Client;
 import com.acpnctr.acpnctr.models.User;
+import com.acpnctr.acpnctr.utils.Constants;
+import com.acpnctr.acpnctr.utils.FirebaseUtil;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -44,14 +46,12 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.SetOptions;
 import com.squareup.picasso.Picasso;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_CLIENTS;
 import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_USERS;
-import static com.acpnctr.acpnctr.utils.Constants.INTENT_CURRENT_CLIENT;
 import static com.acpnctr.acpnctr.utils.Constants.INTENT_EXTRA_UID;
+import static com.acpnctr.acpnctr.utils.Constants.INTENT_SELECTED_CLIENT;
 
 public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ClientAdapter.OnClientSelectedListener {
@@ -63,7 +63,7 @@ public class DashboardActivity extends AppCompatActivity
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private FirestoreRecyclerAdapter adapter;
+    private FirestoreRecyclerAdapter mAdapter;
 
     // Flag that indicates if the user has already signed in hence has already a document in db
     private static boolean isAlreadyInDatabase = false;
@@ -219,7 +219,7 @@ public class DashboardActivity extends AppCompatActivity
                 .setQuery(query, Client.class)
                 .build();
 
-        adapter = new ClientAdapter(options, this){
+        mAdapter = new ClientAdapter(options, this){
 
             @Override
             public void onDataChanged() {
@@ -241,18 +241,23 @@ public class DashboardActivity extends AppCompatActivity
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mClientsList.setLayoutManager(layoutManager);
         mClientsList.setHasFixedSize(true);
-        mClientsList.setAdapter(adapter);
-        adapter.startListening();
+        mClientsList.setAdapter(mAdapter);
+        mAdapter.startListening();
     }
 
     // click handler of items of the clients list
     @Override
-    public void onClientSelected(Client client) {
+    public void onClientSelected(Client client, int position) {
+        // getIdFromSnapshot(mAdapter, position);
         // Create a new intent to open the {@link ClientActivity} passing in uid and Client Object
         Intent clientIntent = new Intent(DashboardActivity.this, ClientActivity.class);
+        // add the uid
         clientIntent.putExtra(INTENT_EXTRA_UID, mUid);
-        clientIntent.putExtra(INTENT_CURRENT_CLIENT, client);
-
+        // add the {@link Client} object
+        clientIntent.putExtra(INTENT_SELECTED_CLIENT, client);
+        // Get the selected client's id from the adapter and add it
+        String selectedClientid = FirebaseUtil.getIdFromSnapshot(mAdapter, position);
+        clientIntent.putExtra(Constants.INTENT_SELECTED_CLIENT_ID, selectedClientid);
         // start activity
         startActivity(clientIntent);
     }
@@ -290,15 +295,6 @@ public class DashboardActivity extends AppCompatActivity
                 });
     }
 
-    private String convertTimeStampToString(long timestamp) {
-        // TODO: insert auto Locale recog for date pattern
-        Date date = new Date(timestamp);
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-YY");
-        String formattedDate = sdf.format(date);
-        Log.v(LOG_TAG, "date: " + formattedDate);
-        return formattedDate;
-    }
-
     /**
      * Starts AuthentificationActivity for authentication
      */
@@ -313,8 +309,8 @@ public class DashboardActivity extends AppCompatActivity
         // check if the user is signed in (non-null)
         FirebaseUser user = mAuth.getCurrentUser();
         if(user != null) {
-            if(adapter != null){
-                adapter.startListening();
+            if(mAdapter != null){
+                mAdapter.startListening();
             }
         } else {
             launchAuthentication();
@@ -338,8 +334,8 @@ public class DashboardActivity extends AppCompatActivity
     @Override
     protected void onStop() {
         super.onStop();
-        if(adapter != null){
-            adapter.stopListening();
+        if(mAdapter != null){
+            mAdapter.stopListening();
         }
     }
 
