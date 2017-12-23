@@ -9,18 +9,16 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import com.acpnctr.acpnctr.adapters.ClientFragmentPageAdapter;
-import com.acpnctr.acpnctr.models.Client;
 
 import static com.acpnctr.acpnctr.fragments.InformationFragment.clientHasChanged;
-import static com.acpnctr.acpnctr.utils.Constants.INTENT_CURRENT_CLIENT;
 import static com.acpnctr.acpnctr.utils.Constants.INTENT_EXTRA_UID;
+import static com.acpnctr.acpnctr.utils.Constants.INTENT_SELECTED_CLIENT_ID;
 
 public class ClientActivity extends AppCompatActivity {
 
@@ -50,17 +48,12 @@ public class ClientActivity extends AppCompatActivity {
             // 1. it's a new client, there's only mUid
             // 2. it's an existing client, there's the Client object to recover
             Intent intent = getIntent();
-            if (intent.hasExtra(INTENT_EXTRA_UID)){
+            if (intent.hasExtra(INTENT_SELECTED_CLIENT_ID)){
                 mUid = intent.getStringExtra(INTENT_EXTRA_UID);
-                Log.d(LOG_TAG, "uid: " + mUid);
-            }
-
-            // it is an existing client who has been selected from the list
-            if (intent.hasExtra(INTENT_CURRENT_CLIENT)){
-                Client selectedClient = intent.getParcelableExtra(INTENT_CURRENT_CLIENT);
-                mClientid = selectedClient.getClientid();
+                mClientid = intent.getStringExtra(INTENT_SELECTED_CLIENT_ID);
                 isNewClient = false;
             } else {
+                mUid = intent.getStringExtra(INTENT_EXTRA_UID);
                 mClientid = null;
                 isNewClient = true;
             }
@@ -87,9 +80,11 @@ public class ClientActivity extends AppCompatActivity {
                 if (isNewClient){
                     Toast.makeText(ClientActivity.this, getString(R.string.new_client_not_saved), Toast.LENGTH_SHORT).show();
                 } else {
-                    // Create a new intent to open the {@link ClientActivity}
+                    // Create a new intent to open the {@link SessionActivity}
                     Intent sessionIntent = new Intent(ClientActivity.this, SessionActivity.class);
-
+                    // pass in uid and clientid to build firestore path
+                    sessionIntent.putExtra(USER_ID, mUid);
+                    sessionIntent.putExtra(CLIENT_ID, mClientid);
                     // Start the new activity
                     startActivity(sessionIntent);
                 }
