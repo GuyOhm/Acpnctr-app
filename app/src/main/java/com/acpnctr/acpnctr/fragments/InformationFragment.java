@@ -25,7 +25,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +35,6 @@ import static com.acpnctr.acpnctr.ClientActivity.mUid;
 import static com.acpnctr.acpnctr.models.Client.CLIENT_ACQUI_KEY;
 import static com.acpnctr.acpnctr.models.Client.CLIENT_DOB_KEY;
 import static com.acpnctr.acpnctr.models.Client.CLIENT_GENDER_KEY;
-import static com.acpnctr.acpnctr.models.Client.CLIENT_ID_KEY;
 import static com.acpnctr.acpnctr.models.Client.CLIENT_MAIL_KEY;
 import static com.acpnctr.acpnctr.models.Client.CLIENT_NAME_KEY;
 import static com.acpnctr.acpnctr.models.Client.CLIENT_PHONE_KEY;
@@ -51,7 +49,7 @@ import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_USERS;
 import static com.acpnctr.acpnctr.utils.Constants.GENDER_FEMALE;
 import static com.acpnctr.acpnctr.utils.Constants.GENDER_MALE;
 import static com.acpnctr.acpnctr.utils.Constants.GENDER_UNKNOWN;
-import static com.acpnctr.acpnctr.utils.Constants.INTENT_CURRENT_CLIENT;
+import static com.acpnctr.acpnctr.utils.Constants.INTENT_SELECTED_CLIENT;
 
 /**
  * {@link Fragment} to display client information.
@@ -60,8 +58,6 @@ public class InformationFragment extends Fragment {
 
     // Log for debugging purposes
     private static final String LOG_TAG = InformationFragment.class.getSimpleName();
-
-    public static final String CLIENT_HAS_CHANGED = "client_has_changed";
 
     // Firebase instance variable
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -131,8 +127,8 @@ public class InformationFragment extends Fragment {
 
         // it is an existing client who has been selected from the list recover the Client object
         Intent intent = getActivity().getIntent();
-        if (intent.hasExtra(INTENT_CURRENT_CLIENT)){
-            Client selectedClient = intent.getParcelableExtra(INTENT_CURRENT_CLIENT);
+        if (intent.hasExtra(INTENT_SELECTED_CLIENT)){
+            Client selectedClient = intent.getParcelableExtra(INTENT_SELECTED_CLIENT);
             onClientSelectedInitialize(selectedClient);
         }
 
@@ -351,8 +347,6 @@ public class InformationFragment extends Fragment {
                 });
     }
 
-    // TODO: make sure clientid is created to the document or delete it
-
     private void createNewClientDocument(Client client) {
         // create a doc from the Client object to clients collection with auto-generated unique ID
         db.collection(FIRESTORE_COLLECTION_USERS)
@@ -366,8 +360,6 @@ public class InformationFragment extends Fragment {
                         Toast.makeText(getActivity(), getString(R.string.client_info_insert_successful), Toast.LENGTH_SHORT).show();
                         // update mClientid
                         mClientid = documentReference.getId();
-                        // add the clientid to the client document
-                        addClientidToDocument();
                         isNewClient = false;
                         // reinit clienHasChanged to false
                         clientHasChanged = false;
@@ -378,31 +370,6 @@ public class InformationFragment extends Fragment {
                     public void onFailure(@NonNull Exception e) {
                         Log.w(LOG_TAG, "Error adding document", e);
                         Toast.makeText(getActivity(), getString(R.string.client_info_insert_failed), Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-
-    private void addClientidToDocument() {
-        // create a Hashmap with the appropriate key and the clientid
-        Map<String, Object> client = new HashMap<>();
-        client.put(CLIENT_ID_KEY, mClientid);
-
-        // add the data to firestore
-        db.collection(FIRESTORE_COLLECTION_USERS)
-                .document(mUid)
-                .collection(FIRESTORE_COLLECTION_CLIENTS)
-                .document(mClientid)
-                .set(client, SetOptions.merge())
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(LOG_TAG, "clientid successfully added");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(LOG_TAG, "Error adding clientid", e);
                     }
                 });
     }
