@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.acpnctr.acpnctr.R;
@@ -19,6 +20,13 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
 public class SessionAdapter extends FirestoreRecyclerAdapter<Session, SessionAdapter.SessionHolder> {
 
+    private OnSessionSelectedListener mListener;
+
+    public interface OnSessionSelectedListener {
+        void onSessionSelected(Session session, int position);
+        void onSessionRated(float rating, int position);
+    }
+
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See
@@ -26,8 +34,9 @@ public class SessionAdapter extends FirestoreRecyclerAdapter<Session, SessionAda
      *
      * @param options
      */
-    public SessionAdapter(FirestoreRecyclerOptions<Session> options) {
+    public SessionAdapter(FirestoreRecyclerOptions<Session> options, OnSessionSelectedListener listener) {
         super(options);
+        mListener = listener;
     }
 
     @Override
@@ -40,7 +49,7 @@ public class SessionAdapter extends FirestoreRecyclerAdapter<Session, SessionAda
 
     @Override
     protected void onBindViewHolder(SessionHolder holder, int position, Session model) {
-        holder.bind(model);
+        holder.bind(model, mListener);
     }
 
     static class SessionHolder extends RecyclerView.ViewHolder {
@@ -50,6 +59,9 @@ public class SessionAdapter extends FirestoreRecyclerAdapter<Session, SessionAda
 
         // display the session goal
         private TextView listItemSessionGoal;
+
+        // display session rating
+        private RatingBar listItemSessionRating;
 
         /**
          * Constructor for our ViewHolder. Within this constructor, we get a reference to our
@@ -63,12 +75,30 @@ public class SessionAdapter extends FirestoreRecyclerAdapter<Session, SessionAda
             // hook the views in the item view
             listItemSessionDate = itemView.findViewById(R.id.tv_sessions_list_date);
             listItemSessionGoal = itemView.findViewById(R.id.tv_sessions_list_goal);
+            listItemSessionRating = itemView.findViewById(R.id.rb_session_rating);
         }
 
-        public void bind(Session session){
+        public void bind(final Session session, final OnSessionSelectedListener listener){
             listItemSessionDate.setText(DateFormatUtil.convertTimestampToString(
                     session.getTimestampCreated()));
             listItemSessionGoal.setText(session.getGoal());
+            listItemSessionRating.setRating(session.getSessionRating());
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (listener != null){
+                        listener.onSessionSelected(session, getAdapterPosition());
+                    }
+                }
+            });
+
+            listItemSessionRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                @Override
+                public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+                    listener.onSessionRated(v, getAdapterPosition());
+                }
+            });
         }
     }
 }

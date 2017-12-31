@@ -33,8 +33,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 
 import static com.acpnctr.acpnctr.ClientActivity.isNewClient;
-import static com.acpnctr.acpnctr.ClientActivity.mClientid;
-import static com.acpnctr.acpnctr.ClientActivity.mUid;
+import static com.acpnctr.acpnctr.ClientActivity.sClientid;
+import static com.acpnctr.acpnctr.ClientActivity.sUid;
 import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_ANAMNESIS;
 import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_CLIENTS;
 import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_USERS;
@@ -102,9 +102,9 @@ public class AnamnesisFragment extends Fragment {
 
                         // build the firestore path
                         CollectionReference anamCollection = db.collection(FIRESTORE_COLLECTION_USERS)
-                                .document(mUid)
+                                .document(sUid)
                                 .collection(FIRESTORE_COLLECTION_CLIENTS)
-                                .document(mClientid)
+                                .document(sClientid)
                                 .collection(FIRESTORE_COLLECTION_ANAMNESIS);
 
                         addAnamnesisDocument(anamnesis, anamCollection);
@@ -123,7 +123,7 @@ public class AnamnesisFragment extends Fragment {
         // [END - handle click on add button ]
 
         // Display list of histories from firestore
-        if (mClientid != null){
+        if (sClientid != null){
             displayAnamnesisItems();
         }
 
@@ -134,9 +134,9 @@ public class AnamnesisFragment extends Fragment {
 
         // build the firestore path
         CollectionReference anamCollection = db.collection(FIRESTORE_COLLECTION_USERS)
-                .document(mUid)
+                .document(sUid)
                 .collection(FIRESTORE_COLLECTION_CLIENTS)
-                .document(mClientid)
+                .document(sClientid)
                 .collection(FIRESTORE_COLLECTION_ANAMNESIS);
 
         // query firestore for the client's anamesis

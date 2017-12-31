@@ -57,7 +57,7 @@ public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ClientAdapter.OnClientSelectedListener {
 
     // Tag for the log messages
-    public static final String LOG_TAG = DashboardActivity.class.getSimpleName();
+    private static final String LOG_TAG = DashboardActivity.class.getSimpleName();
 
     // Firebase instance variables
     private FirebaseAuth mAuth;

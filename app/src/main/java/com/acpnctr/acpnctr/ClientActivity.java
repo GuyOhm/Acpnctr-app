@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.acpnctr.acpnctr.adapters.ClientFragmentPageAdapter;
+import com.acpnctr.acpnctr.utils.Constants;
 
 import static com.acpnctr.acpnctr.fragments.InformationFragment.clientHasChanged;
 import static com.acpnctr.acpnctr.utils.Constants.INTENT_EXTRA_UID;
@@ -25,8 +26,8 @@ public class ClientActivity extends AppCompatActivity {
     private final static String LOG_TAG = ClientActivity.class.getSimpleName();
 
     // static member variables to be used by fragments
-    public static String mUid;
-    public static String mClientid;
+    public static String sUid;
+    public static String sClientid;
     public static boolean isNewClient;
 
     // Final Strings to store state information
@@ -40,21 +41,20 @@ public class ClientActivity extends AppCompatActivity {
         setContentView(R.layout.activity_client);
 
         if (savedInstanceState != null){
-            mUid = savedInstanceState.getString(USER_ID);
-            mClientid = savedInstanceState.getString(CLIENT_ID);
+            sUid = savedInstanceState.getString(USER_ID);
+            sClientid = savedInstanceState.getString(CLIENT_ID);
             isNewClient = savedInstanceState.getBoolean(IS_NEW_CLIENT);
         } else {
             // Handles the 2 cases:
-            // 1. it's a new client, there's only mUid
+            // 1. it's a new client, there's only sUid
             // 2. it's an existing client, there's the Client object to recover
             Intent intent = getIntent();
+            sUid = intent.getStringExtra(INTENT_EXTRA_UID);
             if (intent.hasExtra(INTENT_SELECTED_CLIENT_ID)){
-                mUid = intent.getStringExtra(INTENT_EXTRA_UID);
-                mClientid = intent.getStringExtra(INTENT_SELECTED_CLIENT_ID);
+                sClientid = intent.getStringExtra(INTENT_SELECTED_CLIENT_ID);
                 isNewClient = false;
             } else {
-                mUid = intent.getStringExtra(INTENT_EXTRA_UID);
-                mClientid = null;
+                sClientid = null;
                 isNewClient = true;
             }
         }
@@ -83,8 +83,8 @@ public class ClientActivity extends AppCompatActivity {
                     // Create a new intent to open the {@link SessionActivity}
                     Intent sessionIntent = new Intent(ClientActivity.this, SessionActivity.class);
                     // pass in uid and clientid to build firestore path
-                    sessionIntent.putExtra(USER_ID, mUid);
-                    sessionIntent.putExtra(CLIENT_ID, mClientid);
+                    sessionIntent.putExtra(Constants.INTENT_EXTRA_UID, sUid);
+                    sessionIntent.putExtra(Constants.INTENT_SELECTED_CLIENT_ID, sClientid);
                     // Start the new activity
                     startActivity(sessionIntent);
                 }
@@ -188,8 +188,8 @@ public class ClientActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle currentState) {
         super.onSaveInstanceState(currentState);
-        currentState.putString(USER_ID, mUid);
-        currentState.putString(CLIENT_ID, mClientid);
+        currentState.putString(USER_ID, sUid);
+        currentState.putString(CLIENT_ID, sClientid);
         currentState.putBoolean(IS_NEW_CLIENT, isNewClient);
     }
 }

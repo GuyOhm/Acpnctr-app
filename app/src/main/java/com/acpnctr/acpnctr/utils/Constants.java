@@ -22,6 +22,8 @@ public class Constants {
     public static final String INTENT_EXTRA_UID = "uid";
     public static final String INTENT_SELECTED_CLIENT = "client";
     public static final String INTENT_SELECTED_CLIENT_ID = "clientid";
+    public static final String INTENT_SELECTED_SESSION = "session";
+    public static final String INTENT_SELECTED_SESSION_ID = "sessionid";
 
     /**
      * Possible values for the gender of the client.

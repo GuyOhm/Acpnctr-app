@@ -30,8 +30,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.acpnctr.acpnctr.ClientActivity.isNewClient;
-import static com.acpnctr.acpnctr.ClientActivity.mClientid;
-import static com.acpnctr.acpnctr.ClientActivity.mUid;
+import static com.acpnctr.acpnctr.ClientActivity.sClientid;
+import static com.acpnctr.acpnctr.ClientActivity.sUid;
 import static com.acpnctr.acpnctr.models.Client.CLIENT_ACQUI_KEY;
 import static com.acpnctr.acpnctr.models.Client.CLIENT_DOB_KEY;
 import static com.acpnctr.acpnctr.models.Client.CLIENT_GENDER_KEY;
@@ -312,11 +312,11 @@ public class InformationFragment extends Fragment {
     private void updateClientDocument(String name, String dob, String phone, String email) {
         // create the path to the document
         DocumentReference clientDocReference = db.collection(FIRESTORE_COLLECTION_USERS)
-                .document(mUid)
+                .document(sUid)
                 .collection(FIRESTORE_COLLECTION_CLIENTS)
-                .document(mClientid);
+                .document(sClientid);
 
-        Log.d(LOG_TAG, "mClientid: " + mClientid);
+        Log.d(LOG_TAG, "sClientid: " + sClientid);
 
         // create a hashmap with values fetched from the UI that may have been updated
         Map<String, Object> updates = new HashMap<>();
@@ -350,7 +350,7 @@ public class InformationFragment extends Fragment {
     private void createNewClientDocument(Client client) {
         // create a doc from the Client object to clients collection with auto-generated unique ID
         db.collection(FIRESTORE_COLLECTION_USERS)
-                .document(mUid)
+                .document(sUid)
                 .collection(FIRESTORE_COLLECTION_CLIENTS)
                 .add(client)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -358,8 +358,8 @@ public class InformationFragment extends Fragment {
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(LOG_TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
                         Toast.makeText(getActivity(), getString(R.string.client_info_insert_successful), Toast.LENGTH_SHORT).show();
-                        // update mClientid
-                        mClientid = documentReference.getId();
+                        // update sClientid
+                        sClientid = documentReference.getId();
                         isNewClient = false;
                         // reinit clienHasChanged to false
                         clientHasChanged = false;

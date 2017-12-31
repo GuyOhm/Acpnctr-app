@@ -1,7 +1,9 @@
 package com.acpnctr.acpnctr.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,19 +15,28 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.acpnctr.acpnctr.R;
+import com.acpnctr.acpnctr.SessionActivity;
 import com.acpnctr.acpnctr.adapters.SessionAdapter;
 import com.acpnctr.acpnctr.models.Session;
+import com.acpnctr.acpnctr.utils.Constants;
+import com.acpnctr.acpnctr.utils.FirebaseUtil;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 
-import static com.acpnctr.acpnctr.ClientActivity.mClientid;
-import static com.acpnctr.acpnctr.ClientActivity.mUid;
+import java.util.HashMap;
+
+import static com.acpnctr.acpnctr.ClientActivity.sClientid;
+import static com.acpnctr.acpnctr.ClientActivity.sUid;
 import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_CLIENTS;
 import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_SESSIONS;
 import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_USERS;
@@ -33,7 +44,9 @@ import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_USERS;
 /**
  * A {@link Fragment} to display the sessions history of a client.
  */
-public class SessionsListFragment extends Fragment {
+public class SessionsListFragment extends Fragment implements SessionAdapter.OnSessionSelectedListener{
+
+    private static final String LOG_TAG = SessionsListFragment.class.getSimpleName();
 
     // Firebase instance variable
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -67,7 +80,7 @@ public class SessionsListFragment extends Fragment {
         mSessionsList = rootView.findViewById(R.id.rv_sessions_list);
         mLoadingIndicator = rootView.findViewById(R.id.pb_sessions_list_loading_indicator);
 
-        if (mClientid != null) {
+        if (sClientid != null) {
             displaySessionsList();
         }
 
@@ -77,9 +90,9 @@ public class SessionsListFragment extends Fragment {
     private void displaySessionsList() {
         // build the firestore path
         CollectionReference sessionsCollection = db.collection(FIRESTORE_COLLECTION_USERS)
-                .document(mUid)
+                .document(sUid)
                 .collection(FIRESTORE_COLLECTION_CLIENTS)
-                .document(mClientid)
+                .document(sClientid)
                 .collection(FIRESTORE_COLLECTION_SESSIONS);
 
         // query firestore for the client's sessions
@@ -91,7 +104,7 @@ public class SessionsListFragment extends Fragment {
                 .setQuery(query, Session.class)
                 .build();
 
-        mAdapter = new SessionAdapter(options){
+        mAdapter = new SessionAdapter(options, this){
 
             @Override
             public void onDataChanged() {
@@ -129,5 +142,52 @@ public class SessionsListFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         if (mAdapter != null) mAdapter.stopListening();
+    }
+
+    @Override
+    public void onSessionSelected(Session session, int position) {
+        Intent intent = new Intent(getActivity(), SessionActivity.class);
+        // get unique document id from the adapter
+        String sessionid = FirebaseUtil.getIdFromSnapshot(mAdapter, position);
+        // pass in uid
+        intent.putExtra(Constants.INTENT_EXTRA_UID, sUid);
+        // clientid
+        intent.putExtra(Constants.INTENT_SELECTED_CLIENT_ID, sClientid);
+        // sessionid
+        intent.putExtra(Constants.INTENT_SELECTED_SESSION_ID, sessionid);
+        // and the session obj to intent
+        intent.putExtra(Constants.INTENT_SELECTED_SESSION, session);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onSessionRated(float rating, int position) {
+        // get the id of the session that has been rated
+        String sessionid = FirebaseUtil.getIdFromSnapshot(mAdapter, position);
+        // build the HashMap with the sessionRating key and it's value
+        HashMap<String, Object> map = new HashMap<>();
+        map.put(Session.SESSION_RATING_KEY, rating);
+        // path to the session document on firestore
+        DocumentReference sessionDoc = db.collection(FIRESTORE_COLLECTION_USERS)
+                .document(sUid)
+                .collection(FIRESTORE_COLLECTION_CLIENTS)
+                .document(sClientid)
+                .collection(FIRESTORE_COLLECTION_SESSIONS)
+                .document(sessionid);
+        // update sessionRating value
+        sessionDoc.update(map)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getActivity(), getString(R.string.session_rated_successful), Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(LOG_TAG, getString(R.string.session_rated_failed) + e);
+                        Toast.makeText(getActivity(), getString(R.string.session_rated_failed), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }

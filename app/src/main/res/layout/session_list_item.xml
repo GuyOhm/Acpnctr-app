@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="?android:attr/selectableItemBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,11 +24,12 @@
             tools:text="13 novembre 2017" />
 
         <RatingBar
+            android:id="@+id/rb_session_rating"
             style="@style/Widget.AppCompat.RatingBar.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|end"
-            android:rating="3" />
+            android:isIndicator="false" />
 
     </LinearLayout>
 
@@ -35,14 +37,18 @@
         android:id="@+id/tv_sessions_list_goal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:ellipsize="end"
         android:paddingLeft="8dp"
+        android:singleLine="true"
         tools:text="Objectif: tendinite coude gauche" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:ellipsize="end"
         android:paddingBottom="8dp"
         android:paddingLeft="8dp"
+        android:singleLine="true"
         tools:text="Traitement: 5TR, 10TR, 8TR, 4GI, 34VB, 3F " />
 
     <View

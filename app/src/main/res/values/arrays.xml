@@ -16,4 +16,46 @@
         <item>@string/acquisition_confrere</item>
         <item>@string/acquisition_offline</item>
     </string-array>
+
+    <!-- These are the options displayed in Treatment > stimulation drop-down Spinner -->
+    <string-array name="array_stimulation_options">
+        <item>@string/stimulation_tonification</item>
+        <item>@string/stimulation_sedation</item>
+        <item>@string/stimulation_neutral</item>
+    </string-array>
+
+    <!-- Acupuncture points displayed in the AutocompleteTextView of the Treatment fragment -->
+    <string-array name="array_acupuncture_points">
+        <!-- ###### REN MAI ###### -->
+        <item>@string/RM_1</item>
+        <item>@string/RM_2</item>
+        <item>@string/RM_3</item>
+        <item>@string/RM_4</item>
+        <item>@string/RM_5</item>
+        <item>@string/RM_6</item>
+        <item>@string/RM_7</item>
+        <item>@string/RM_8</item>
+        <item>@string/RM_9</item>
+        <item>@string/RM_10</item>
+        <item>@string/RM_11</item>
+        <item>@string/RM_12</item>
+        <item>@string/RM_13</item>
+        <item>@string/RM_14</item>
+        <item>@string/RM_15</item>
+        <item>@string/RM_16</item>
+        <item>@string/RM_17</item>
+        <item>@string/RM_18</item>
+        <item>@string/RM_19</item>
+        <item>@string/RM_20</item>
+        <item>@string/RM_21</item>
+        <item>@string/RM_22</item>
+        <item>@string/RM_23</item>
+        <item>@string/RM_24</item>
+
+        <!-- ###### DU MAI ###### -->
+
+        <!-- ###### LUNG ###### -->
+
+    </string-array>
+
 </resources>

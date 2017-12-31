@@ -62,7 +62,7 @@
     <string name="client_info_insert_successful">Client saved</string>
     <string name="client_info_name_needed">Please enter a name</string>
     <string name="client_info_gender_needed">Please choose a gender</string>
-    <string name="client_info_update_failed">Error with updating client</string>
+    <string name="client_info_update_failed">Error updating client</string>
     <string name="client_info_update_successful">Client updated</string>
     <string name="new_client_not_saved">Please save new client</string>
     <string name="client_anam_no_history">Please enter a history</string>
@@ -92,5 +92,88 @@
     <string name="btn_session_date">Session date</string>
     <string name="four_steps_category_information">Information</string>
     <string name="hint_session_goal">session goal</string>
+    <string name="session_date_needed">Please enter a date</string>
+    <string name="session_goal_needed">Please enter a goal</string>
+    <string name="session_rated_successful">Session rated</string>
+    <string name="session_rated_failed">Error rating session</string>
+    <string name="session_update_success">Session saved</string>
+    <string name="session_update_failed">Error updating session</string>
+    <string name="hint_treatment_point">e.g. DM 20 - baihui</string>
+
+    <!-- Treatment -->
+    <string name="treatment_invalid_point">Please choose a point from the list</string>
+    <string name="stimulation_tonification">tonification</string>
+    <string name="stimulation_sedation">sedation</string>
+    <string name="stimulation_neutral">neutral</string>
+
+    <!-- Acupuncture points for treatment (abbreviation + chinese name) -->
+    <!-- ###### REN MAI ###### -->
+    <string name="RM_1" translatable="false">RM 1 - huiyin</string>
+    <string name="RM_2" translatable="false">RM 2 - qugu</string>
+    <string name="RM_3" translatable="false">RM 3 - zhongji</string>
+    <string name="RM_4" translatable="false">RM 4 - guanyuan</string>
+    <string name="RM_5" translatable="false">RM 5 - shimen</string>
+    <string name="RM_6" translatable="false">RM 6 - qihai</string>
+    <string name="RM_7" translatable="false">RM 7 - yinjiao</string>
+    <string name="RM_8" translatable="false">RM 8 - shenque</string>
+    <string name="RM_9" translatable="false">RM 9 - shuifen</string>
+    <string name="RM_10" translatable="false">RM 10 - xiawan</string>
+    <string name="RM_11" translatable="false">RM 11 - jianli</string>
+    <string name="RM_12" translatable="false">RM 12 - zhongwan</string>
+    <string name="RM_13" translatable="false">RM 13 - shangwan</string>
+    <string name="RM_14" translatable="false">RM 14 - juque</string>
+    <string name="RM_15" translatable="false">RM 15 - jiuwei</string>
+    <string name="RM_16" translatable="false">RM 16 - zhongting</string>
+    <string name="RM_17" translatable="false">RM 17 - danzhong</string>
+    <string name="RM_18" translatable="false">RM 18 - yutang</string>
+    <string name="RM_19" translatable="false">RM 19 - zigong</string>
+    <string name="RM_20" translatable="false">RM 20 - huagai</string>
+    <string name="RM_21" translatable="false">RM 21 - xuanji</string>
+    <string name="RM_22" translatable="false">RM 22 - tiantu</string>
+    <string name="RM_23" translatable="false">RM 23 - lianquan</string>
+    <string name="RM_24" translatable="false">RM 24 - chengjiang</string>
+
+    <!-- ###### DU MAI ###### -->
+    <string name="DM_1" translatable="false">DM 1 - changqiang</string>
+    <string name="DM_2" translatable="false">DM 2 - yaoshu</string>
+    <string name="DM_3" translatable="false">DM 3 - yaoyangguan</string>
+    <string name="DM_4" translatable="false">DM 4 - mingmen</string>
+    <string name="DM_5" translatable="false">DM 5 - xuanshu</string>
+    <string name="DM_6" translatable="false">DM 6 - jizhong</string>
+    <string name="DM_7" translatable="false">DM 7 - zhongshu</string>
+    <string name="DM_8" translatable="false">DM 8 - jinsuo</string>
+    <string name="DM_9" translatable="false">DM 9 - zhiyang</string>
+    <string name="DM_10" translatable="false">DM 10 - lingtai</string>
+    <string name="DM_11" translatable="false">DM 11 - shendao</string>
+    <string name="DM_12" translatable="false">DM 12 - shenzhu</string>
+    <string name="DM_13" translatable="false">DM 13 - taodao</string>
+    <string name="DM_14" translatable="false">DM 14 - dazhui</string>
+    <string name="DM_15" translatable="false">DM 15 - yamen</string>
+    <string name="DM_16" translatable="false">DM 16 - fengfu</string>
+    <string name="DM_17" translatable="false">DM 17 - naohu</string>
+    <string name="DM_18" translatable="false">DM 18 - qiangjian</string>
+    <string name="DM_19" translatable="false">DM 19 - houding</string>
+    <string name="DM_20" translatable="false">DM 20 - baihui</string>
+    <string name="DM_21" translatable="false">DM 21 - qianding</string>
+    <string name="DM_22" translatable="false">DM 22 - xinhui</string>
+    <string name="DM_23" translatable="false">DM 23 - shangxing</string>
+    <string name="DM_24" translatable="false">DM 24 - shenting</string>
+    <string name="DM_25" translatable="false">DM 25 - suliao</string>
+    <string name="DM_26" translatable="false">DM 26 - renzhong</string>
+    <string name="DM_27" translatable="false">DM 27 - duiduan</string>
+    <string name="DM_28" translatable="false">DM 28 - yinjiao</string>
+
+    <!-- ###### LUNG ###### -->
+    <string name="P_1">P 1 - zhongfu</string>
+    <string name="P_2">P 2 - yunmen</string>
+    <string name="P_3">P 3 - tianfu</string>
+    <string name="P_4">P 4 - xiabai</string>
+    <string name="P_5">P 5 - chize</string>
+    <string name="P_6">P 6 - kongzui</string>
+    <string name="P_7">P 7 - lieque</string>
+    <string name="P_8">P 8 - jingqu</string>
+    <string name="P_9">P 9 - taiyuan</string>
+    <string name="P_10">P 10 - yuji</string>
+    <string name="P_11">P 11 - shaoshang</string>
 
 </resources>

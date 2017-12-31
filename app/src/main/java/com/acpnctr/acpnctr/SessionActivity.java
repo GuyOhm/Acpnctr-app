@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.acpnctr.acpnctr.adapters.SessionFragmentPageAdapter;
+import com.acpnctr.acpnctr.utils.Constants;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class SessionActivity extends AppCompatActivity {
@@ -19,9 +20,9 @@ public class SessionActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     // static member variables to be used by fragments
-    public static String mUid;
-    public static String mClientid;
-    public static String mSessionid;
+    public static String sUid;
+    public static String sClientid;
+    public static String sSessionid;
 
     // Final Strings to store state information
     public static final String CLIENT_ID = "client_id";
@@ -41,12 +42,18 @@ public class SessionActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             // get the data from the intent that started the activity
             Intent intent = getIntent();
-            mUid = intent.getStringExtra(USER_ID);
-            mClientid = intent.getStringExtra(CLIENT_ID);
+            sUid = intent.getStringExtra(Constants.INTENT_EXTRA_UID);
+            sClientid = intent.getStringExtra(Constants.INTENT_SELECTED_CLIENT_ID);
+            if (intent.hasExtra(Constants.INTENT_SELECTED_SESSION_ID)){
+                sSessionid = intent.getStringExtra(Constants.INTENT_SELECTED_SESSION_ID);
+                isNewSession = false;
+            } else {
+                isNewSession = true;
+            }
         } else {
-            mUid = savedInstanceState.getString(USER_ID);
-            mClientid = savedInstanceState.getString(CLIENT_ID);
-            mSessionid = savedInstanceState.getString(SESSION_ID);
+            sUid = savedInstanceState.getString(USER_ID);
+            sClientid = savedInstanceState.getString(CLIENT_ID);
+            sSessionid = savedInstanceState.getString(SESSION_ID);
             isNewSession = savedInstanceState.getBoolean(IS_NEW_SESSION);
         }
 
@@ -84,9 +91,9 @@ public class SessionActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(CLIENT_ID, mClientid);
-        outState.putString(USER_ID, mUid);
-        outState.putString(SESSION_ID, mSessionid);
+        outState.putString(CLIENT_ID, sClientid);
+        outState.putString(USER_ID, sUid);
+        outState.putString(SESSION_ID, sSessionid);
         outState.putBoolean(IS_NEW_SESSION, isNewSession);
     }
 }

@@ -141,7 +141,7 @@ public class Client implements Parcelable{
         }
     };
 
-    // Example constructor that takes a Parcel and gives you an object populated with it's values
+    // Constructor that takes a Parcel and gives you an object populated with it's values
     private Client(Parcel in) {
         clientName = in.readString();
         clientDOB = in.readString();
