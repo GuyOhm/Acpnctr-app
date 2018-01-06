@@ -7,7 +7,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.acpnctr.acpnctr.R;
-import com.acpnctr.acpnctr.models.Session;
+import com.acpnctr.acpnctr.fragments.TreatmentFragment;
+import com.acpnctr.acpnctr.models.Treatment;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
@@ -16,7 +17,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
  * for the list of points displayed in {@link com.acpnctr.acpnctr.fragments.TreatmentFragment}
  */
 
-public class TreatmentAdapter extends FirestoreRecyclerAdapter<Session,
+public class TreatmentAdapter extends FirestoreRecyclerAdapter<Treatment,
         TreatmentAdapter.PointHolder> {
 
     /**
@@ -25,7 +26,7 @@ public class TreatmentAdapter extends FirestoreRecyclerAdapter<Session,
      *
      * @param options
      */
-    public TreatmentAdapter(FirestoreRecyclerOptions<Session> options) {
+    public TreatmentAdapter(FirestoreRecyclerOptions<Treatment> options) {
         super(options);
     }
 
@@ -39,25 +40,29 @@ public class TreatmentAdapter extends FirestoreRecyclerAdapter<Session,
     }
 
     @Override
-    protected void onBindViewHolder(PointHolder holder, int position, Session session) {
+    protected void onBindViewHolder(PointHolder holder, int position, Treatment treatment) {
         // bind the Anamnesis object to the AnamnesisHolder
-        holder.bind(session);
+        holder.bind(treatment);
     }
 
 
     static class PointHolder extends RecyclerView.ViewHolder{
 
         private TextView acuPointTextView;
+        private TextView stimulationTextView;
 
         public PointHolder(View itemView) {
             super(itemView);
-
             // hook my views in the item view
             acuPointTextView = itemView.findViewById(R.id.tv_treatment_point);
+            stimulationTextView = itemView.findViewById(R.id.tv_treatment_stimulation);
         }
 
-        public void bind(Session session) {
-
+        public void bind(Treatment treatment) {
+            int pointPosition = treatment.getPoint();
+            int stimulationPosition = treatment.getStimulation();
+            acuPointTextView.setText(TreatmentFragment.acuPoints[pointPosition]);
+            stimulationTextView.setText(TreatmentFragment.stimulationOptions[stimulationPosition]);
         }
     }
 }
