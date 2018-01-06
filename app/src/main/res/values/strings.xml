@@ -58,7 +58,7 @@
     <string name="client_info_action_save">Save</string>
 
     <!-- Toast messages for client data manipulation-->
-    <string name="client_info_insert_failed">Error with saving client</string>
+    <string name="client_info_insert_failed">Error saving client</string>
     <string name="client_info_insert_successful">Client saved</string>
     <string name="client_info_name_needed">Please enter a name</string>
     <string name="client_info_gender_needed">Please choose a gender</string>
@@ -66,7 +66,7 @@
     <string name="client_info_update_successful">Client updated</string>
     <string name="new_client_not_saved">Please save new client</string>
     <string name="client_anam_no_history">Please enter a history</string>
-    <string name="generic_data_insert_failed">Error with adding data</string>
+    <string name="generic_data_insert_failed">Error adding data</string>
 
     <!-- Dialog message when user is leaving editor but hasn't saved changes  -->
     <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
@@ -82,7 +82,7 @@
     <string name="session_list_item">Session item</string>
 
     <!-- Dashboard clients list -->
-    <string name="clients_list_error">Error while loading clients list</string>
+    <string name="clients_list_error">Error loading clients list</string>
     <string name="date_hint">date (dd/mm/yyyy)</string>
 
     <string name="history_hint">history</string>
@@ -99,12 +99,14 @@
     <string name="session_update_success">Session saved</string>
     <string name="session_update_failed">Error updating session</string>
     <string name="hint_treatment_point">e.g. DM 20 - baihui</string>
+    <string name="treatment_session_not_saved">Please save new session</string>
 
     <!-- Treatment -->
     <string name="treatment_invalid_point">Please choose a point from the list</string>
     <string name="stimulation_tonification">tonification</string>
     <string name="stimulation_sedation">sedation</string>
     <string name="stimulation_neutral">neutral</string>
+    <string name="treatment_list_error">Error loading treatment</string>
 
     <!-- Acupuncture points for treatment (abbreviation + chinese name) -->
     <!-- ###### REN MAI ###### -->

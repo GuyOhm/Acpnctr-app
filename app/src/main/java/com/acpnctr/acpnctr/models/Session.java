@@ -3,6 +3,8 @@ package com.acpnctr.acpnctr.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Map;
+
 /**
  * Model POJO for a session that the user creates.
  * This firestore Document belongs to the Collection sessions in the clientid Document
@@ -18,6 +20,9 @@ public class Session implements Parcelable {
     private long timestampCreated;
     private String goal;
     private float sessionRating;
+    // Variable to store Diagnosis data
+    // e.g. diagnosis<bagang, <yin, true>>
+    private Map<String, Map<String, Boolean>> diagnosis;
 
     // Empty constructor required by Firebase firestore
     public Session() {
@@ -27,6 +32,10 @@ public class Session implements Parcelable {
         this.timestampCreated = timestampCreated;
         this.goal = goal;
         this.sessionRating = sessionRating;
+    }
+
+    public Session(Map<String, Map<String, Boolean>> diagnosis) {
+        this.diagnosis = diagnosis;
     }
 
     public long getTimestampCreated() {
@@ -51,6 +60,14 @@ public class Session implements Parcelable {
 
     public void setSessionRating(float sessionRating) {
         this.sessionRating = sessionRating;
+    }
+
+    public Map<String, Map<String, Boolean>> getDiagnosis() {
+        return diagnosis;
+    }
+
+    public void setDiagnosis(Map<String, Map<String, Boolean>> diagnosis) {
+        this.diagnosis = diagnosis;
     }
 
     // Parcel part

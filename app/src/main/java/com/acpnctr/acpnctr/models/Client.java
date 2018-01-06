@@ -9,6 +9,23 @@ import android.os.Parcelable;
 
 public class Client implements Parcelable{
 
+    /**
+     * Possible values for the gender of the client.
+     */
+    public static final int GENDER_UNKNOWN = 0;
+    public static final int GENDER_MALE = 1;
+    public static final int GENDER_FEMALE = 2;
+
+    /**
+     * Possible values for the acquisition channel.
+     */
+    public static final int ACQUI_UNKNOWN = 0;
+    public static final int ACQUI_WOM = 1;
+    public static final int ACQUI_WEBSITE = 2;
+    public static final int ACQUI_FACEBOOK = 3;
+    public static final int ACQUI_CONFRERE = 4;
+    public static final int ACQUI_OFFLINE = 5;
+
     // key constants (not sure if I'll be using them
     public static final String CLIENT_NAME_KEY = "clientName";
     public static final String CLIENT_DOB_KEY = "clientDOB";
@@ -23,8 +40,8 @@ public class Client implements Parcelable{
     private String clientDOB;
     private String clientPhone;
     private String clientEmail;
-    private String clientGender;
-    private String clientAcquisition;
+    private int clientGender;
+    private int clientAcquisition;
     // This var is not passed into the constructor as a param => to be handled during implementation
     private long timestampCreated;
 
@@ -32,7 +49,7 @@ public class Client implements Parcelable{
     public Client() {}
 
     public Client(String clientName, String clientDOB, String clientPhone, String clientEmail,
-                  String clientGender, String clientAcquisition, long timestampCreated) {
+                  int clientGender, int clientAcquisition, long timestampCreated) {
         this.clientName = clientName;
         this.clientDOB = clientDOB;
         this.clientPhone = clientPhone;
@@ -44,7 +61,7 @@ public class Client implements Parcelable{
 
     // constructor without timestamp for updates
     public Client(String clientName, String clientDOB, String clientPhone, String clientEmail,
-                  String clientGender, String clientAcquisition) {
+                  int clientGender, int clientAcquisition) {
         this.clientName = clientName;
         this.clientDOB = clientDOB;
         this.clientPhone = clientPhone;
@@ -85,19 +102,19 @@ public class Client implements Parcelable{
         this.clientEmail = clientEmail;
     }
 
-    public String getClientGender() {
+    public int getClientGender() {
         return clientGender;
     }
 
-    public void setClientGender(String clientGender) {
+    public void setClientGender(int clientGender) {
         this.clientGender = clientGender;
     }
 
-    public String getClientAcquisition() {
+    public int getClientAcquisition() {
         return clientAcquisition;
     }
 
-    public void setClientAcquisition(String clientAcquisition) {
+    public void setClientAcquisition(int clientAcquisition) {
         this.clientAcquisition = clientAcquisition;
     }
 
@@ -123,8 +140,8 @@ public class Client implements Parcelable{
         out.writeString(clientDOB);
         out.writeString(clientPhone);
         out.writeString(clientEmail);
-        out.writeString(clientGender);
-        out.writeString(clientAcquisition);
+        out.writeInt(clientGender);
+        out.writeInt(clientAcquisition);
         out.writeLong(timestampCreated);
     }
 
@@ -147,8 +164,8 @@ public class Client implements Parcelable{
         clientDOB = in.readString();
         clientPhone = in.readString();
         clientEmail = in.readString();
-        clientGender = in.readString();
-        clientAcquisition = in.readString();
+        clientGender = in.readInt();
+        clientAcquisition = in.readInt();
         timestampCreated = in.readLong();
     }
 }

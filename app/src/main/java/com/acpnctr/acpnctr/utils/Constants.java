@@ -24,21 +24,4 @@ public class Constants {
     public static final String INTENT_SELECTED_CLIENT_ID = "clientid";
     public static final String INTENT_SELECTED_SESSION = "session";
     public static final String INTENT_SELECTED_SESSION_ID = "sessionid";
-
-    /**
-     * Possible values for the gender of the client.
-     */
-    public static final String GENDER_UNKNOWN = "unknown";
-    public static final String GENDER_MALE = "male";
-    public static final String GENDER_FEMALE = "female";
-
-    /**
-     * Possible values for the acquisition channel.
-     */
-    public static final String ACQUI_UNKNOWN = "unknown";
-    public static final String ACQUI_WOM = "word of mouth";
-    public static final String ACQUI_WEBSITE = "website";
-    public static final String ACQUI_FACEBOOK = "facebook";
-    public static final String ACQUI_CONFRERE = "confrere";
-    public static final String ACQUI_OFFLINE = "offline";
 }
