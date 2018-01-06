@@ -38,17 +38,8 @@ import static com.acpnctr.acpnctr.models.Client.CLIENT_GENDER_KEY;
 import static com.acpnctr.acpnctr.models.Client.CLIENT_MAIL_KEY;
 import static com.acpnctr.acpnctr.models.Client.CLIENT_NAME_KEY;
 import static com.acpnctr.acpnctr.models.Client.CLIENT_PHONE_KEY;
-import static com.acpnctr.acpnctr.utils.Constants.ACQUI_CONFRERE;
-import static com.acpnctr.acpnctr.utils.Constants.ACQUI_FACEBOOK;
-import static com.acpnctr.acpnctr.utils.Constants.ACQUI_OFFLINE;
-import static com.acpnctr.acpnctr.utils.Constants.ACQUI_UNKNOWN;
-import static com.acpnctr.acpnctr.utils.Constants.ACQUI_WEBSITE;
-import static com.acpnctr.acpnctr.utils.Constants.ACQUI_WOM;
 import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_CLIENTS;
 import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_USERS;
-import static com.acpnctr.acpnctr.utils.Constants.GENDER_FEMALE;
-import static com.acpnctr.acpnctr.utils.Constants.GENDER_MALE;
-import static com.acpnctr.acpnctr.utils.Constants.GENDER_UNKNOWN;
 import static com.acpnctr.acpnctr.utils.Constants.INTENT_SELECTED_CLIENT;
 
 /**
@@ -71,8 +62,8 @@ public class InformationFragment extends Fragment {
     private Spinner clientAcquisitionSpinner;
 
     // Gender and acquisition of the client.
-    private String clientGender = GENDER_UNKNOWN;
-    private String clientAcquisition = ACQUI_UNKNOWN;
+    private int clientGender = Client.GENDER_UNKNOWN;
+    private int clientAcquisition = Client.ACQUI_UNKNOWN;
 
     // Boolean flag that keeps track of whether the client has been edited (true) or not (false)
     public static boolean clientHasChanged = false;
@@ -143,28 +134,8 @@ public class InformationFragment extends Fragment {
         clientGender = selectedClient.getClientGender();
         clientAcquisition = selectedClient.getClientAcquisition();
         // see the position in the arrays.xml
-        clientGenderSpinner.setSelection(getPositionInArray(R.array.array_gender_options, clientGender));
-        clientAcquisitionSpinner.setSelection(getPositionInArray(R.array.array_acquisition_options, clientAcquisition));
-    }
-
-    /**
-     * This method find the value in an array and returns its position. Used to set the right
-     * selection for the spinners.
-     *
-     * @param resourceID array containing the possible values
-     * @param value we are looking for in the array
-     * @return position of the value in the resource array
-     */
-    private int getPositionInArray(int resourceID, String value) {
-        String[] options = getResources().getStringArray(resourceID);
-        // Capitalize value to match with constants
-        String capValue = value.substring(0, 1).toUpperCase() + value.substring(1);
-        for (int i = 0; i < options.length; i++){
-            if(capValue.equals(options[i])){
-                return i;
-            }
-        }
-        return 0;
+        clientGenderSpinner.setSelection(clientGender);
+        clientAcquisitionSpinner.setSelection(clientAcquisition);
     }
 
     @Override
@@ -199,11 +170,11 @@ public class InformationFragment extends Fragment {
                 String selection = (String) parent.getItemAtPosition(position);
                 if (!TextUtils.isEmpty(selection)) {
                     if (selection.equals(getString(R.string.gender_male))) {
-                        clientGender = GENDER_MALE;
+                        clientGender = Client.GENDER_MALE;
                     } else if (selection.equals(getString(R.string.gender_female))) {
-                        clientGender = GENDER_FEMALE;
+                        clientGender = Client.GENDER_FEMALE;
                     } else {
-                        clientGender = GENDER_UNKNOWN;
+                        clientGender = Client.GENDER_UNKNOWN;
                     }
                 }
             }
@@ -211,7 +182,7 @@ public class InformationFragment extends Fragment {
             // Because AdapterView is an abstract class, onNothingSelected must be defined
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                clientGender = GENDER_UNKNOWN;
+                clientGender = Client.GENDER_UNKNOWN;
             }
         });
     }
@@ -238,17 +209,17 @@ public class InformationFragment extends Fragment {
                 String selection = (String) parent.getItemAtPosition(position);
                 if (!TextUtils.isEmpty(selection)) {
                     if (selection.equals(getString(R.string.acquisition_offline))) {
-                        clientAcquisition = ACQUI_OFFLINE;
+                        clientAcquisition = Client.ACQUI_OFFLINE;
                     } else if (selection.equals(getString(R.string.acquisition_wom))) {
-                        clientAcquisition = ACQUI_WOM;
+                        clientAcquisition = Client.ACQUI_WOM;
                     } else if (selection.equals(getString(R.string.acquisition_website))) {
-                        clientAcquisition = ACQUI_WEBSITE;
+                        clientAcquisition = Client.ACQUI_WEBSITE;
                     } else if (selection.equals(getString(R.string.acquisition_facebook))) {
-                        clientAcquisition = ACQUI_FACEBOOK;
+                        clientAcquisition = Client.ACQUI_FACEBOOK;
                     } else if (selection.equals(getString(R.string.acquisition_confrere))) {
-                        clientAcquisition = ACQUI_CONFRERE;
+                        clientAcquisition = Client.ACQUI_CONFRERE;
                     } else {
-                        clientAcquisition = ACQUI_UNKNOWN;
+                        clientAcquisition = Client.ACQUI_UNKNOWN;
                     }
                 }
             }
@@ -256,7 +227,7 @@ public class InformationFragment extends Fragment {
             // Because AdapterView is an abstract class, onNothingSelected must be defined
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                clientAcquisition = ACQUI_UNKNOWN;
+                clientAcquisition = Client.ACQUI_UNKNOWN;
             }
         });
     }
@@ -287,7 +258,7 @@ public class InformationFragment extends Fragment {
             Toast.makeText(getActivity(), getString(R.string.client_info_name_needed), Toast.LENGTH_SHORT).show();
             // return early
             return;
-        } else if (clientGender.equals(GENDER_UNKNOWN)) {
+        } else if (clientGender == Client.GENDER_UNKNOWN) {
             Toast.makeText(getActivity(), getString(R.string.client_info_gender_needed), Toast.LENGTH_SHORT).show();
             // return early
             return;
