@@ -4,6 +4,8 @@ package com.acpnctr.acpnctr.fragments;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,16 +15,22 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.acpnctr.acpnctr.R;
+import com.acpnctr.acpnctr.adapters.TreatmentAdapter;
 import com.acpnctr.acpnctr.models.Treatment;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 
 import static com.acpnctr.acpnctr.SessionActivity.isNewSession;
 import static com.acpnctr.acpnctr.SessionActivity.sClientid;
@@ -44,8 +52,16 @@ public class TreatmentFragment extends Fragment {
     private Spinner pointStimulationSpinner;
     private Button addPointButton;
 
+    // Adapter responsible for feeding data to the RecyclerView
+    private FirestoreRecyclerAdapter mAdapter;
+    // Recycler view variable to display points list
+    private RecyclerView mTreatmentList;
+    // loading indicator
+    private ProgressBar mLoadingIndicator;
+
     private int mStimulation;
-    private String[] acuPoints;
+    public static String[] acuPoints;
+    public static String[] stimulationOptions;
 
     // Firebase instance variable
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -54,18 +70,25 @@ public class TreatmentFragment extends Fragment {
         // Required empty public constructor
     }
 
+    // TODO: GET RID OF SAVE ICON IN ACTION BAR
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_treatment, container, false);
 
+        // Get references to our Layout views
+        mTreatmentList = rootView.findViewById(R.id.rv_treatment_points_list);
+        mLoadingIndicator = rootView.findViewById(R.id.pb_treatment_loading_indicator);
+
         // [START - SET UP AUTO COMPLETION FOR ACUPUNCTURE POINTS]
         // Get a reference to the AutoCompleteTextView in the layout
         acuPointActv = rootView.findViewById(R.id.actv_treatment_point);
 
-        // Get the string array
+        // Get the string arrays
         acuPoints = getResources().getStringArray(R.array.array_acupuncture_points);
+        stimulationOptions = getResources().getStringArray(R.array.array_stimulation_options);
 
         // Create the adapter and set it to the AutoCompleteTextView
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
@@ -82,7 +105,12 @@ public class TreatmentFragment extends Fragment {
         addPointButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addPointDocument();
+                if (!isNewSession) {
+                    addPointDocument();
+                } else {
+                    Toast.makeText(getActivity(), getString(R.string.treatment_session_not_saved), Toast.LENGTH_SHORT)
+                            .show();
+                }
             }
         });
 
@@ -123,11 +151,9 @@ public class TreatmentFragment extends Fragment {
                     }
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
                 mStimulation = Treatment.TREATMENT_STIMULATION_NEUTRAL;
-
             }
         });
     }
@@ -141,6 +167,36 @@ public class TreatmentFragment extends Fragment {
                 .collection(FIRESTORE_COLLECTION_SESSIONS)
                 .document(sSessionid)
                 .collection(FIRESTORE_COLLECTION_TREATMENT);
+
+        // Query firestore for the list of points in treatment collection
+        Query query = treatmentColl.orderBy("point");
+
+        // Configure recycler adapter options
+        FirestoreRecyclerOptions<Treatment> options = new FirestoreRecyclerOptions.Builder<Treatment>()
+                .setQuery(query, Treatment.class)
+                .build();
+
+        mAdapter = new TreatmentAdapter(options) {
+
+            @Override
+            public void onDataChanged() {
+                // hide the loading indicator
+                mLoadingIndicator.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onError(FirebaseFirestoreException e) {
+                Log.d(LOG_TAG, "Error while loading data for treatment" + e);
+                Toast.makeText(getActivity(), getString(R.string.treatment_list_error),
+                        Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        mTreatmentList.setLayoutManager(layoutManager);
+        mTreatmentList.setHasFixedSize(true);
+        mTreatmentList.setAdapter(mAdapter);
+        mAdapter.startListening();
 
         // WILL BE USED FOR OTHER DATA
         /*treatmentDoc.addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -164,8 +220,6 @@ public class TreatmentFragment extends Fragment {
             }
         });*/
         // WILL BE USED FOR OTHER DATA
-
-
     }
 
     private void addPointDocument() {
@@ -215,5 +269,17 @@ public class TreatmentFragment extends Fragment {
             }
         }
         return -1;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (mAdapter != null) mAdapter.startListening();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mAdapter != null) mAdapter.stopListening();
     }
 }
