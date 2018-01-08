@@ -3,12 +3,15 @@ package com.acpnctr.acpnctr.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -70,7 +73,12 @@ public class TreatmentFragment extends Fragment {
         // Required empty public constructor
     }
 
-    // TODO: GET RID OF SAVE ICON IN ACTION BAR
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+        getActivity().invalidateOptionsMenu();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -108,7 +116,7 @@ public class TreatmentFragment extends Fragment {
                 if (!isNewSession) {
                     addPointDocument();
                 } else {
-                    Toast.makeText(getActivity(), getString(R.string.treatment_session_not_saved), Toast.LENGTH_SHORT)
+                    Toast.makeText(getActivity(), getString(R.string.session_not_saved), Toast.LENGTH_SHORT)
                             .show();
                 }
             }
@@ -281,5 +289,12 @@ public class TreatmentFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         if (mAdapter != null) mAdapter.stopListening();
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        MenuItem menuItem = menu.findItem(R.id.action_save);
+        menuItem.setVisible(false);
     }
 }
