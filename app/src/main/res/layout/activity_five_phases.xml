@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/activity_margin"
+    android:orientation="vertical"
+    tools:context="com.acpnctr.acpnctr.FivePhasesActivity">
+
+    <RadioButton
+        android:id="@+id/wood_to_earth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/diag_5_phases_wood_earth" />
+
+    <RadioButton
+        android:id="@+id/wood_to_metal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/diag_5_phases_wood_metal" />
+
+    <RadioButton
+        android:id="@+id/fire_to_metal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/diag_5_phases_fire_metal" />
+
+    <RadioButton
+        android:id="@+id/fire_to_water"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/diag_5_phases_fire_water" />
+
+    <RadioButton
+        android:id="@+id/earth_to_water"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/diag_5_phases_earth_water" />
+
+    <RadioButton
+        android:id="@+id/earth_to_wood"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/diag_5_phases_earth_wood" />
+
+    <RadioButton
+        android:id="@+id/metal_to_wood"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/diag_5_phases_metal_wood" />
+
+    <RadioButton
+        android:id="@+id/metal_to_fire"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/diag_5_phases_metal_fire" />
+
+    <RadioButton
+        android:id="@+id/water_to_fire"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/diag_5_phases_water_fire" />
+
+    <RadioButton
+        android:id="@+id/water_to_earth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/diag_5_phases_water_earth" />
+
+</LinearLayout>

@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.acpnctr.acpnctr.FivePhasesActivity;
 import com.acpnctr.acpnctr.R;
 import com.acpnctr.acpnctr.models.Session;
 import com.acpnctr.acpnctr.utils.Constants;
@@ -28,6 +29,7 @@ import com.google.firebase.firestore.WriteBatch;
 import java.util.HashMap;
 import java.util.Map;
 
+import static android.app.Activity.RESULT_OK;
 import static com.acpnctr.acpnctr.SessionActivity.isNewSession;
 import static com.acpnctr.acpnctr.SessionActivity.sClientid;
 import static com.acpnctr.acpnctr.SessionActivity.sSessionid;
@@ -45,6 +47,8 @@ public class DiagnosisFragment extends Fragment {
 
     // Firebase instance variable
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    // Get a new write batch
+    private WriteBatch mBatch = db.batch();
 
     // Keys to store state information
     private static final String IS_BAGANG_SHOWN = "is_bagang_shown";
@@ -68,8 +72,13 @@ public class DiagnosisFragment extends Fragment {
     private RadioButton mBagangInterior;
     private RadioButton mBagangExterior;
 
+    private Button mWuxingBtn;
+
     // Flags
     private boolean isBagangShown;
+
+    // Request code for result from activity
+    public static final int WUXING_REQUEST = 1;
 
     public DiagnosisFragment() {
         // Required empty public constructor
@@ -98,6 +107,8 @@ public class DiagnosisFragment extends Fragment {
         mBagangInterior = rootView.findViewById(R.id.rb_bagang_interior);
         mBagangExterior = rootView.findViewById(R.id.rb_bagang_exterior);
 
+        mWuxingBtn = rootView.findViewById(R.id.btn_add_wu_xing);
+
         if (savedInstanceState != null){
             // BAGANG
             isBagangShown = savedInstanceState.getBoolean(IS_BAGANG_SHOWN);
@@ -118,7 +129,8 @@ public class DiagnosisFragment extends Fragment {
             initializeScreen();
         }
 
-        // set up buttons for different diagnosis systems
+        // [START - SET UP BUTTONS FOR THE DIFFERENT SYSTEMS OF DIAGNOSIS]
+        // Bagang (8 règles thérapeuthiques)
         mBagangBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -129,6 +141,22 @@ public class DiagnosisFragment extends Fragment {
                 }
             }
         });
+
+        // Wuxing (5 phases)
+        mWuxingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!isNewSession) {
+                    // create a new intent to start 5 phases activity
+                    Intent fivePhasesIntent = new Intent(getActivity(), FivePhasesActivity.class);
+                    startActivityForResult(fivePhasesIntent, WUXING_REQUEST);
+                } else {
+                    Toast.makeText(getActivity(), getString(R.string.session_not_saved),
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        // [END - SET UP BUTTONS FOR THE DIFFERENT SYSTEMS OF DIAGNOSIS]
 
         return rootView;
     }
@@ -151,6 +179,15 @@ public class DiagnosisFragment extends Fragment {
                 mBagangExterior.setChecked(bagang.get(Session.BAGANG_EXTERIOR_KEY));
             } else {
                 hideBagang();
+            }
+            // init wuxing
+            Map<String, Boolean> wuxing = selectedSession.getWuxing();
+            if (!wuxing.isEmpty()) {
+                Bundle wuxingBundle = new Bundle();
+                for (Map.Entry<String, Boolean> entry : wuxing.entrySet()) {
+                    wuxingBundle.putBoolean(entry.getKey(), entry.getValue());
+                }
+                setWuxingImage(wuxingBundle);
             }
         } else {
             hideBagang();
@@ -186,7 +223,9 @@ public class DiagnosisFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        Toast toastSessionNotSaved = Toast.makeText(getActivity(), getString(R.string.session_not_saved), Toast.LENGTH_SHORT);
+        // Toast to ask the user to save the session first
+        Toast toastSessionNotSaved = Toast.makeText(getActivity(), getString(R.string.session_not_saved),
+                Toast.LENGTH_SHORT);
         switch(id){
             case R.id.action_save:
                 if (!isNewSession){
@@ -207,9 +246,6 @@ public class DiagnosisFragment extends Fragment {
     }
 
     private void saveDiagnosis() {
-        // Get a new write batch
-        WriteBatch batch = db.batch();
-
         // build the firestore path
         DocumentReference sessionForDiag = db.collection(FIRESTORE_COLLECTION_USERS)
                 .document(sUid)
@@ -231,12 +267,12 @@ public class DiagnosisFragment extends Fragment {
             bagang.put(Session.BAGANG_INTERIOR_KEY, mBagangInterior.isChecked());
             bagang.put(Session.BAGANG_EXTERIOR_KEY, mBagangExterior.isChecked());
 
-            batch.update(sessionForDiag, Session.BAGANG_KEY, bagang);
+            mBatch.update(sessionForDiag, Session.BAGANG_KEY, bagang);
         }
 
         // Commit the batch (if and only if at least one system has been edited)
         if (hasBagangBeenEdited()) {
-            batch.commit()
+            mBatch.commit()
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -266,5 +302,170 @@ public class DiagnosisFragment extends Fragment {
         outState.putBoolean(BAGANG_HEAT, mBagangHeat.isChecked());
         outState.putBoolean(BAGANG_INTERIOR, mBagangInterior.isChecked());
         outState.putBoolean(BAGANG_EXTERIOR, mBagangExterior.isChecked());
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == WUXING_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                // build the firestore path
+                DocumentReference sessionForDiag = db.collection(FIRESTORE_COLLECTION_USERS)
+                        .document(sUid)
+                        .collection(FIRESTORE_COLLECTION_CLIENTS)
+                        .document(sClientid)
+                        .collection(FIRESTORE_COLLECTION_SESSIONS)
+                        .document(sSessionid);
+                // get data from itent and store them in a bundle
+                Bundle b = data.getExtras();
+                // create a hashmap and put data to be send to firestore
+                Map<String, Boolean> wuxingMap = new HashMap<>();
+                wuxingMap.put(Session.WUXING_WOOD_TO_EARTH_KEY, b.getBoolean(Session.WUXING_WOOD_TO_EARTH_KEY));
+                wuxingMap.put(Session.WUXING_WOOD_TO_METAL_KEY, b.getBoolean(Session.WUXING_WOOD_TO_METAL_KEY));
+                wuxingMap.put(Session.WUXING_FIRE_TO_METAL_KEY, b.getBoolean(Session.WUXING_FIRE_TO_METAL_KEY));
+                wuxingMap.put(Session.WUXING_FIRE_TO_WATER_KEY, b.getBoolean(Session.WUXING_FIRE_TO_WATER_KEY));
+                wuxingMap.put(Session.WUXING_EARTH_TO_WATER_KEY, b.getBoolean(Session.WUXING_EARTH_TO_WATER_KEY));
+                wuxingMap.put(Session.WUXING_EARTH_TO_WOOD_KEY, b.getBoolean(Session.WUXING_EARTH_TO_WOOD_KEY));
+                wuxingMap.put(Session.WUXING_METAL_TO_WOOD_KEY, b.getBoolean(Session.WUXING_METAL_TO_WOOD_KEY));
+                wuxingMap.put(Session.WUXING_METAL_TO_FIRE_KEY, b.getBoolean(Session.WUXING_METAL_TO_FIRE_KEY));
+                wuxingMap.put(Session.WUXING_WATER_TO_FIRE_KEY, b.getBoolean(Session.WUXING_WATER_TO_FIRE_KEY));
+                wuxingMap.put(Session.WUXING_WATER_TO_EARTH_KEY, b.getBoolean(Session.WUXING_WATER_TO_EARTH_KEY));
+                // add the hashmap to the batch
+                mBatch.update(sessionForDiag, Session.WUXING_KEY, wuxingMap);
+                // set the corresponding image for the wuxing diagnosis
+                setWuxingImage(b);
+            }
+        }
+    }
+
+    private void setWuxingImage(Bundle bundle) {
+        // if wood attacks earth AND wood attacks metal
+        if (bundle.getBoolean(Session.WUXING_WOOD_TO_EARTH_KEY) &&
+                bundle.getBoolean(Session.WUXING_WOOD_TO_METAL_KEY)){
+            Log.d(LOG_TAG, "wood attacks earth AND wood attacks metal");
+
+        }
+        // if only wood attacks earth
+        else if (bundle.getBoolean(Session.WUXING_WOOD_TO_EARTH_KEY) &&
+                !bundle.getBoolean(Session.WUXING_WOOD_TO_METAL_KEY) &&
+                !bundle.getBoolean(Session.WUXING_WATER_TO_EARTH_KEY)){
+            Log.d(LOG_TAG, "wood attacks earth");
+
+        }
+        // if only wood attacks metal
+        else if (!bundle.getBoolean(Session.WUXING_WOOD_TO_EARTH_KEY) &&
+                bundle.getBoolean(Session.WUXING_WOOD_TO_METAL_KEY) &&
+                !bundle.getBoolean(Session.WUXING_FIRE_TO_METAL_KEY)){
+            Log.d(LOG_TAG, "wood attacks metal");
+
+        }
+        // if wood attacks metal AND fire attacks metal
+        else if (bundle.getBoolean(Session.WUXING_WOOD_TO_METAL_KEY) &&
+                bundle.getBoolean(Session.WUXING_FIRE_TO_METAL_KEY)){
+            Log.d(LOG_TAG, "wood attacks metal AND fire attacks metal");
+
+        }
+        // if only fire attacks metal
+        else if (bundle.getBoolean(Session.WUXING_FIRE_TO_METAL_KEY) &&
+                !bundle.getBoolean(Session.WUXING_FIRE_TO_WATER_KEY) &&
+                !bundle.getBoolean(Session.WUXING_WOOD_TO_METAL_KEY)){
+            Log.d(LOG_TAG, "fire attacks metal");
+
+        }
+        // if only fire attacks water
+        else if (!bundle.getBoolean(Session.WUXING_FIRE_TO_METAL_KEY) &&
+                bundle.getBoolean(Session.WUXING_FIRE_TO_WATER_KEY) &&
+                !bundle.getBoolean(Session.WUXING_EARTH_TO_WATER_KEY)){
+            Log.d(LOG_TAG, "fire attacks water");
+
+        }
+        // if fire attacks metal AND fire attacks water
+        else if (bundle.getBoolean(Session.WUXING_FIRE_TO_METAL_KEY) &&
+                bundle.getBoolean(Session.WUXING_FIRE_TO_WATER_KEY)){
+            Log.d(LOG_TAG, "fire attacks metal AND fire attacks water");
+
+        }
+        // if only earth attacks water
+        else if (bundle.getBoolean(Session.WUXING_EARTH_TO_WATER_KEY) &&
+                !bundle.getBoolean(Session.WUXING_EARTH_TO_WOOD_KEY) &&
+                !bundle.getBoolean(Session.WUXING_FIRE_TO_WATER_KEY)){
+            Log.d(LOG_TAG, "earth attacks water");
+
+        }
+        // if only earth attacks wood
+        else if (!bundle.getBoolean(Session.WUXING_EARTH_TO_WATER_KEY) &&
+                bundle.getBoolean(Session.WUXING_EARTH_TO_WOOD_KEY) &&
+                !bundle.getBoolean(Session.WUXING_METAL_TO_WOOD_KEY)){
+            Log.d(LOG_TAG, "earth attacks wood");
+
+        }
+        // if earth attacks water AND wood
+        else if (bundle.getBoolean(Session.WUXING_EARTH_TO_WATER_KEY) &&
+                bundle.getBoolean(Session.WUXING_EARTH_TO_WOOD_KEY)){
+            Log.d(LOG_TAG, "earth attacks water AND wood");
+
+        }
+        // if earth attacks water AND fire attacks water
+        else if (bundle.getBoolean(Session.WUXING_EARTH_TO_WATER_KEY) &&
+                bundle.getBoolean(Session.WUXING_FIRE_TO_WATER_KEY)){
+            Log.d(LOG_TAG, "earth attacks water AND fire attacks water");
+
+        }
+        // if only metal attacks wood
+        else if (bundle.getBoolean(Session.WUXING_METAL_TO_WOOD_KEY) &&
+                !bundle.getBoolean(Session.WUXING_METAL_TO_FIRE_KEY) &&
+                !bundle.getBoolean(Session.WUXING_EARTH_TO_WOOD_KEY)){
+            Log.d(LOG_TAG, "metal attacks wood");
+
+        }
+        // if only metal attacks fire
+        else if (!bundle.getBoolean(Session.WUXING_METAL_TO_WOOD_KEY) &&
+                bundle.getBoolean(Session.WUXING_METAL_TO_FIRE_KEY) &&
+                !bundle.getBoolean(Session.WUXING_WATER_TO_FIRE_KEY)){
+            Log.d(LOG_TAG, "metal attacks fire");
+
+        }
+        // if metal attacks fire AND wood
+        else if (bundle.getBoolean(Session.WUXING_METAL_TO_WOOD_KEY) &&
+                bundle.getBoolean(Session.WUXING_METAL_TO_FIRE_KEY)){
+            Log.d(LOG_TAG, "metal attacks fire AND wood");
+
+        }
+        // if metal attacks wood and earth attacks wood
+        else if (bundle.getBoolean(Session.WUXING_METAL_TO_WOOD_KEY) &&
+                bundle.getBoolean(Session.WUXING_EARTH_TO_WOOD_KEY)){
+            Log.d(LOG_TAG, "metal attacks wood and earth attacks wood");
+
+        }
+        // if only water attacks fire
+        else if (bundle.getBoolean(Session.WUXING_WATER_TO_FIRE_KEY) &&
+                !bundle.getBoolean(Session.WUXING_WATER_TO_EARTH_KEY) &&
+                !bundle.getBoolean(Session.WUXING_METAL_TO_FIRE_KEY)){
+            Log.d(LOG_TAG, "water attacks fire");
+
+        }
+        // if only water attacks earth
+        else if (!bundle.getBoolean(Session.WUXING_WATER_TO_FIRE_KEY) &&
+                bundle.getBoolean(Session.WUXING_WATER_TO_EARTH_KEY) &&
+                !bundle.getBoolean(Session.WUXING_WOOD_TO_EARTH_KEY)){
+            Log.d(LOG_TAG, "water attacks earth");
+
+        }
+        // if water attacks fire AND earth
+        else if (bundle.getBoolean(Session.WUXING_WATER_TO_FIRE_KEY) &&
+                bundle.getBoolean(Session.WUXING_WATER_TO_EARTH_KEY)){
+            Log.d(LOG_TAG, "water attacks fire AND earth");
+
+        }
+        // if water attacks fire AND metal attacks fire
+        else if (bundle.getBoolean(Session.WUXING_WATER_TO_FIRE_KEY) &&
+                bundle.getBoolean(Session.WUXING_METAL_TO_FIRE_KEY)){
+            Log.d(LOG_TAG, "water attacks fire AND metal attacks fire");
+
+        }
+        // if water attacks earth AND wood attacks earth
+        else if (bundle.getBoolean(Session.WUXING_WATER_TO_EARTH_KEY) &&
+                bundle.getBoolean(Session.WUXING_WOOD_TO_EARTH_KEY)){
+            Log.d(LOG_TAG, "water attacks earth AND wood attacks earth");
+        }
     }
 }

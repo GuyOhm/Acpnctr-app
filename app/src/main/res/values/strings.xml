@@ -108,7 +108,8 @@
     <string name="stimulation_neutral">neutral</string>
     <string name="treatment_list_error">Error loading treatment</string>
 
-    <!-- Diagnosis -->
+    <!-- DIAGNOSIS -->
+    <!-- bagang-->
     <string name="btn_diag_bagang">ba gang</string>
     <string name="diag_bagang_yin">yin</string>
     <string name="diag_bagang_yang">yang</string>
@@ -118,8 +119,37 @@
     <string name="diag_bagang_heat">heat</string>
     <string name="diag_bagang_interior">interior</string>
     <string name="diag_bagang_exterior">exterior</string>
+    <!-- 5 phases -->
+    <string name="label_five_phases">five phases</string>
+    <string name="btn_diag_wu_xing">five phases</string>
+    <string name="diag_5_phases_wood_earth">wood attacks earth (ko)</string>
+    <string name="diag_5_phases_wood_metal">wood attacks metal (rae)</string>
+    <string name="diag_5_phases_fire_metal">fire attacks metal (ko)</string>
+    <string name="diag_5_phases_fire_water">fire attacks water (rae)</string>
+    <string name="diag_5_phases_earth_water">earth attacks water (ko)</string>
+    <string name="diag_5_phases_earth_wood">earth attacks wood (rae)</string>
+    <string name="diag_5_phases_metal_wood">metal attacks wood (ko)</string>
+    <string name="diag_5_phases_metal_fire">metal attacks fire (rae)</string>
+    <string name="diag_5_phases_water_fire">water attacks fire (ko)</string>
+    <string name="diag_5_phases_water_earth">water attacks earth (rae)</string>
 
+    <!-- messages for notification -->
     <string name="diag_saved">Diagnosis saved</string>
+
+    <!-- 4 steps / Questionnaire -->
+    <string name="btn_questionnaire">Questionnaire</string>
+    <string name="quest_yin_yang">Yin Yang</string>
+    <string name="quest_5_phases">5 phases</string>
+    <string name="quest_diet">Diet</string>
+    <string name="quest_digestion">Digestion</string>
+    <string name="quest_way_of_life">Way of life</string>
+    <string name="quest_sleep">Sleep</string>
+    <string name="quest_symptoms">Symptoms</string>
+    <string name="quest_medication">Medication</string>
+    <string name="quest_events">Events</string>
+    <string name="quest_emotional">Emotional</string>
+    <string name="quest_psychological">Psychological</string>
+    <string name="quest_gynecological">Gynecological</string>
 
     <!-- Acupuncture points for treatment (abbreviation + chinese name) -->
     <!-- ###### REN MAI ###### -->

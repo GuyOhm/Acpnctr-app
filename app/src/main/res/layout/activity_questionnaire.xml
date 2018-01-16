@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.acpnctr.acpnctr.QuestionnaireActivity">
+
+    <EditText
+        android:id="@+id/et_quest_yinyang"
+        android:layout_width="match_parent"
+        android:inputType="textMultiLine"
+        android:layout_height="wrap_content"
+        android:hint="@string/quest_yin_yang"/>
+
+    <EditText
+        android:id="@+id/et_quest_5_phases"
+        android:layout_width="match_parent"
+        android:inputType="textMultiLine"
+        android:layout_height="wrap_content"
+        android:hint="@string/quest_5_phases"/>
+
+    <EditText
+        android:id="@+id/et_quest_diet"
+        android:layout_width="match_parent"
+        android:inputType="textMultiLine"
+        android:layout_height="wrap_content"
+        android:hint="@string/quest_diet"/>
+
+    <EditText
+        android:id="@+id/et_quest_digestion"
+        android:layout_width="match_parent"
+        android:inputType="textMultiLine"
+        android:layout_height="wrap_content"
+        android:hint="@string/quest_digestion"/>
+
+    <EditText
+        android:id="@+id/et_quest_way_of_life"
+        android:layout_width="match_parent"
+        android:inputType="textMultiLine"
+        android:layout_height="wrap_content"
+        android:hint="@string/quest_way_of_life"/>
+
+    <EditText
+        android:id="@+id/et_quest_sleep"
+        android:layout_width="match_parent"
+        android:inputType="textMultiLine"
+        android:layout_height="wrap_content"
+        android:hint="@string/quest_sleep"/>
+
+    <EditText
+        android:id="@+id/et_quest_symptoms"
+        android:layout_width="match_parent"
+        android:inputType="textMultiLine"
+        android:layout_height="wrap_content"
+        android:hint="@string/quest_symptoms"/>
+
+    <EditText
+        android:id="@+id/et_quest_medication"
+        android:layout_width="match_parent"
+        android:inputType="textMultiLine"
+        android:layout_height="wrap_content"
+        android:hint="@string/quest_medication"/>
+
+    <EditText
+        android:id="@+id/et_quest_events"
+        android:layout_width="match_parent"
+        android:inputType="textMultiLine"
+        android:layout_height="wrap_content"
+        android:hint="@string/quest_events"/>
+
+    <EditText
+        android:id="@+id/et_quest_emotional"
+        android:layout_width="match_parent"
+        android:inputType="textMultiLine"
+        android:layout_height="wrap_content"
+        android:hint="@string/quest_emotional"/>
+
+    <EditText
+        android:id="@+id/et_quest_psychological"
+        android:layout_width="match_parent"
+        android:inputType="textMultiLine"
+        android:layout_height="wrap_content"
+        android:hint="@string/quest_psychological"/>
+
+    <EditText
+        android:id="@+id/et_quest_gynecological"
+        android:layout_width="match_parent"
+        android:inputType="textMultiLine"
+        android:layout_height="wrap_content"
+        android:hint="@string/quest_gynecological"/>
+
+</LinearLayout>

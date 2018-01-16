@@ -205,29 +205,6 @@ public class TreatmentFragment extends Fragment {
         mTreatmentList.setHasFixedSize(true);
         mTreatmentList.setAdapter(mAdapter);
         mAdapter.startListening();
-
-        // WILL BE USED FOR OTHER DATA
-        /*treatmentDoc.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
-                if (e != null){
-                    Log.w(LOG_TAG, "Listen failed" , e);
-                }
-
-                if (documentSnapshot != null && documentSnapshot.exists()){
-                    Session session = documentSnapshot.toObject(Session.class);
-                    Map<String, Boolean> treatment = session.getTreatment();
-                    if (treatment != null) {
-                        for (String point : treatment.keySet()) {
-                            Log.d(LOG_TAG, "=========== key : " + point + " ===========");
-                        }
-                    }
-                } else {
-                    Log.d(LOG_TAG, "Current data: null");
-                }
-            }
-        });*/
-        // WILL BE USED FOR OTHER DATA
     }
 
     private void addPointDocument() {
