@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "898145505774",
+    "firebase_url": "https://acpnctr-dev.firebaseio.com",
+    "project_id": "acpnctr-dev",
+    "storage_bucket": "acpnctr-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:898145505774:android:d53a080c61d7d24f",
+        "android_client_info": {
+          "package_name": "com.acpnctr.acpnctr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "898145505774-pntldpisfvuib8cdfm5p5pu338qql9pi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.acpnctr.acpnctr",
+            "certificate_hash": "cbbde7b8a8e3ffb8e1eb0a88d47380f3856e86f1"
+          }
+        },
+        {
+          "client_id": "898145505774-iid8b8g99m8cq0jbigg8pqf3ns51rces.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiE1g1x_RgQ4Qu_tBc9HV-blirkz9xBe4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "898145505774-iid8b8g99m8cq0jbigg8pqf3ns51rces.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
