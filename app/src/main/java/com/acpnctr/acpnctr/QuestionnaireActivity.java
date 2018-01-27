@@ -2,17 +2,53 @@ package com.acpnctr.acpnctr;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 
 import com.acpnctr.acpnctr.models.Session;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.WriteBatch;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.acpnctr.acpnctr.SessionActivity.sClientid;
+import static com.acpnctr.acpnctr.SessionActivity.sSessionid;
+import static com.acpnctr.acpnctr.SessionActivity.sUid;
+import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_CLIENTS;
+import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_SESSIONS;
+import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_USERS;
 
 public class QuestionnaireActivity extends AppCompatActivity {
 
+    public static final String LOG_TAG = QuestionnaireActivity.class.getSimpleName();
+
+    // Firebase instance variable
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+
     EditText mYinyang;
+    EditText mFivephases;
+    EditText mDiet;
+    EditText mDigestion;
+    EditText mWayOfLife;
+    EditText mSleep;
+    EditText mSymptoms;
+    EditText mMedication;
+    EditText mEvents;
+    EditText mEmotional;
+    EditText mPsychological;
+    EditText mGynecological;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,16 +58,87 @@ public class QuestionnaireActivity extends AppCompatActivity {
 
         // get references to our views
         mYinyang = findViewById(R.id.et_quest_yinyang);
+        mFivephases = findViewById(R.id.et_quest_5_phases);
+        mDiet = findViewById(R.id.et_quest_diet);
+        mDigestion = findViewById(R.id.et_quest_digestion);
+        mWayOfLife = findViewById(R.id.et_quest_way_of_life);
+        mSleep = findViewById(R.id.et_quest_sleep);
+        mSymptoms = findViewById(R.id.et_quest_symptoms);
+        mMedication = findViewById(R.id.et_quest_medication);
+        mEvents = findViewById(R.id.et_quest_events);
+        mEmotional = findViewById(R.id.et_quest_emotional);
+        mPsychological = findViewById(R.id.et_quest_psychological);
+        mGynecological = findViewById(R.id.et_quest_gynecological);
+
 
         // initialize list of questions
-        initializeQuestionnaire();
+        loadQuestionnaire();
     }
 
-    private void initializeQuestionnaire() {
-        Intent intent = getIntent();
-        if (intent.hasExtra(Session.QUEST_YIN_YANG_KEY)){
-            mYinyang.setVisibility(View.GONE);
-        }
+    private void loadQuestionnaire() {
+        db.collection(FIRESTORE_COLLECTION_USERS)
+                .document(sUid)
+                .collection(FIRESTORE_COLLECTION_CLIENTS)
+                .document(sClientid)
+                .collection(FIRESTORE_COLLECTION_SESSIONS)
+                .document(sSessionid)
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
+                        if (e != null){
+                            Log.w(LOG_TAG, "Listen failed" , e);
+                        }
+
+                        if (documentSnapshot != null && documentSnapshot.exists()){
+                            // store all data to a Map
+                            Map<String, Object> sessionMap = documentSnapshot.getData();
+                            // get questionnaire data and display them to edit views
+                            Map<String, String> questionMap = (Map<String, String>) sessionMap.get(Session.QUEST_KEY);
+                            if (questionMap != null){
+                                if(questionMap.containsKey(Session.QUEST_YIN_YANG_KEY)){
+                                    mYinyang.setText(questionMap.get(Session.QUEST_YIN_YANG_KEY));
+                                }
+                                if(questionMap.containsKey(Session.QUEST_FIVE_PHASES_KEY)){
+                                    mFivephases.setText(questionMap.get(Session.QUEST_FIVE_PHASES_KEY));
+                                }
+                                if(questionMap.containsKey(Session.QUEST_DIET_KEY)){
+                                    mDiet.setText(questionMap.get(Session.QUEST_DIET_KEY));
+                                }
+                                if(questionMap.containsKey(Session.QUEST_DIGESTION_KEY)){
+                                    mDigestion.setText(questionMap.get(Session.QUEST_DIGESTION_KEY));
+                                }
+                                if(questionMap.containsKey(Session.QUEST_WAY_OF_LIFE_KEY)){
+                                    mWayOfLife.setText(questionMap.get(Session.QUEST_WAY_OF_LIFE_KEY));
+                                }
+                                if(questionMap.containsKey(Session.QUEST_SLEEP_KEY)){
+                                    mSleep.setText(questionMap.get(Session.QUEST_SLEEP_KEY));
+                                }
+                                if(questionMap.containsKey(Session.QUEST_SYMPTOMS_KEY)){
+                                    mSymptoms.setText(questionMap.get(Session.QUEST_SYMPTOMS_KEY));
+                                }
+                                if(questionMap.containsKey(Session.QUEST_MEDICATION_KEY)){
+                                    mMedication.setText(questionMap.get(Session.QUEST_MEDICATION_KEY));
+                                }
+                                if(questionMap.containsKey(Session.QUEST_EVENTS_KEY)){
+                                    mEvents.setText(questionMap.get(Session.QUEST_EVENTS_KEY));
+                                }
+                                if(questionMap.containsKey(Session.QUEST_EMOTIONAL_KEY)){
+                                    mEmotional.setText(questionMap.get(Session.QUEST_EMOTIONAL_KEY));
+                                }
+                                if(questionMap.containsKey(Session.QUEST_PSYCHOLOGICAL_KEY)){
+                                    mPsychological.setText(questionMap.get(Session.QUEST_PSYCHOLOGICAL_KEY));
+                                }
+                                if(questionMap.containsKey(Session.QUEST_GYNECOLOGICAL_KEY)){
+                                    mGynecological.setText(questionMap.get(Session.QUEST_GYNECOLOGICAL_KEY));
+                                }
+                            } else {
+                                Log.d(LOG_TAG, "No questionnaire data yet!");
+                            }
+                        } else {
+                            Log.d(LOG_TAG, "Current data: null");
+                        }
+                    }
+                });
     }
 
     @Override
@@ -48,19 +155,59 @@ public class QuestionnaireActivity extends AppCompatActivity {
                 cancelQuestion();
                 return true;
             case R.id.action_save:
-                returnSelectedQuestion();
+                saveQuestion();
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void returnSelectedQuestion() {
-        Intent returnIntent = new Intent();
-        Bundle questBundle = new Bundle();
-        questBundle.putString("yin_yang", mYinyang.getText().toString().trim());
-        returnIntent.putExtras(questBundle);
-        setResult(RESULT_OK, returnIntent);
-        finish();
+    private void saveQuestion() {
+        // build firestore path
+        DocumentReference sessionDoc = db.collection(FIRESTORE_COLLECTION_USERS)
+                .document(sUid)
+                .collection(FIRESTORE_COLLECTION_CLIENTS)
+                .document(sClientid)
+                .collection(FIRESTORE_COLLECTION_SESSIONS)
+                .document(sSessionid);
+
+        // create a batch to write data to firestore at once
+        WriteBatch batch = db.batch();
+        // create a hashmap to store data fetched from UI
+        Map<String, String> questionMap = new HashMap<>();
+
+        questionMap.put(Session.QUEST_YIN_YANG_KEY, mYinyang.getText().toString().trim());
+        questionMap.put(Session.QUEST_FIVE_PHASES_KEY, mFivephases.getText().toString().trim());
+        questionMap.put(Session.QUEST_DIET_KEY, mDiet.getText().toString().trim());
+        questionMap.put(Session.QUEST_DIGESTION_KEY, mDigestion.getText().toString().trim());
+        questionMap.put(Session.QUEST_WAY_OF_LIFE_KEY, mWayOfLife.getText().toString().trim());
+        questionMap.put(Session.QUEST_SLEEP_KEY, mSleep.getText().toString().trim());
+        questionMap.put(Session.QUEST_SYMPTOMS_KEY, mSymptoms.getText().toString().trim());
+        questionMap.put(Session.QUEST_MEDICATION_KEY, mMedication.getText().toString().trim());
+        questionMap.put(Session.QUEST_EVENTS_KEY, mEvents.getText().toString().trim());
+        questionMap.put(Session.QUEST_EMOTIONAL_KEY, mEmotional.getText().toString().trim());
+        questionMap.put(Session.QUEST_PSYCHOLOGICAL_KEY, mPsychological.getText().toString().trim());
+        questionMap.put(Session.QUEST_GYNECOLOGICAL_KEY, mGynecological.getText().toString().trim());
+
+        // write data to the batch
+        batch.update(sessionDoc, Session.QUEST_KEY, questionMap);
+
+        // commit the batch
+        batch.commit()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.d(LOG_TAG, "questionnaire saved!");
+                        Intent returnIntent = new Intent();
+                        setResult(RESULT_OK, returnIntent);
+                        finish();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(LOG_TAG, "error updating session: " + e);
+                    }
+                });
     }
 
     private void cancelQuestion() {

@@ -7,61 +7,61 @@
     android:orientation="vertical"
     tools:context="com.acpnctr.acpnctr.FivePhasesActivity">
 
-    <RadioButton
+    <CheckBox
         android:id="@+id/wood_to_earth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/diag_5_phases_wood_earth" />
 
-    <RadioButton
+    <CheckBox
         android:id="@+id/wood_to_metal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/diag_5_phases_wood_metal" />
 
-    <RadioButton
+    <CheckBox
         android:id="@+id/fire_to_metal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/diag_5_phases_fire_metal" />
 
-    <RadioButton
+    <CheckBox
         android:id="@+id/fire_to_water"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/diag_5_phases_fire_water" />
 
-    <RadioButton
+    <CheckBox
         android:id="@+id/earth_to_water"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/diag_5_phases_earth_water" />
 
-    <RadioButton
+    <CheckBox
         android:id="@+id/earth_to_wood"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/diag_5_phases_earth_wood" />
 
-    <RadioButton
+    <CheckBox
         android:id="@+id/metal_to_wood"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/diag_5_phases_metal_wood" />
 
-    <RadioButton
+    <CheckBox
         android:id="@+id/metal_to_fire"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/diag_5_phases_metal_fire" />
 
-    <RadioButton
+    <CheckBox
         android:id="@+id/water_to_fire"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/diag_5_phases_water_fire" />
 
-    <RadioButton
+    <CheckBox
         android:id="@+id/water_to_earth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

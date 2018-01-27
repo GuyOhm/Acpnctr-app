@@ -67,6 +67,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".SessionActivity" />
         </activity>
+        <activity android:name=".ObservationActivity" />
+        <activity android:name=".AuscultationActivity" />
+        <activity android:name=".PalpationActivity"></activity>
     </application>
 
 </manifest>

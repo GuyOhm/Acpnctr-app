@@ -33,4 +33,40 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <!-- Observation -->
+    <Button
+        android:id="@+id/btn_add_observation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_observation" />
+
+    <ListView
+        android:id="@+id/lv_observation_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <!-- Auscultation -->
+    <Button
+        android:id="@+id/btn_add_auscultation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_auscultation" />
+
+    <ListView
+        android:id="@+id/lv_auscultation_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <!-- Palpation -->
+    <Button
+        android:id="@+id/btn_add_palpation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_palpation" />
+
+    <ListView
+        android:id="@+id/lv_palpation_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>

@@ -54,8 +54,8 @@
     <string name="acquisition_confrere">Confrere</string>
     <string name="acquisition_offline">Offline</string>
 
-    <!-- Action menu for client information screen -->
-    <string name="client_info_action_save">Save</string>
+    <!-- Action menu for saving data -->
+    <string name="action_save">Save</string>
 
     <!-- Toast messages for client data manipulation-->
     <string name="client_info_insert_failed">Error saving client</string>
@@ -132,11 +132,13 @@
     <string name="diag_5_phases_metal_fire">metal attacks fire (rae)</string>
     <string name="diag_5_phases_water_fire">water attacks fire (ko)</string>
     <string name="diag_5_phases_water_earth">water attacks earth (rae)</string>
+    <string name="diag_5_phases_saved">5 phases saved</string>
 
     <!-- messages for notification -->
     <string name="diag_saved">Diagnosis saved</string>
 
-    <!-- 4 steps / Questionnaire -->
+    <!-- 4 STEPS -->
+    <!-- Questionnaire -->
     <string name="btn_questionnaire">Questionnaire</string>
     <string name="quest_yin_yang">Yin Yang</string>
     <string name="quest_5_phases">5 phases</string>
@@ -150,6 +152,36 @@
     <string name="quest_emotional">Emotional</string>
     <string name="quest_psychological">Psychological</string>
     <string name="quest_gynecological">Gynecological</string>
+    <string name="questionnaire_saved">Questionnaire saved</string>
+    <!-- Observation -->
+    <string name="btn_observation">Observation</string>
+    <string name="obs_behaviour">Behaviour</string>
+    <string name="obs_tongue">Tongue</string>
+    <string name="obs_lips">Lips</string>
+    <string name="obs_limb">Limb</string>
+    <string name="obs_meridian">Meridian</string>
+    <string name="obs_morphology">Morphology</string>
+    <string name="obs_nails">Nails</string>
+    <string name="obs_skin">Skin</string>
+    <string name="obs_hairiness">Hairiness</string>
+    <string name="obs_complexion">Complexion</string>
+    <string name="obs_eyes">Eyes</string>
+    <string name="observation_saved">Observation saved</string>
+    <!-- Auscultation -->
+    <string name="btn_auscultation">Auscultation</string>
+    <string name="ausc_blood_pressure">Blood pressure</string>
+    <string name="ausc_abdomen">Abdomen</string>
+    <string name="ausc_smell">Smell</string>
+    <string name="ausc_breathing">Breathing</string>
+    <string name="ausc_cough">Cough</string>
+    <string name="ausc_voice">Voice</string>
+    <string name="auscultation_saved">Auscultation saved</string>
+    <!-- Palpation -->
+    <string name="btn_palpation">Palpation</string>
+    <string name="palp_abdomen">Abdomen</string>
+    <string name="palp_meridian">Meridian</string>
+    <string name="palp_point">Point</string>
+    <string name="palpation_saved">Palpation saved</string>
 
     <!-- Acupuncture points for treatment (abbreviation + chinese name) -->
     <!-- ###### REN MAI ###### -->

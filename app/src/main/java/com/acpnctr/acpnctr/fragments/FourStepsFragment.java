@@ -1,7 +1,6 @@
 package com.acpnctr.acpnctr.fragments;
 
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,15 +13,18 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.acpnctr.acpnctr.AuscultationActivity;
+import com.acpnctr.acpnctr.ObservationActivity;
+import com.acpnctr.acpnctr.PalpationActivity;
 import com.acpnctr.acpnctr.QuestionnaireActivity;
 import com.acpnctr.acpnctr.R;
+import com.acpnctr.acpnctr.adapters.FourStepsAdapter;
 import com.acpnctr.acpnctr.models.Session;
 import com.acpnctr.acpnctr.utils.Constants;
 import com.acpnctr.acpnctr.utils.DateFormatUtil;
@@ -31,12 +33,14 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 import static android.app.Activity.RESULT_CANCELED;
@@ -65,22 +69,26 @@ public class FourStepsFragment extends Fragment {
     // for primary session data
     private String mSessionDate;
     private String mSessionGoal;
-    // for questionnaire
-    private Button addQuestion;
-    private ListView questionContainer;
+    // for questionnaire data
     private ArrayList<String> mQuestionArray = new ArrayList<>();
     private ArrayAdapter<String> mQuestionAdapter;
-    private Map<String, String> mQuestionMap = new HashMap<>();
-    private boolean questionnaireHasChanged = false;
+    private Map<String, String> mQuestionMap;
+    // for observation data
+    private ArrayList<String> mObservationArray = new ArrayList<>();
+    private ArrayAdapter<String> mObservationAdapter;
+    private Map<String, String> mObservationMap;
+    // for auscultation data
+    private ArrayList<String> mAuscultationArray = new ArrayList<>();
+    private ArrayAdapter<String> mAuscultationAdapter;
+    private Map<String, String> mAuscultationMap;
+    // for palpation data
+    private ArrayList<String> mPalpationArray = new ArrayList<>();
+    private ArrayAdapter<String> mPalpationAdapter;
+    private Map<String, String> mPalpationMap;
 
-    // COMPLETED: create a flag for questionnaire changed
-    // COMPLETED : add questionnaire parcel in Session obj
-    // COMPLETED: initialize questionnaire if any
-    // COMPLETED: add save instance for questionnaire
-    // TODO: fix question list bug
-    // TODO: polish dialog box (getWindow, WindowManager, LayoutParams.FILL_PARENT)
-    // TODO: refactor showEditBow for it to be usable by other lists (pass in data array, Map...)
-    // TODO: finish to integrate all question fields
+    // TODO: finish Palpation
+    // TODO: finish Pulses/eurhythmy
+    // TODO: finish Pulses/28 forms
 
     private static boolean sessionDataHasChanged = false;
 
@@ -97,11 +105,15 @@ public class FourStepsFragment extends Fragment {
     private static final String SESSION_GOAL = "session_goal";
     private static final String SESSION_HAS_CHANGED = "session_has_changed";
     private static final String QUESTION_ARRAY = "question_array";
-    private static final String QUESTION_MAP = "question_map";
-    private static final String QUESTION_HAS_CHANGED = "question_map";
+    private static final String OBSERVATION_ARRAY = "observation_array";
+    private static final String AUSCULTATION_ARRAY = "auscultation_array";
+    private static final String PALPATION_ARRAY = "palpation_array";
 
     // Request code for result from activity
     public static final int QUESTION_REQUEST = 2;
+    public static final int OBSERVATION_REQUEST = 3;
+    public static final int AUSCULTATION_REQUEST = 4;
+    public static final int PALPATION_REQUEST = 5;
 
     public FourStepsFragment() {
         // Required empty public constructor
@@ -122,13 +134,18 @@ public class FourStepsFragment extends Fragment {
         // hook up the views
         goalEditText = rootView.findViewById(R.id.et_session_goal);
         dateEditText = rootView.findViewById(R.id.et_session_date);
-        addQuestion = rootView.findViewById(R.id.btn_add_question);
-        questionContainer = rootView.findViewById(R.id.lv_questionnaire_container);
+        Button addQuestion = rootView.findViewById(R.id.btn_add_question);
+        ListView questionContainer = rootView.findViewById(R.id.lv_questionnaire_container);
+        Button addObservation = rootView.findViewById(R.id.btn_add_observation);
+        ListView observationContainer = rootView.findViewById(R.id.lv_observation_container);
+        Button addAuscultation = rootView.findViewById(R.id.btn_add_auscultation);
+        ListView auscultationContainer = rootView.findViewById(R.id.lv_auscultation_container);
+        Button addPalpation = rootView.findViewById(R.id.btn_add_palpation);
+        ListView palpationContainer = rootView.findViewById(R.id.lv_palpation_container);
 
         // set up OnTouchListeners on them
         goalEditText.setOnTouchListener(sessionTouchListener);
         dateEditText.setOnTouchListener(sessionTouchListener);
-
 
         // check if there's state to recover after config change
         if (savedInstanceState != null){
@@ -136,15 +153,11 @@ public class FourStepsFragment extends Fragment {
             mSessionDate = savedInstanceState.getString(SESSION_DATE);
             mSessionGoal = savedInstanceState.getString(SESSION_GOAL);
             sessionDataHasChanged = savedInstanceState.getBoolean(SESSION_HAS_CHANGED);
-            // questionnaire data
             mQuestionArray = savedInstanceState.getStringArrayList(QUESTION_ARRAY);
-            Bundle questionBundle = savedInstanceState.getBundle(QUESTION_MAP);
-            for (String key: questionBundle.keySet()){
-                mQuestionMap.put(key, questionBundle.getString(key));
-            }
-            questionnaireHasChanged = savedInstanceState.getBoolean(QUESTION_HAS_CHANGED);
+            mObservationArray = savedInstanceState.getStringArrayList(OBSERVATION_ARRAY);
+            mAuscultationArray = savedInstanceState.getStringArrayList(AUSCULTATION_ARRAY);
+            mPalpationArray = savedInstanceState.getStringArrayList(PALPATION_ARRAY);
         } else {
-
             /** Check if this session was selected from the list at {@link SessionsListFragment} */
             Intent intent = getActivity().getIntent();
             if (intent.hasExtra(Constants.INTENT_SELECTED_SESSION_ID)) {
@@ -159,11 +172,6 @@ public class FourStepsFragment extends Fragment {
             public void onClick(View view) {
                 if (!isNewSession) {
                     Intent questIntent = new Intent(getActivity(), QuestionnaireActivity.class);
-                    if (!mQuestionMap.isEmpty()){
-                        for (Map.Entry<String, String> entry: mQuestionMap.entrySet()) {
-                            questIntent.putExtra(entry.getKey(), entry.getValue());
-                        }
-                    }
                     startActivityForResult(questIntent, QUESTION_REQUEST);
                 } else {
                     Toast.makeText(getActivity(), getString(R.string.session_not_saved),
@@ -172,53 +180,160 @@ public class FourStepsFragment extends Fragment {
             }
         });
 
-        // set adapter to questionnaire listview
-        mQuestionAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, mQuestionArray);
-        questionContainer.setAdapter(mQuestionAdapter);
-        questionContainer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        // set up button listener for observation
+        addObservation.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                showEditBox(mQuestionArray.get(position), position);
+            public void onClick(View view) {
+                if (!isNewSession) {
+                    Intent obsIntent = new Intent(getActivity(), ObservationActivity.class);
+                    startActivityForResult(obsIntent, OBSERVATION_REQUEST);
+                } else {
+                    Toast.makeText(getActivity(), getString(R.string.session_not_saved),
+                            Toast.LENGTH_SHORT).show();
+                }
             }
         });
+
+        // set up button listener for auscultation
+        addAuscultation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!isNewSession) {
+                    Intent auscIntent = new Intent(getActivity(), AuscultationActivity.class);
+                    startActivityForResult(auscIntent, AUSCULTATION_REQUEST);
+                } else {
+                    Toast.makeText(getActivity(), getString(R.string.session_not_saved),
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        // set up button listener for palpation
+        addPalpation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!isNewSession) {
+                    Intent palpIntent = new Intent(getActivity(), PalpationActivity.class);
+                    startActivityForResult(palpIntent, PALPATION_REQUEST);
+                } else {
+                    Toast.makeText(getActivity(), getString(R.string.session_not_saved),
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        // set adapter to questionnaire listview
+        mQuestionAdapter = new FourStepsAdapter(getActivity(), android.R.layout.simple_list_item_1, mQuestionArray);
+        questionContainer.setAdapter(mQuestionAdapter);
+
+        // set adapter to observation listview
+        mObservationAdapter = new FourStepsAdapter(getActivity(), android.R.layout.simple_list_item_1, mObservationArray);
+        observationContainer.setAdapter(mObservationAdapter);
+
+        // set adapter to auscultation listview
+        mAuscultationAdapter = new FourStepsAdapter(getActivity(), android.R.layout.simple_list_item_1, mAuscultationArray);
+        auscultationContainer.setAdapter(mAuscultationAdapter);
+
+        // set adapter to palpation listview
+        mPalpationAdapter = new FourStepsAdapter(getActivity(), android.R.layout.simple_list_item_1, mPalpationArray);
+        palpationContainer.setAdapter(mPalpationAdapter);
 
         return rootView;
     }
 
-    private void showEditBox(final String string, final int position) {
-        final Dialog dialog = new Dialog(getActivity());
-        dialog.setContentView(R.layout.edit_box);
-        final EditText textToEdit = dialog.findViewById(R.id.et_dialog_text);
-        textToEdit.setText(string);
-        Button cancelBtn = dialog.findViewById(R.id.btn_dialog_cancel);
-        Button saveBtn = dialog.findViewById(R.id.btn_dialog_save);
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-        saveBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String newString = textToEdit.getText().toString().trim();
-                mQuestionArray.set(position, newString);
-                updateQuestionMap(string, newString);
-                questionnaireHasChanged = true;
-                mQuestionAdapter.notifyDataSetChanged();
-                dialog.dismiss();
-            }
+    private void loadFourSteps() {
 
-            private void updateQuestionMap(String string, String newString) {
-                for (Map.Entry<String, String> entry: mQuestionMap.entrySet()){
-                    if (string.equals(entry.getValue())){
-                        mQuestionMap.put(entry.getKey(), newString);
+        db.collection(FIRESTORE_COLLECTION_USERS)
+                .document(sUid)
+                .collection(FIRESTORE_COLLECTION_CLIENTS)
+                .document(sClientid)
+                .collection(FIRESTORE_COLLECTION_SESSIONS)
+                .document(sSessionid)
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
+                if (e != null){
+                    Log.w(LOG_TAG, "Listen failed" , e);
+                }
+
+                if (documentSnapshot != null && documentSnapshot.exists()){
+                    // Store all data to a Map
+                    Map<String, Object> sessionMap = documentSnapshot.getData();
+
+                    // [START - GET AND SET QUESTIONNAIRE DATA]
+                    mQuestionMap = (Map<String, String>) sessionMap.get(Session.QUEST_KEY);
+                    if (mQuestionMap != null) {
+                        mQuestionArray.clear();
+                        for (Map.Entry<String, String> entry : mQuestionMap.entrySet()) {
+                            if (!TextUtils.isEmpty(entry.getValue())) {
+                                mQuestionArray.add(entry.getValue());
+                            }
+                            if (mQuestionAdapter != null) {
+                                mQuestionAdapter.notifyDataSetChanged();
+                            }
+                        }
+                    } else {
+                        Log.d(LOG_TAG, "No questionnaire data yet!");
                     }
+                    // [END - GET AND SET QUESTIONNAIRE DATA]
+
+                    // [START - GET AND SET OBSERVATION DATA]
+                    mObservationMap = (Map<String, String>) sessionMap.get(Session.OBS_KEY);
+                    if (mObservationMap != null) {
+                        mObservationArray.clear();
+                        for (Map.Entry<String, String> entry : mObservationMap.entrySet()) {
+                            if (!TextUtils.isEmpty(entry.getValue())) {
+                                mObservationArray.add(entry.getValue());
+                            }
+                            if (mObservationAdapter != null) {
+                                mObservationAdapter.notifyDataSetChanged();
+                            }
+                        }
+                    } else {
+                        Log.d(LOG_TAG, "No observation data yet!");
+                    }
+                    // [END - GET AND SET OBSERVATION DATA]
+
+                    // [START - GET AND SET AUSCULTATION DATA]
+                    mAuscultationMap = (Map<String, String>) sessionMap.get(Session.AUSC_KEY);
+                    if (mAuscultationMap != null) {
+                        mAuscultationArray.clear();
+                        for (Map.Entry<String, String> entry : mAuscultationMap.entrySet()) {
+                            if (!TextUtils.isEmpty(entry.getValue())) {
+                                mAuscultationArray.add(entry.getValue());
+                            }
+                            if (mAuscultationAdapter != null) {
+                                mAuscultationAdapter.notifyDataSetChanged();
+                            }
+                        }
+                    } else {
+                        Log.d(LOG_TAG, "No auscultation data yet!");
+                    }
+                    // [END - GET AND SET AUSCULTATION DATA]
+
+                    // [START - GET AND SET PALPATION DATA]
+                    mPalpationMap = (Map<String, String>) sessionMap.get(Session.PALP_KEY);
+                    if (mPalpationMap != null) {
+                        mPalpationArray.clear();
+                        for (Map.Entry<String, String> entry : mPalpationMap.entrySet()) {
+                            if (!TextUtils.isEmpty(entry.getValue())) {
+                                mPalpationArray.add(entry.getValue());
+                            }
+                            if (mPalpationAdapter != null) {
+                                mPalpationAdapter.notifyDataSetChanged();
+                            }
+                        }
+                    } else {
+                        Log.d(LOG_TAG, "No palpation data yet!");
+                    }
+                    // [END - GET AND SET PALPATION DATA]
+
+                // There is no session document
+                } else {
+                    Log.d(LOG_TAG, "Current data: null");
                 }
             }
         });
-        dialog.show();
-
     }
 
     private void onSessionSelectedInitialize(Session selectedSession) {
@@ -226,13 +341,6 @@ public class FourStepsFragment extends Fragment {
         String dateString = DateFormatUtil.convertTimestampToString(selectedSession.getTimestampCreated());
         dateEditText.setText(dateString);
         goalEditText.setText(selectedSession.getGoal());
-        // Get questionnaire if any
-        mQuestionMap = selectedSession.getQuestionnaire();
-        if (!mQuestionMap.isEmpty()){
-            for (Map.Entry<String, String> entry : mQuestionMap.entrySet()) {
-                mQuestionArray.add(entry.getValue());
-            }
-        }
     }
 
     @Override
@@ -298,20 +406,14 @@ public class FourStepsFragment extends Fragment {
             batch.update(sessionDoc, Session.SESSION_GOAL, goal);
         }
 
-        // save questionnaire if any
-        if (!mQuestionMap.isEmpty() && questionnaireHasChanged){
-            batch.update(sessionDoc, Session.QUEST_KEY, mQuestionMap);
-        }
-
         // commit the batch if there is any changes
-        if (sessionDataHasChanged || questionnaireHasChanged){
+        if (sessionDataHasChanged){
             batch.commit()
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             Toast.makeText(getActivity(), getString(R.string.session_update_success), Toast.LENGTH_SHORT).show();
                             sessionDataHasChanged = false;
-                            questionnaireHasChanged = false;
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -352,23 +454,52 @@ public class FourStepsFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == QUESTION_REQUEST){
-            if (resultCode == RESULT_OK){
-                Bundle b = data.getExtras();
-                if (data.hasExtra(Session.QUEST_YIN_YANG_KEY)){
-                    // add data to questionnaire listview
-                    mQuestionArray.add(data.getStringExtra(Session.QUEST_YIN_YANG_KEY));
-                    // add data to hashmap so we can write it to firestore
-                    mQuestionMap.put(Session.QUEST_YIN_YANG_KEY, data.getStringExtra(Session.QUEST_YIN_YANG_KEY));
+        switch (requestCode){
+
+            case QUESTION_REQUEST:
+                if (resultCode == RESULT_OK){
+                    Toast.makeText(getActivity(), getString(R.string.questionnaire_saved), Toast.LENGTH_SHORT).show();
                 }
-                questionnaireHasChanged = true;
-                // notify the adapter that data have changed
-                mQuestionAdapter.notifyDataSetChanged();
-            }
-            if (resultCode == RESULT_CANCELED){
-                mQuestionAdapter.notifyDataSetChanged();
-            }
+                else if (resultCode == RESULT_CANCELED){
+                    // nothing yet
+                }
+                mQuestionAdapter.clear();
+                break;
+
+            case OBSERVATION_REQUEST:
+                if (resultCode == RESULT_OK){
+                    Toast.makeText(getActivity(), getString(R.string.observation_saved), Toast.LENGTH_SHORT).show();
+                }
+                else if (resultCode == RESULT_CANCELED){
+                    // nothing yet
+                }
+                mObservationAdapter.clear();
+                break;
+
+            case AUSCULTATION_REQUEST:
+                if (resultCode == RESULT_OK){
+                    Toast.makeText(getActivity(), getString(R.string.auscultation_saved), Toast.LENGTH_SHORT).show();
+                }
+                else if (resultCode == RESULT_CANCELED){
+                    // nothing yet
+                }
+                mAuscultationAdapter.clear();
+                break;
+
+            case PALPATION_REQUEST:
+                if (resultCode == RESULT_OK){
+                    Toast.makeText(getActivity(), getString(R.string.palpation_saved), Toast.LENGTH_SHORT).show();
+                }
+                else if (resultCode == RESULT_CANCELED){
+                    // nothing yet
+                }
+                mPalpationAdapter.clear();
+                break;
+
+            default:
+                throw new IllegalArgumentException("Invalid request code, " + requestCode);
         }
+        loadFourSteps();
     }
 
     @Override
@@ -378,20 +509,10 @@ public class FourStepsFragment extends Fragment {
         outState.putString(SESSION_DATE, mSessionDate);
         outState.putString(SESSION_GOAL, mSessionGoal);
         outState.putBoolean(SESSION_HAS_CHANGED, sessionDataHasChanged);
-        // questionnaire data
         outState.putStringArrayList(QUESTION_ARRAY, mQuestionArray);
-        outState.putBoolean(QUESTION_HAS_CHANGED, questionnaireHasChanged);
-        Bundle questionBundle = new Bundle();
-        for (Map.Entry<String, String> entry: mQuestionMap.entrySet()){
-            questionBundle.putString(entry.getKey(), entry.getValue());
-        }
-        outState.putBundle(QUESTION_MAP, questionBundle);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        mQuestionAdapter.notifyDataSetChanged();
+        outState.putStringArrayList(OBSERVATION_ARRAY, mObservationArray);
+        outState.putStringArrayList(AUSCULTATION_ARRAY, mAuscultationArray);
+        outState.putStringArrayList(PALPATION_ARRAY, mPalpationArray);
     }
 
     @Override
@@ -401,6 +522,24 @@ public class FourStepsFragment extends Fragment {
             mQuestionAdapter.clear();
             mQuestionAdapter.notifyDataSetChanged();
         }
+        if (mObservationAdapter != null) {
+            mObservationAdapter.clear();
+            mObservationAdapter.notifyDataSetChanged();
+        }
+        if (mAuscultationAdapter != null) {
+            mAuscultationAdapter.clear();
+            mAuscultationAdapter.notifyDataSetChanged();
+        }
+        if (mPalpationAdapter != null) {
+            mPalpationAdapter.clear();
+            mPalpationAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!isNewSession) loadFourSteps();
     }
 }
 

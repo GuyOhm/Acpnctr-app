@@ -18,12 +18,14 @@ import android.widget.Toast;
 import com.acpnctr.acpnctr.FivePhasesActivity;
 import com.acpnctr.acpnctr.R;
 import com.acpnctr.acpnctr.models.Session;
-import com.acpnctr.acpnctr.utils.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.util.HashMap;
@@ -47,8 +49,6 @@ public class DiagnosisFragment extends Fragment {
 
     // Firebase instance variable
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    // Get a new write batch
-    private WriteBatch mBatch = db.batch();
 
     // Keys to store state information
     private static final String IS_BAGANG_SHOWN = "is_bagang_shown";
@@ -91,7 +91,7 @@ public class DiagnosisFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_diagnosis, container, false);
@@ -126,7 +126,10 @@ public class DiagnosisFragment extends Fragment {
                 hideBagang();
             }
         } else {
-            initializeScreen();
+            if (!isNewSession) {
+                initializeScreen();
+            }
+            hideBagang();
         }
 
         // [START - SET UP BUTTONS FOR THE DIFFERENT SYSTEMS OF DIAGNOSIS]
@@ -162,36 +165,60 @@ public class DiagnosisFragment extends Fragment {
     }
 
     private void initializeScreen() {
-        Intent intent = getActivity().getIntent();
-        if (intent.hasExtra(Constants.INTENT_SELECTED_SESSION_ID)){
-            Session selectedSession = intent.getParcelableExtra(Constants.INTENT_SELECTED_SESSION);
-            // Init Bagang
-            Map<String, Boolean> bagang = selectedSession.getBagang();
-            if (!bagang.isEmpty()) {
-                showBagang();
-                mBagangYin.setChecked(bagang.get(Session.BAGANG_YIN_KEY));
-                mBagangYang.setChecked(bagang.get(Session.BAGANG_YANG_KEY));
-                mBagangDeficiency.setChecked(bagang.get(Session.BAGANG_DEFICIENCY_KEY));
-                mBagangExcess.setChecked(bagang.get(Session.BAGANG_EXCESS_KEY));
-                mBagangCold.setChecked(bagang.get(Session.BAGANG_COLD_KEY));
-                mBagangHeat.setChecked(bagang.get(Session.BAGANG_HEAT_KEY));
-                mBagangInterior.setChecked(bagang.get(Session.BAGANG_INTERIOR_KEY));
-                mBagangExterior.setChecked(bagang.get(Session.BAGANG_EXTERIOR_KEY));
-            } else {
-                hideBagang();
-            }
-            // init wuxing
-            Map<String, Boolean> wuxing = selectedSession.getWuxing();
-            if (!wuxing.isEmpty()) {
-                Bundle wuxingBundle = new Bundle();
-                for (Map.Entry<String, Boolean> entry : wuxing.entrySet()) {
-                    wuxingBundle.putBoolean(entry.getKey(), entry.getValue());
+
+        // create a reference to the firestore document holding data
+        DocumentReference sessionDoc = db.collection(FIRESTORE_COLLECTION_USERS)
+                .document(sUid)
+                .collection(FIRESTORE_COLLECTION_CLIENTS)
+                .document(sClientid)
+                .collection(FIRESTORE_COLLECTION_SESSIONS)
+                .document(sSessionid);
+
+        // listen to the session document snapshot and initialize data
+        sessionDoc.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
+                if (e != null){
+                    Log.w(LOG_TAG, "Listen failed" , e);
                 }
-                setWuxingImage(wuxingBundle);
+
+                if (documentSnapshot != null && documentSnapshot.exists()){
+                    // store all data to a Map
+                    Map<String, Object> sessionMap = documentSnapshot.getData();
+                    // get bagang data
+                    Map<String, Boolean> bagang = (Map<String, Boolean>) sessionMap.get(Session.BAGANG_KEY);
+                    if (bagang != null) {
+                        showBagang();
+                        mBagangYin.setChecked(bagang.get(Session.BAGANG_YIN_KEY));
+                        mBagangYang.setChecked(bagang.get(Session.BAGANG_YANG_KEY));
+                        mBagangDeficiency.setChecked(bagang.get(Session.BAGANG_DEFICIENCY_KEY));
+                        mBagangExcess.setChecked(bagang.get(Session.BAGANG_EXCESS_KEY));
+                        mBagangCold.setChecked(bagang.get(Session.BAGANG_COLD_KEY));
+                        mBagangHeat.setChecked(bagang.get(Session.BAGANG_HEAT_KEY));
+                        mBagangInterior.setChecked(bagang.get(Session.BAGANG_INTERIOR_KEY));
+                        mBagangExterior.setChecked(bagang.get(Session.BAGANG_EXTERIOR_KEY));
+
+                    } else {
+                        Log.d(LOG_TAG, "No bagang data yet!");
+                        hideBagang();
+                    }
+                    // get wuxing (5 phases) data
+                    Map<String, Boolean> wuxing = (Map<String, Boolean>) sessionMap.get(Session.WUXING_KEY);
+                    if (wuxing != null){
+                        Bundle wuxingBundle = new Bundle();
+                        for (Map.Entry<String, Boolean> entry : wuxing.entrySet()) {
+                            wuxingBundle.putBoolean(entry.getKey(), entry.getValue());
+                        }
+                        setWuxingImage(wuxingBundle);
+                    }
+
+                // session hasn't been saved yet
+                } else {
+                    Log.d(LOG_TAG, "Current data: null");
+                    hideBagang();
+                }
             }
-        } else {
-            hideBagang();
-        }
+        });
     }
 
     private void hideBagang() {
@@ -246,6 +273,9 @@ public class DiagnosisFragment extends Fragment {
     }
 
     private void saveDiagnosis() {
+        // Get a new write batch
+        WriteBatch batch = db.batch();
+
         // build the firestore path
         DocumentReference sessionForDiag = db.collection(FIRESTORE_COLLECTION_USERS)
                 .document(sUid)
@@ -267,12 +297,12 @@ public class DiagnosisFragment extends Fragment {
             bagang.put(Session.BAGANG_INTERIOR_KEY, mBagangInterior.isChecked());
             bagang.put(Session.BAGANG_EXTERIOR_KEY, mBagangExterior.isChecked());
 
-            mBatch.update(sessionForDiag, Session.BAGANG_KEY, bagang);
+            batch.update(sessionForDiag, Session.BAGANG_KEY, bagang);
         }
 
         // Commit the batch (if and only if at least one system has been edited)
         if (hasBagangBeenEdited()) {
-            mBatch.commit()
+            batch.commit()
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -306,35 +336,17 @@ public class DiagnosisFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // [START - RESULT FROM FIVEPHASESACTIVITY]
         if (requestCode == WUXING_REQUEST) {
             if (resultCode == RESULT_OK) {
-                // build the firestore path
-                DocumentReference sessionForDiag = db.collection(FIRESTORE_COLLECTION_USERS)
-                        .document(sUid)
-                        .collection(FIRESTORE_COLLECTION_CLIENTS)
-                        .document(sClientid)
-                        .collection(FIRESTORE_COLLECTION_SESSIONS)
-                        .document(sSessionid);
+                Toast.makeText(getActivity(), getString(R.string.diag_5_phases_saved), Toast.LENGTH_SHORT).show();
                 // get data from itent and store them in a bundle
                 Bundle b = data.getExtras();
-                // create a hashmap and put data to be send to firestore
-                Map<String, Boolean> wuxingMap = new HashMap<>();
-                wuxingMap.put(Session.WUXING_WOOD_TO_EARTH_KEY, b.getBoolean(Session.WUXING_WOOD_TO_EARTH_KEY));
-                wuxingMap.put(Session.WUXING_WOOD_TO_METAL_KEY, b.getBoolean(Session.WUXING_WOOD_TO_METAL_KEY));
-                wuxingMap.put(Session.WUXING_FIRE_TO_METAL_KEY, b.getBoolean(Session.WUXING_FIRE_TO_METAL_KEY));
-                wuxingMap.put(Session.WUXING_FIRE_TO_WATER_KEY, b.getBoolean(Session.WUXING_FIRE_TO_WATER_KEY));
-                wuxingMap.put(Session.WUXING_EARTH_TO_WATER_KEY, b.getBoolean(Session.WUXING_EARTH_TO_WATER_KEY));
-                wuxingMap.put(Session.WUXING_EARTH_TO_WOOD_KEY, b.getBoolean(Session.WUXING_EARTH_TO_WOOD_KEY));
-                wuxingMap.put(Session.WUXING_METAL_TO_WOOD_KEY, b.getBoolean(Session.WUXING_METAL_TO_WOOD_KEY));
-                wuxingMap.put(Session.WUXING_METAL_TO_FIRE_KEY, b.getBoolean(Session.WUXING_METAL_TO_FIRE_KEY));
-                wuxingMap.put(Session.WUXING_WATER_TO_FIRE_KEY, b.getBoolean(Session.WUXING_WATER_TO_FIRE_KEY));
-                wuxingMap.put(Session.WUXING_WATER_TO_EARTH_KEY, b.getBoolean(Session.WUXING_WATER_TO_EARTH_KEY));
-                // add the hashmap to the batch
-                mBatch.update(sessionForDiag, Session.WUXING_KEY, wuxingMap);
                 // set the corresponding image for the wuxing diagnosis
                 setWuxingImage(b);
             }
         }
+        // [END - RESULT FROM FIVEPHASESACTIVITY]
     }
 
     private void setWuxingImage(Bundle bundle) {

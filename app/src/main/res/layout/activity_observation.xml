@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,90 +9,83 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.acpnctr.acpnctr.QuestionnaireActivity">
+    tools:context="com.acpnctr.acpnctr.ObservationActivity">
 
     <EditText
-        android:id="@+id/et_quest_yinyang"
+        android:id="@+id/et_obs_behaviour"
         android:layout_width="match_parent"
         android:inputType="textMultiLine"
         android:layout_height="wrap_content"
-        android:hint="@string/quest_yin_yang"/>
+        android:hint="@string/obs_behaviour"/>
 
     <EditText
-        android:id="@+id/et_quest_5_phases"
+        android:id="@+id/et_obs_tongue"
         android:layout_width="match_parent"
         android:inputType="textMultiLine"
         android:layout_height="wrap_content"
-        android:hint="@string/quest_5_phases"/>
+        android:hint="@string/obs_tongue"/>
 
     <EditText
-        android:id="@+id/et_quest_diet"
+        android:id="@+id/et_obs_lips"
         android:layout_width="match_parent"
         android:inputType="textMultiLine"
         android:layout_height="wrap_content"
-        android:hint="@string/quest_diet"/>
+        android:hint="@string/obs_lips"/>
 
     <EditText
-        android:id="@+id/et_quest_digestion"
+        android:id="@+id/et_obs_limb"
         android:layout_width="match_parent"
         android:inputType="textMultiLine"
         android:layout_height="wrap_content"
-        android:hint="@string/quest_digestion"/>
+        android:hint="@string/obs_limb"/>
 
     <EditText
-        android:id="@+id/et_quest_way_of_life"
+        android:id="@+id/et_obs_meridian"
         android:layout_width="match_parent"
         android:inputType="textMultiLine"
         android:layout_height="wrap_content"
-        android:hint="@string/quest_way_of_life"/>
+        android:hint="@string/obs_meridian"/>
 
     <EditText
-        android:id="@+id/et_quest_sleep"
+        android:id="@+id/et_obs_morphology"
         android:layout_width="match_parent"
         android:inputType="textMultiLine"
         android:layout_height="wrap_content"
-        android:hint="@string/quest_sleep"/>
+        android:hint="@string/obs_morphology"/>
 
     <EditText
-        android:id="@+id/et_quest_symptoms"
+        android:id="@+id/et_obs_nails"
         android:layout_width="match_parent"
         android:inputType="textMultiLine"
         android:layout_height="wrap_content"
-        android:hint="@string/quest_symptoms"/>
+        android:hint="@string/obs_nails"/>
 
     <EditText
-        android:id="@+id/et_quest_medication"
+        android:id="@+id/et_obs_skin"
         android:layout_width="match_parent"
         android:inputType="textMultiLine"
         android:layout_height="wrap_content"
-        android:hint="@string/quest_medication"/>
+        android:hint="@string/obs_skin"/>
 
     <EditText
-        android:id="@+id/et_quest_events"
+        android:id="@+id/et_obs_hairiness"
         android:layout_width="match_parent"
         android:inputType="textMultiLine"
         android:layout_height="wrap_content"
-        android:hint="@string/quest_events"/>
+        android:hint="@string/obs_hairiness"/>
 
     <EditText
-        android:id="@+id/et_quest_emotional"
+        android:id="@+id/et_obs_complexion"
         android:layout_width="match_parent"
         android:inputType="textMultiLine"
         android:layout_height="wrap_content"
-        android:hint="@string/quest_emotional"/>
+        android:hint="@string/obs_complexion"/>
 
     <EditText
-        android:id="@+id/et_quest_psychological"
+        android:id="@+id/et_obs_eyes"
         android:layout_width="match_parent"
         android:inputType="textMultiLine"
         android:layout_height="wrap_content"
-        android:hint="@string/quest_psychological"/>
-
-    <EditText
-        android:id="@+id/et_quest_gynecological"
-        android:layout_width="match_parent"
-        android:inputType="textMultiLine"
-        android:layout_height="wrap_content"
-        android:hint="@string/quest_gynecological"/>
+        android:hint="@string/obs_eyes"/>
 
 </LinearLayout>

@@ -1,11 +1,7 @@
 package com.acpnctr.acpnctr.models;
 
-import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Model POJO for a session that the user creates.
@@ -49,15 +45,52 @@ public class Session implements Parcelable {
     // Questionnaire from 4 steps
     public static final String QUEST_KEY = "questionnaire";
     public static final String QUEST_YIN_YANG_KEY = "yin_yang";
+    public static final String QUEST_FIVE_PHASES_KEY = "five_phases";
+    public static final String QUEST_DIET_KEY = "diet";
+    public static final String QUEST_DIGESTION_KEY = "digestion";
+    public static final String QUEST_WAY_OF_LIFE_KEY = "way_of_life";
+    public static final String QUEST_SLEEP_KEY = "sleep";
+    public static final String QUEST_SYMPTOMS_KEY = "symptoms";
+    public static final String QUEST_MEDICATION_KEY = "medication";
+    public static final String QUEST_EVENTS_KEY = "events";
+    public static final String QUEST_EMOTIONAL_KEY = "emotional";
+    public static final String QUEST_PSYCHOLOGICAL_KEY = "psychological";
+    public static final String QUEST_GYNECOLOGICAL_KEY = "gynecological";
+
+    // Observation from 4 steps
+    public static final String OBS_KEY = "observation";
+    public static final String OBS_BEHAVIOUR_KEY = "behaviour";
+    public static final String OBS_TONGUE_KEY = "tongue";
+    public static final String OBS_LIPS_KEY = "lips";
+    public static final String OBS_LIMB_KEY = "limb";
+    public static final String OBS_MERIDIAN_KEY = "meridian";
+    public static final String OBS_MORPHOLOGY_KEY = "morphology";
+    public static final String OBS_NAILS_KEY = "nails";
+    public static final String OBS_SKIN_KEY = "skin";
+    public static final String OBS_HAIRINESS_KEY = "hairiness";
+    public static final String OBS_COMPLEXION_KEY = "complexion";
+    public static final String OBS_EYES_KEY = "eyes";
+
+    // Auscultation from 4 steps
+    public static final String AUSC_KEY = "auscultation";
+    public static final String AUSC_BLOOD_PRESSURE_KEY = "blood_pressure";
+    public static final String AUSC_ABDOMEN_KEY = "abdomen";
+    public static final String AUSC_SMELL_KEY = "smell";
+    public static final String AUSC_BREATHING_KEY = "breathing";
+    public static final String AUSC_COUGH_KEY = "cough";
+    public static final String AUSC_VOICE_KEY = "voice";
+
+    // Palpation from 4 steps
+    public static final String PALP_KEY = "palpation";
+    public static final String PALP_ABDOMEN_KEY = "abdomen";
+    public static final String PALP_MERIDIAN_KEY = "meridian";
+    public static final String PALP_POINT_KEY = "point";
 
     /************************************************/
 
     private long timestampCreated;
     private String goal;
     private float sessionRating;
-    private Map<String, Boolean> bagang;
-    private Map<String, Boolean> wuxing;
-    private Map<String, String> questionnaire;
 
     // Empty constructor required by Firebase firestore
     public Session() {
@@ -67,10 +100,6 @@ public class Session implements Parcelable {
         this.timestampCreated = timestampCreated;
         this.goal = goal;
         this.sessionRating = sessionRating;
-    }
-
-    public Session(Map<String, Boolean> bagang) {
-        this.bagang = bagang;
     }
 
     public long getTimestampCreated() {
@@ -97,30 +126,6 @@ public class Session implements Parcelable {
         this.sessionRating = sessionRating;
     }
 
-    public Map<String, Boolean> getBagang() {
-        return bagang;
-    }
-
-    public void setBagang(Map<String, Boolean> bagang) {
-        this.bagang = bagang;
-    }
-
-    public Map<String, Boolean> getWuxing() {
-        return wuxing;
-    }
-
-    public void setWuxing(Map<String, Boolean> wuxing) {
-        this.wuxing = wuxing;
-    }
-
-    public Map<String, String> getQuestionnaire() {
-        return questionnaire;
-    }
-
-    public void setQuestionnaire(Map<String, String> questionnaire) {
-        this.questionnaire = questionnaire;
-    }
-
     // Parcel part
     // as per: https://developer.android.com/reference/android/os/Parcelable.html
 
@@ -135,37 +140,6 @@ public class Session implements Parcelable {
         out.writeLong(timestampCreated);
         out.writeString(goal);
         out.writeFloat(sessionRating);
-
-        // [START - PARCEL OUT BAGANG MAP]
-        if (bagang != null) {
-            Bundle bagangBundle = new Bundle();
-            for (Map.Entry<String, Boolean> entry : bagang.entrySet()) {
-                bagangBundle.putBoolean(entry.getKey(), entry.getValue());
-            }
-            out.writeBundle(bagangBundle);
-        }
-        // [END - PARCEL OUT BAGANG MAP]
-
-        // [START - PARCEL OUT WUXING MAP]
-        if (wuxing != null) {
-            Bundle wuxingBundle = new Bundle();
-            for (Map.Entry<String, Boolean> entry : wuxing.entrySet()) {
-                wuxingBundle.putBoolean(entry.getKey(), entry.getValue());
-            }
-            out.writeBundle(wuxingBundle);
-        }
-        // [END - PARCEL OUT WUXING MAP]
-
-        // [START - PARCEL OUT QUESTIONNAIRE MAP]
-        if (questionnaire != null) {
-            Bundle questionBundle = new Bundle();
-            for (Map.Entry<String, String> entry : questionnaire.entrySet()){
-                questionBundle.putString(entry.getKey(), entry.getValue());
-            }
-            out.writeBundle(questionBundle);
-        }
-        // [END - PARCEL OUT QUESTIONNAIRE MAP]
-
     }
 
     // This is used to regenerate your object.
@@ -186,35 +160,5 @@ public class Session implements Parcelable {
         timestampCreated = in.readLong();
         goal = in.readString();
         sessionRating = in.readFloat();
-
-        // [START - PARCEL IN BAGANG MAP]
-        Bundle bagangBundle = new Bundle();
-        bagangBundle = in.readBundle(getClass().getClassLoader());
-        Map<String, Boolean> tempBagang = new HashMap<>();
-        for (String key: bagangBundle.keySet()){
-            tempBagang.put(key, bagangBundle.getBoolean(key));
-        }
-        bagang = tempBagang;
-        // [END - PARCEL IN BAGANG MAP]
-
-        // [START - PARCEL IN WUXING MAP]
-        Bundle wuxingBundle = new Bundle();
-        wuxingBundle = in.readBundle(getClass().getClassLoader());
-        Map<String, Boolean> tempWuxing = new HashMap<>();
-        for (String key: wuxingBundle.keySet()){
-            tempWuxing.put(key, wuxingBundle.getBoolean(key));
-        }
-        wuxing = tempWuxing;
-        // [END - PARCEL IN WUXING MAP]
-
-        // [START - PARCEL IN QUESTIONNAIRE MAP]
-        Bundle questionBundle = new Bundle();
-        questionBundle = in.readBundle(getClass().getClassLoader());
-        Map<String, String> tempQuestion = new HashMap<>();
-        for (String key: questionBundle.keySet()){
-            tempQuestion.put(key, questionBundle.getString(key));
-        }
-        questionnaire = tempQuestion;
-        // [END - PARCEL IN QUESTIONNAIRE MAP]
     }
 }
