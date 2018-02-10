@@ -24,33 +24,26 @@
 
         <ImageView
             android:id="@+id/empty_client_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/ic_no_client"
+            android:layout_height="@dimen/ic_no_client"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/ic_account_circle_black_36dp" />
+            app:srcCompat="@drawable/ic_client"
+            android:layout_marginBottom="@dimen/ic_no_client_margin"/>
 
         <TextView
             android:id="@+id/empty_client_title_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/EmptyScreenPrimaryTextStyle"
             android:layout_below="@+id/empty_client_image"
-            android:layout_centerHorizontal="true"
-            android:fontFamily="sans-serif-medium"
             android:paddingTop="16dp"
-            android:text="@string/client_list_empty_view_title_text"
-            android:textAppearance="?android:textAppearanceMedium" />
+            android:text="@string/client_list_empty_view_title_text" />
 
         <TextView
+            style="@style/EmptyScreenSecondaryTextStyle"
             android:id="@+id/empty_client_subtitle_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_below="@+id/empty_client_title_text"
-            android:layout_centerHorizontal="true"
-            android:fontFamily="sans-serif"
             android:paddingTop="8dp"
-            android:text="@string/client_list_empty_view_subtitle_text"
-            android:textAppearance="?android:textAppearanceSmall"
-            android:textColor="#A2AAB0" />
+            android:text="@string/client_list_empty_view_subtitle_text" />
+
     </RelativeLayout>
 
     <!-- Loading indicator -->

@@ -13,6 +13,8 @@ import com.acpnctr.acpnctr.utils.DateFormatUtil;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
+import java.util.ArrayList;
+
 /**
  * Adapter to feed data from firestore to the RecyclerView via ViewHolder
  * for the sessions list in {@link com.acpnctr.acpnctr.fragments.SessionsListFragment}
@@ -63,6 +65,9 @@ public class SessionAdapter extends FirestoreRecyclerAdapter<Session, SessionAda
         // display session rating
         private RatingBar listItemSessionRating;
 
+        // display the treatment list of abbreviated points
+        private TextView listItemSessionTreatment;
+
         /**
          * Constructor for our ViewHolder. Within this constructor, we get a reference to our
          * TextViews.
@@ -76,6 +81,7 @@ public class SessionAdapter extends FirestoreRecyclerAdapter<Session, SessionAda
             listItemSessionDate = itemView.findViewById(R.id.tv_sessions_list_date);
             listItemSessionGoal = itemView.findViewById(R.id.tv_sessions_list_goal);
             listItemSessionRating = itemView.findViewById(R.id.rb_session_rating);
+            listItemSessionTreatment = itemView.findViewById(R.id.tv_session_list_treatment);
         }
 
         public void bind(final Session session, final OnSessionSelectedListener listener){
@@ -83,6 +89,17 @@ public class SessionAdapter extends FirestoreRecyclerAdapter<Session, SessionAda
                     session.getTimestampCreated()));
             listItemSessionGoal.setText(session.getGoal());
             listItemSessionRating.setRating(session.getSessionRating());
+
+            // build the treatment list string
+            ArrayList<String> treatmentList = session.getTreatmentList();
+            StringBuilder treatmentString = new StringBuilder();
+            if (treatmentList != null) {
+                for (int i = 0; i < treatmentList.size(); i++) {
+                    treatmentString.append(treatmentList.get(i));
+                    if (i < treatmentList.size() - 1) treatmentString.append(", ");
+                }
+            }
+            listItemSessionTreatment.setText(treatmentString);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

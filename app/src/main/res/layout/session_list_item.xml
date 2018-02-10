@@ -3,24 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="?android:attr/selectableItemBackground">
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp">
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/tv_sessions_list_date"
+            style="@style/ListItemPrimaryText"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|start"
             android:layout_weight="1"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingTop="8dp"
-            android:textAppearance="?android:textAppearanceMedium"
             tools:text="13 novembre 2017" />
 
         <RatingBar
@@ -29,7 +27,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|end"
-            android:isIndicator="false" />
+            android:isIndicator="false"
+            android:paddingRight="@dimen/activity_horizontal_margin" />
 
     </LinearLayout>
 
@@ -38,23 +37,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ellipsize="end"
-        android:paddingLeft="8dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
         android:singleLine="true"
-        tools:text="Objectif: tendinite coude gauche" />
+        tools:text="tendinite coude gauche" />
 
     <TextView
+        android:id="@+id/tv_session_list_treatment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:paddingBottom="8dp"
-        android:paddingLeft="8dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
         android:singleLine="true"
-        tools:text="Traitement: 5TR, 10TR, 8TR, 4GI, 34VB, 3F " />
+        tools:text="5TR, 10TR, 8TR, 4GI, 34VB, 3F " />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#dadada"
-        android:paddingLeft="8dp" />
+    <View style="@style/DividerViewStyle" />
 
 </LinearLayout>

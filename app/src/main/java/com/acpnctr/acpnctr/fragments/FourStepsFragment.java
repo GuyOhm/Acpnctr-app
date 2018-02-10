@@ -1,6 +1,7 @@
 package com.acpnctr.acpnctr.fragments;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,11 +18,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.acpnctr.acpnctr.AuscultationActivity;
 import com.acpnctr.acpnctr.ObservationActivity;
 import com.acpnctr.acpnctr.PalpationActivity;
+import com.acpnctr.acpnctr.PulsesActivity;
 import com.acpnctr.acpnctr.QuestionnaireActivity;
 import com.acpnctr.acpnctr.R;
 import com.acpnctr.acpnctr.adapters.FourStepsAdapter;
@@ -85,9 +88,10 @@ public class FourStepsFragment extends Fragment {
     private ArrayList<String> mPalpationArray = new ArrayList<>();
     private ArrayAdapter<String> mPalpationAdapter;
     private Map<String, String> mPalpationMap;
+    // for pulses data
+    private TextView mEurythmyTextView;
+    private Map<String, Object> mPulsesMap;
 
-    // TODO: finish Palpation
-    // TODO: finish Pulses/eurhythmy
     // TODO: finish Pulses/28 forms
 
     private static boolean sessionDataHasChanged = false;
@@ -114,6 +118,7 @@ public class FourStepsFragment extends Fragment {
     public static final int OBSERVATION_REQUEST = 3;
     public static final int AUSCULTATION_REQUEST = 4;
     public static final int PALPATION_REQUEST = 5;
+    public static final int PULSES_REQUEST = 6;
 
     public FourStepsFragment() {
         // Required empty public constructor
@@ -125,6 +130,7 @@ public class FourStepsFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -142,6 +148,8 @@ public class FourStepsFragment extends Fragment {
         ListView auscultationContainer = rootView.findViewById(R.id.lv_auscultation_container);
         Button addPalpation = rootView.findViewById(R.id.btn_add_palpation);
         ListView palpationContainer = rootView.findViewById(R.id.lv_palpation_container);
+        Button addPulses = rootView.findViewById(R.id.btn_add_pulses);
+        mEurythmyTextView = rootView.findViewById(R.id.tv_eurythmy_value);
 
         // set up OnTouchListeners on them
         goalEditText.setOnTouchListener(sessionTouchListener);
@@ -221,6 +229,22 @@ public class FourStepsFragment extends Fragment {
                 }
             }
         });
+
+        // set up button listener for pulses
+        addPulses.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!isNewSession) {
+                    Intent pulsesIntent = new Intent(getActivity(), PulsesActivity.class);
+                    startActivityForResult(pulsesIntent, PULSES_REQUEST);
+                }
+                else {
+                    Toast.makeText(getActivity(), getString(R.string.session_not_saved),
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
 
         // set adapter to questionnaire listview
         mQuestionAdapter = new FourStepsAdapter(getActivity(), android.R.layout.simple_list_item_1, mQuestionArray);
@@ -327,6 +351,26 @@ public class FourStepsFragment extends Fragment {
                         Log.d(LOG_TAG, "No palpation data yet!");
                     }
                     // [END - GET AND SET PALPATION DATA]
+
+                    // [START - GET AND SET PULSES DATA]
+                    mPulsesMap = (Map<String, Object>) sessionMap.get(Session.PULSES_KEY);
+                    if (mPulsesMap != null){
+                        Map<String, String> eurythmyMap = (Map<String, String>) mPulsesMap.get(Session.PULSES_EURYTHMY_KEY);
+                        if (eurythmyMap != null && eurythmyMap.containsKey(Session.PULSES_EURYTHMY_BPB_KEY)){
+                            mEurythmyTextView.setVisibility(View.VISIBLE);
+                            StringBuilder eurythmyString = new StringBuilder();
+                            // TODO: TEST STRING BUILDER
+                            eurythmyString
+                                    .append(getString(R.string.pulses_beat_per_breath_label))
+                                    .append(eurythmyMap.get(Session.PULSES_EURYTHMY_BPB_KEY));
+                            mEurythmyTextView.setText(eurythmyString);
+                        } else {
+                            mEurythmyTextView.setVisibility(View.GONE);
+                        }
+                    } else {
+                        Log.d(LOG_TAG, "No pulses data yet!");
+                    }
+                    // [START - GET AND SET PULSES DATA]
 
                 // There is no session document
                 } else {
@@ -494,6 +538,15 @@ public class FourStepsFragment extends Fragment {
                     // nothing yet
                 }
                 mPalpationAdapter.clear();
+                break;
+
+            case PULSES_REQUEST:
+                if (resultCode == RESULT_OK){
+                    Toast.makeText(getActivity(), getString(R.string.pulses_saved), Toast.LENGTH_SHORT).show();
+                }
+                else if (resultCode == RESULT_CANCELED){
+                    // nothing yet
+                }
                 break;
 
             default:

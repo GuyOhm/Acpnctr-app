@@ -33,7 +33,6 @@ public class FivePhasesActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = FivePhasesActivity.class.getSimpleName();
 
-    // COMPLETED: change RB to CB
     CheckBox mWoodEarth;
     CheckBox mWoodMetal;
     CheckBox mFireMetal;

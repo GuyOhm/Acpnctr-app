@@ -1,13 +1,39 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light">
+    <style name="AppTheme" parent="Theme.AppCompat">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="actionBarStyle">@style/CustomActionBarStyle</item>
+        <item name="buttonStyle">@style/AppTheme.Button</item>
     </style>
 
+    <!-- Button style -->
+    <style name="AppTheme.Button" parent="Widget.AppCompat.Button">
+        <item name="android:background">@android:color/white</item>
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <!-- TabLayout style -->
+    <style name="AppTheme.TabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabBackground">@android:color/white</item>
+        <item name="tabTextAppearance">@style/TabTextAppearance</item>
+        <item name="tabSelectedTextColor">@color/colorAccent</item>
+    </style>
+
+    <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textColor">@color/colorTabLayoutText</item>
+    </style>
+
+    <!-- Splash Screen theme. -->
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_background</item>
+    </style>
+
+    <!-- No action bar theme -->
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -17,14 +43,52 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <!-- FirebaseUI themes for Authentication -->
+    <style name="AppTheme.Login" parent="FirebaseUI">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/splash</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
+        <item name="android:textColorHint">@android:color/white</item>
+        <item name="colorAccent">@android:color/white</item>
+    </style>
+
+    <style name="FirebaseUI.Button.AccountChooser.EmailButton">
+        <item name="drawableStartCompat">@drawable/fui_ic_mail_white_24dp</item>
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="FirebaseUI.EditText">
+        <item name="android:paddingBottom">14dp</item>
+        <item name="android:paddingTop">14dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="colorControlActivated">@android:color/white</item>
+        <item name="colorControlHighlight">@android:color/white</item>
+        <item name="android:textColorHint">@android:color/white</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="FirebaseUI.Text.TextInputLayout" parent="@style/FirebaseUI.EditText" />
+
+    <style name="FirebaseUI.Text.HintText" parent="@style/FirebaseUI.EditText" />
+
+    <!-- Style for our custom Action Bar -->
+    <style name="CustomActionBarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="background">@drawable/action_bar</item>
+    </style>
+
     <!-- Style for a category in the fragment layouts -->
     <style name="FragmentCategoryStyle">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:paddingTop">16dp</item>
-        <item name="android:textColor">@color/colorAccent</item>
         <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@android:color/white</item>
         <item name="android:textAppearance">?android:textAppearanceSmall</item>
     </style>
 
@@ -34,6 +98,36 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textAppearance">?android:textAppearanceMedium</item>
+    </style>
+
+    <!-- Style for item list view -->
+    <style name="ListItemPrimaryText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">?android:textAppearanceMedium</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="DividerViewStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/divider_view_height</item>
+        <item name="android:background">@color/colorItemListDivider</item>
+        <item name="android:layout_marginRight">@dimen/divider_view_horizontal_padding</item>
+        <item name="android:layout_marginLeft">@dimen/divider_view_horizontal_padding</item>
+    </style>
+
+    <!-- Styles for empty screen text -->
+    <style name="EmptyScreenPrimaryTextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:textAppearance">?android:textAppearanceMedium</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="EmptyScreenSecondaryTextStyle" parent="EmptyScreenPrimaryTextStyle">
+        <item name="android:textAppearance">?android:textAppearanceSmall</item>
+        <item name="android:fontFamily">sans-serif</item>
     </style>
 
 </resources>

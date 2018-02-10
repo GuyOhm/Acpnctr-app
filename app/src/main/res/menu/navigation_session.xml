@@ -4,17 +4,14 @@
     <!-- Nav for session activity-->
     <item
         android:id="@+id/navigation_four_steps"
-        android:icon="@drawable/ic_home_black_24dp"
         android:title="@string/title_four_steps" />
 
     <item
         android:id="@+id/navigation_energetics_diagnosis"
-        android:icon="@drawable/ic_dashboard_black_24dp"
         android:title="@string/title_energetics_diagnosis" />
 
     <item
         android:id="@+id/navigation_treatment"
-        android:icon="@drawable/ic_notifications_black_24dp"
         android:title="@string/title_treatment" />
 
 </menu>

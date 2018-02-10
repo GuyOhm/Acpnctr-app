@@ -196,8 +196,6 @@ public class DashboardActivity extends AppCompatActivity
         ImageView pictureView = header.findViewById(R.id.iv_drawer_user_pic);
         Picasso.with(DashboardActivity.this)
                 .load(pictureUri)
-                //.resize(50, 50)
-                //.centerCrop()
                 .placeholder(R.drawable.ic_account_circle_black_36dp)
                 .into(pictureView);
         // name
@@ -299,6 +297,7 @@ public class DashboardActivity extends AppCompatActivity
      * Starts AuthentificationActivity for authentication
      */
     private void launchAuthentication() {
+        // TODO: launch activity for result to display toat here and see it this fixes login bug...
         Intent authIntent = new Intent(DashboardActivity.this, AuthenticationActivity.class);
         startActivity(authIntent);
     }
@@ -387,7 +386,7 @@ public class DashboardActivity extends AppCompatActivity
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         // user is signed out
-                        Toast.makeText(DashboardActivity.this, "You\'ve successfully signed out", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DashboardActivity.this, "You\'ve successfully signed out", Toast.LENGTH_SHORT).show(); // TODO: extract as a string
                         isAlreadyInDatabase = false;
                     }
                 });
@@ -406,17 +405,15 @@ public class DashboardActivity extends AppCompatActivity
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.nav_camera:
+            case R.id.nav_dashboard:
                 break;
-            case R.id.nav_gallery:
+            case R.id.nav_account:
                 break;
-            case R.id.nav_slideshow:
+            case R.id.nav_settings:
                 break;
-            case R.id.nav_manage:
+            case R.id.nav_stats:
                 break;
-            case R.id.nav_share:
-                break;
-            case R.id.nav_send:
+            case R.id.nav_tools:
                 break;
         }
 

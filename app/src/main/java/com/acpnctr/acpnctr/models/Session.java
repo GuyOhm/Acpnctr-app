@@ -3,6 +3,8 @@ package com.acpnctr.acpnctr.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
 /**
  * Model POJO for a session that the user creates.
  * This firestore Document belongs to the Collection sessions in the clientid Document
@@ -17,6 +19,9 @@ public class Session implements Parcelable {
     public static final String SESSION_RATING_KEY = "sessionRating";
     public static final String SESSION_TIMESTAMP = "timestampCreated";
     public static final String SESSION_GOAL = "goal";
+
+    // Session data updated in TreatmentFragment
+    public static final String SESSION_TREATMENT_LIST_KEY = "treatmentList";
 
     // Bagang from DiagnosisFragment
     public static final String BAGANG_KEY = "bagang";
@@ -86,11 +91,50 @@ public class Session implements Parcelable {
     public static final String PALP_MERIDIAN_KEY = "meridian";
     public static final String PALP_POINT_KEY = "point";
 
+    // Pulses from 4 steps
+    public static final String PULSES_KEY = "pulses";
+    //... Eurythmy
+    public static final String PULSES_EURYTHMY_KEY = "eurythmy";
+    public static final String PULSES_EURYTHMY_BEAT_KEY = "beat_per_min";
+    public static final String PULSES_EURYTHMY_BREATH_KEY = "breath_per_min";
+    public static final String PULSES_EURYTHMY_BPB_KEY = "breath_per_breath";
+    //... 28 types of pulse
+    public static final String PULSES_28_TYPES_KEY = "28Types";
+    public static final String PULSES_28_TYPES_FEOU_KEY = "feou";
+    public static final String PULSES_28_TYPES_ROA_KEY = "roa";
+    public static final String PULSES_28_TYPES_CHE_KEY = "che";
+    public static final String PULSES_28_TYPES_RONG_KEY = "rong";
+    public static final String PULSES_28_TYPES_TSIN_KEY = "tsin";
+    public static final String PULSES_28_TYPES_KREOU_KEY = "kreou";
+    public static final String PULSES_28_TYPES_SIEN_KEY = "sien";
+    public static final String PULSES_28_TYPES_TCHIN_KEY = "tchin";
+    public static final String PULSES_28_TYPES_TCHRE_KEY = "tchre";
+    public static final String PULSES_28_TYPES_SEU_KEY = "seu";
+    public static final String PULSES_28_TYPES_OE_KEY = "oé";
+    public static final String PULSES_28_TYPES_ROAN_KEY = "roan";
+    public static final String PULSES_28_TYPES_JOAN_KEY = "joan";
+    public static final String PULSES_28_TYPES_JOU_KEY = "jou";
+    public static final String PULSES_28_TYPES_FOU_KEY = "fou";
+    public static final String PULSES_28_TYPES_CHOU_KEY = "chou";
+    public static final String PULSES_28_TYPES_HIU_KEY = "hiu";
+    public static final String PULSES_28_TYPES_KO_KEY = "ko";
+    public static final String PULSES_28_TYPES_SAN_KEY = "san";
+    public static final String PULSES_28_TYPES_SI_KEY = "si";
+    public static final String PULSES_28_TYPES_LAO_KEY = "lao";
+    public static final String PULSES_28_TYPES_TONG_KEY = "tong";
+    public static final String PULSES_28_TYPES_TSOU_KEY = "tsou";
+    public static final String PULSES_28_TYPES_TSIE_KEY = "tsie";
+    public static final String PULSES_28_TYPES_TA_KEY = "ta";
+    public static final String PULSES_28_TYPES_TCHRANG_KEY = "tchrang";
+    public static final String PULSES_28_TYPES_TOAN_KEY = "toan";
+    public static final String PULSES_28_TYPES_TAE_KEY = "taé";
+
     /************************************************/
 
     private long timestampCreated;
     private String goal;
     private float sessionRating;
+    private ArrayList<String> treatmentList;
 
     // Empty constructor required by Firebase firestore
     public Session() {
@@ -126,27 +170,39 @@ public class Session implements Parcelable {
         this.sessionRating = sessionRating;
     }
 
-    // Parcel part
-    // as per: https://developer.android.com/reference/android/os/Parcelable.html
+    public ArrayList<String> getTreatmentList() {
+        return treatmentList;
+    }
 
+    public void setTreatmentList(ArrayList<String> treatmentList) {
+        this.treatmentList = treatmentList;
+    }
+
+    // PARCEL PART
     @Override
     public int describeContents() {
         return 0;
     }
 
-    // Write the object's data to the passed-in Parcel
     @Override
-    public void writeToParcel(Parcel out, int flags) {
-        out.writeLong(timestampCreated);
-        out.writeString(goal);
-        out.writeFloat(sessionRating);
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.timestampCreated);
+        dest.writeString(this.goal);
+        dest.writeFloat(this.sessionRating);
+        dest.writeStringList(this.treatmentList);
     }
 
-    // This is used to regenerate your object.
-    // All Parcelables must have a CREATOR that implements these two methods
-    public static final Parcelable.Creator<Session> CREATOR = new Parcelable.Creator<Session>() {
-        public Session createFromParcel(Parcel in){
-            return new Session(in);
+    protected Session(Parcel in) {
+        this.timestampCreated = in.readLong();
+        this.goal = in.readString();
+        this.sessionRating = in.readFloat();
+        this.treatmentList = in.createStringArrayList();
+    }
+
+    public static final Creator<Session> CREATOR = new Creator<Session>() {
+        @Override
+        public Session createFromParcel(Parcel source) {
+            return new Session(source);
         }
 
         @Override
@@ -154,11 +210,4 @@ public class Session implements Parcelable {
             return new Session[size];
         }
     };
-
-    // Constructor that takes a Parcel and gives you an object populated with it's values
-    private Session(Parcel in) {
-        timestampCreated = in.readLong();
-        goal = in.readString();
-        sessionRating = in.readFloat();
-    }
 }

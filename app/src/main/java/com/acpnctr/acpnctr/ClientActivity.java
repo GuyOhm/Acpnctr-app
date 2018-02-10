@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.acpnctr.acpnctr.adapters.ClientFragmentPageAdapter;
@@ -183,6 +185,16 @@ public class ClientActivity extends AppCompatActivity {
         // Create and show the AlertDialog
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+
+        // Customize the alert dialog box
+        Window alertDialogWindow = alertDialog.getWindow();
+        if (alertDialogWindow != null) {
+            alertDialogWindow.setBackgroundDrawableResource(R.color.colorAccent);
+        }
+        Button negButton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+        negButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        Button posButton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+        posButton.setTextColor(getResources().getColor(R.color.colorPrimary));
     }
 
     @Override

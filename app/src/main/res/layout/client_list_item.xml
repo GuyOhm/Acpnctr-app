@@ -1,54 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/list_item_height"
+    android:background="?android:attr/selectableItemBackground"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:background="?android:attr/selectableItemBackground">
+    <ImageView
+        android:id="@+id/ic_client"
+        android:layout_width="@dimen/ic_client_list_item"
+        android:layout_height="@dimen/ic_client_list_item"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_client"
+        android:layout_marginLeft="16dp" />
 
-        <ImageView
-            android:id="@+id/ic_client"
-            android:layout_width="@dimen/list_item_height"
-            android:layout_height="@dimen/list_item_height"
-            android:scaleType="center"
-            android:src="@drawable/ic_account_circle_black_36dp" />
+    <TextView
+        android:id="@+id/tv_client_list_name"
+        style="@style/ListItemPrimaryText"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ic_client"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.222"
+        tools:text="John Doe"
+        android:layout_marginLeft="32dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/list_item_height"
-            android:gravity="center_vertical"
-            android:orientation="vertical"
-            android:paddingLeft="@dimen/activity_horizontal_margin">
-
-            <TextView
-                android:id="@+id/tv_client_list_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:textAppearanceMedium"
-                tools:text="John Doe" />
-
-            <TextView
-                android:id="@+id/tv_client_list_last_session"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="January 1st 2017" />
-
-        </LinearLayout>
-
-    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_client_list_last_session"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/tv_client_list_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_client_list_name"
+        tools:text="January 1st 2017" />
 
     <!--This View serves as a visual divider between list items-->
-    <!-- TODO: factorize out this view to style -->
     <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#dadada"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp" />
+        android:id="@+id/view"
+        style="@style/DividerViewStyle"
+        android:layout_marginEnd="@dimen/divider_view_horizontal_padding"
+        android:layout_marginStart="@dimen/divider_view_horizontal_padding"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

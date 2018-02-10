@@ -1,70 +1,229 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="@dimen/activity_margin"
-    android:orientation="vertical"
-    tools:context="com.acpnctr.acpnctr.FivePhasesActivity">
+    android:layout_height="match_parent">
 
-    <CheckBox
-        android:id="@+id/wood_to_earth"
-        android:layout_width="wrap_content"
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/diag_5_phases_wood_earth" />
+        tools:context="com.acpnctr.acpnctr.FivePhasesActivity">
 
-    <CheckBox
-        android:id="@+id/wood_to_metal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/diag_5_phases_wood_metal" />
+        <CheckBox
+            android:id="@+id/wood_to_earth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/diag_5_phases_wood_earth"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginLeft="16dp" />
 
-    <CheckBox
-        android:id="@+id/fire_to_metal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/diag_5_phases_fire_metal" />
+        <CheckBox
+            android:id="@+id/wood_to_metal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/diag_5_phases_wood_metal"
+            app:layout_constraintStart_toStartOf="@+id/wood_to_earth"
+            app:layout_constraintTop_toBottomOf="@+id/wood_to_earth" />
 
-    <CheckBox
-        android:id="@+id/fire_to_water"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/diag_5_phases_fire_water" />
+        <View
+            android:id="@+id/divider_1"
+            style="@style/DividerViewStyle"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/wood_to_metal" />
 
-    <CheckBox
-        android:id="@+id/earth_to_water"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/diag_5_phases_earth_water" />
+        <CheckBox
+            android:id="@+id/fire_to_metal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/diag_5_phases_fire_metal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider_1"
+            android:layout_marginLeft="16dp" />
 
-    <CheckBox
-        android:id="@+id/earth_to_wood"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/diag_5_phases_earth_wood" />
+        <CheckBox
+            android:id="@+id/fire_to_water"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/diag_5_phases_fire_water"
+            app:layout_constraintStart_toStartOf="@+id/fire_to_metal"
+            app:layout_constraintTop_toBottomOf="@+id/fire_to_metal" />
 
-    <CheckBox
-        android:id="@+id/metal_to_wood"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/diag_5_phases_metal_wood" />
+        <View
+            android:id="@+id/divider_2"
+            style="@style/DividerViewStyle"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fire_to_water" />
 
-    <CheckBox
-        android:id="@+id/metal_to_fire"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/diag_5_phases_metal_fire" />
+        <CheckBox
+            android:id="@+id/earth_to_water"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/diag_5_phases_earth_water"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider_2"
+            android:layout_marginLeft="16dp" />
 
-    <CheckBox
-        android:id="@+id/water_to_fire"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/diag_5_phases_water_fire" />
+        <CheckBox
+            android:id="@+id/earth_to_wood"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/diag_5_phases_earth_wood"
+            app:layout_constraintStart_toStartOf="@+id/earth_to_water"
+            app:layout_constraintTop_toBottomOf="@+id/earth_to_water" />
 
-    <CheckBox
-        android:id="@+id/water_to_earth"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/diag_5_phases_water_earth" />
+        <View
+            android:id="@+id/divider_3"
+            style="@style/DividerViewStyle"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/earth_to_wood" />
 
-</LinearLayout>
+        <CheckBox
+            android:id="@+id/metal_to_wood"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/diag_5_phases_metal_wood"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider_3"
+            android:layout_marginLeft="16dp" />
+
+        <CheckBox
+            android:id="@+id/metal_to_fire"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/diag_5_phases_metal_fire"
+            app:layout_constraintStart_toStartOf="@+id/metal_to_wood"
+            app:layout_constraintTop_toBottomOf="@+id/metal_to_wood" />
+
+        <View
+            android:id="@+id/divider_4"
+            style="@style/DividerViewStyle"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/metal_to_fire" />
+
+        <CheckBox
+            android:id="@+id/water_to_fire"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/diag_5_phases_water_fire"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider_4"
+            android:layout_marginLeft="16dp" />
+
+        <CheckBox
+            android:id="@+id/water_to_earth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/diag_5_phases_water_earth"
+            app:layout_constraintStart_toStartOf="@+id/water_to_fire"
+            app:layout_constraintTop_toBottomOf="@+id/water_to_fire" />
+
+        <View
+            android:id="@+id/divider_5"
+            style="@style/DividerViewStyle"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/water_to_earth" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/wood_to_metal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/wood_to_earth"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/ic_wood_48dp"
+            android:layout_marginRight="16dp" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/fire_to_water"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/fire_to_metal"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/ic_fire_48dp"
+            android:layout_marginRight="16dp" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/earth_to_wood"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/earth_to_water"
+            app:srcCompat="@drawable/ic_earth_48dp"
+            android:layout_marginRight="16dp" />
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/metal_to_fire"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/metal_to_wood"
+            app:srcCompat="@drawable/ic_metal_48dp"
+            android:layout_marginRight="16dp" />
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/water_to_earth"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/water_to_fire"
+            app:srcCompat="@drawable/ic_water_48dp"
+            android:layout_marginRight="16dp" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</ScrollView>

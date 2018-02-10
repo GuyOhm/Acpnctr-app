@@ -1,8 +1,14 @@
 <resources>
-    <string name="app_name">Acpnctr</string>
+    <string name="app_name" translatable="false">Acpnctr</string>
 
+    <!-- Navigation drawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_account">Account</string>
+    <string name="nav_settings">Settings</string>
+    <string name="nav_stats">Stats</string>
+    <string name="nav_tools">Tools</string>
 
     <string name="search_title">Search</string>
     <string name="action_settings">Settings</string>
@@ -120,8 +126,8 @@
     <string name="diag_bagang_interior">interior</string>
     <string name="diag_bagang_exterior">exterior</string>
     <!-- 5 phases -->
-    <string name="label_five_phases">five phases</string>
-    <string name="btn_diag_wu_xing">five phases</string>
+    <string name="label_five_phases">5 phases</string>
+    <string name="btn_diag_wu_xing">5 phases</string>
     <string name="diag_5_phases_wood_earth">wood attacks earth (ko)</string>
     <string name="diag_5_phases_wood_metal">wood attacks metal (rae)</string>
     <string name="diag_5_phases_fire_metal">fire attacks metal (ko)</string>
@@ -139,6 +145,7 @@
 
     <!-- 4 STEPS -->
     <!-- Questionnaire -->
+    <string name="label_questionnaire">Questionnaire</string>
     <string name="btn_questionnaire">Questionnaire</string>
     <string name="quest_yin_yang">Yin Yang</string>
     <string name="quest_5_phases">5 phases</string>
@@ -154,6 +161,7 @@
     <string name="quest_gynecological">Gynecological</string>
     <string name="questionnaire_saved">Questionnaire saved</string>
     <!-- Observation -->
+    <string name="label_observation">Observation</string>
     <string name="btn_observation">Observation</string>
     <string name="obs_behaviour">Behaviour</string>
     <string name="obs_tongue">Tongue</string>
@@ -168,6 +176,7 @@
     <string name="obs_eyes">Eyes</string>
     <string name="observation_saved">Observation saved</string>
     <!-- Auscultation -->
+    <string name="label_auscultation">Auscultation</string>
     <string name="btn_auscultation">Auscultation</string>
     <string name="ausc_blood_pressure">Blood pressure</string>
     <string name="ausc_abdomen">Abdomen</string>
@@ -177,11 +186,55 @@
     <string name="ausc_voice">Voice</string>
     <string name="auscultation_saved">Auscultation saved</string>
     <!-- Palpation -->
+    <string name="label_palpation">Palpation</string>
     <string name="btn_palpation">Palpation</string>
     <string name="palp_abdomen">Abdomen</string>
     <string name="palp_meridian">Meridian</string>
     <string name="palp_point">Point</string>
     <string name="palpation_saved">Palpation saved</string>
+    <!-- Pulses -->
+    <string name="label_pulses">Pulses</string>
+    <string name="btn_pulses">Pulses</string>
+    <!--... Eurythmy -->
+    <string name="pulses_eurythmy_title">Eurythmy</string>
+    <string name="pulses_beatpm_hint">Beat Per Min</string>
+    <string name="pulses_breathpm_hint">Breath Per Min</string>
+    <string name="pulses_beat_per_breath_label">Beat Per Breath</string>
+    <!--... 28 types of pulse -->
+    <string name="pulses_28_types_title" translatable="false">28 Types</string>
+    <!-- type translation -->
+    <!-- type meaning -->
+    <string name="pulses_28_types_feou" translatable="false">Feou</string>
+    <string name="pulses_28_types_roa" translatable="false">Roa</string>
+    <string name="pulses_28_types_che" translatable="false">Che</string>
+    <string name="pulses_28_types_rong" translatable="false">Rong</string>
+    <string name="pulses_28_types_tsin" translatable="false">Tsin</string>
+    <string name="pulses_28_types_kreou" translatable="false">Kreou</string>
+    <string name="pulses_28_types_sien" translatable="false">Sien</string>
+    <string name="pulses_28_types_tchin" translatable="false">Tchin</string>
+    <string name="pulses_28_types_tchre" translatable="false">Tchre</string>
+    <string name="pulses_28_types_seu" translatable="false">Seu</string>
+    <string name="pulses_28_types_oé" translatable="false">Oé</string>
+    <string name="pulses_28_types_roan" translatable="false">Roan</string>
+    <string name="pulses_28_types_joan" translatable="false">Joan</string>
+    <string name="pulses_28_types_jou" translatable="false">Jou</string>
+    <string name="pulses_28_types_fou" translatable="false">Fou</string>
+    <string name="pulses_28_types_chou" translatable="false">Chou</string>
+    <string name="pulses_28_types_hiu" translatable="false">Hiu</string>
+    <string name="pulses_28_types_ko" translatable="false">Ko</string>
+    <string name="pulses_28_types_san" translatable="false">San</string>
+    <string name="pulses_28_types_si" translatable="false">Si</string>
+    <string name="pulses_28_types_lao" translatable="false">Lao</string>
+    <string name="pulses_28_types_tong" translatable="false">Tong</string>
+    <string name="pulses_28_types_tsou" translatable="false">Tsou</string>
+    <string name="pulses_28_types_tsie" translatable="false">Tsie</string>
+    <string name="pulses_28_types_ta" translatable="false">Ta</string>
+    <string name="pulses_28_types_tchrang" translatable="false">Tchrang</string>
+    <string name="pulses_28_types_toan" translatable="false">Toan</string>
+    <string name="pulses_28_types_taé" translatable="false">Taé</string>
+
+
+    <string name="pulses_saved">Pulses saved</string>
 
     <!-- Acupuncture points for treatment (abbreviation + chinese name) -->
     <!-- ###### REN MAI ###### -->

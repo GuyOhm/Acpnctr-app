@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by guiguette on 15/12/2017.
+ * Util class with date format manipulation methods
  */
 
 public class DateFormatUtil {

@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.acpnctr.acpnctr.R;
@@ -49,20 +50,30 @@ public class TreatmentAdapter extends FirestoreRecyclerAdapter<Treatment,
     static class PointHolder extends RecyclerView.ViewHolder{
 
         private TextView acuPointTextView;
-        private TextView stimulationTextView;
+        private ImageView stimulationImageView;
 
         public PointHolder(View itemView) {
             super(itemView);
             // hook my views in the item view
             acuPointTextView = itemView.findViewById(R.id.tv_treatment_point);
-            stimulationTextView = itemView.findViewById(R.id.tv_treatment_stimulation);
+            stimulationImageView = itemView.findViewById(R.id.iv_stimulation_ic);
         }
 
         public void bind(Treatment treatment) {
             int pointPosition = treatment.getPoint();
             int stimulationPosition = treatment.getStimulation();
             acuPointTextView.setText(TreatmentFragment.acuPoints[pointPosition]);
-            stimulationTextView.setText(TreatmentFragment.stimulationOptions[stimulationPosition]);
+            switch(stimulationPosition){
+                case Treatment.TREATMENT_STIMULATION_TONIFICATION:
+                    stimulationImageView.setImageResource(R.drawable.ic_up_arrow_white_36dp);
+                    break;
+                case Treatment.TREATMENT_STIMULATION_NEUTRAL:
+                    stimulationImageView.setImageResource(R.drawable.ic_neutral_white_36dp);
+                    break;
+                case Treatment.TREATMENT_STIMULATION_SEDATION:
+                    stimulationImageView.setImageResource(R.drawable.ic_down_arrow_white_36dp);
+                    break;
+            }
         }
     }
 }

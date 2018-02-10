@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    tools:context="fragments.AnamnesisFragment"
-    android:padding="@dimen/activity_margin">
+    android:padding="@dimen/activity_margin"
+    tools:context="fragments.AnamnesisFragment">
 
     <EditText
         android:id="@+id/et_history_date"
+        android:gravity="center_horizontal"
         style="@style/FragmentEditorFieldStyle"
         android:hint="@string/date_hint"
         android:inputType="date"
@@ -17,6 +18,7 @@
 
     <EditText
         android:id="@+id/et_history_text"
+        android:gravity="center_horizontal"
         style="@style/FragmentEditorFieldStyle"
         android:hint="@string/history_hint"
         android:inputType="text"
@@ -28,7 +30,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="@dimen/btn_margin_bottom"
+        android:layout_marginTop="@dimen/btn_margin_top"
         android:text="@string/btn_add" />
 
 
@@ -40,6 +43,7 @@
             android:id="@+id/rv_anamnesis_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
         </android.support.v7.widget.RecyclerView>
 
         <!-- Loading indicator -->

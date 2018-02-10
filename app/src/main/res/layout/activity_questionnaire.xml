@@ -1,97 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.acpnctr.acpnctr.QuestionnaireActivity">
+    android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/et_quest_yinyang"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:inputType="textMultiLine"
         android:layout_height="wrap_content"
-        android:hint="@string/quest_yin_yang"/>
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context="com.acpnctr.acpnctr.QuestionnaireActivity">
 
-    <EditText
-        android:id="@+id/et_quest_5_phases"
-        android:layout_width="match_parent"
-        android:inputType="textMultiLine"
-        android:layout_height="wrap_content"
-        android:hint="@string/quest_5_phases"/>
+        <EditText
+            android:id="@+id/et_quest_yinyang"
+            style="@style/FragmentEditorFieldStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/quest_yin_yang"
+            android:inputType="textMultiLine" />
 
-    <EditText
-        android:id="@+id/et_quest_diet"
-        android:layout_width="match_parent"
-        android:inputType="textMultiLine"
-        android:layout_height="wrap_content"
-        android:hint="@string/quest_diet"/>
+        <EditText
+            android:id="@+id/et_quest_5_phases"
+            style="@style/FragmentEditorFieldStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/quest_5_phases"
+            android:inputType="textMultiLine" />
 
-    <EditText
-        android:id="@+id/et_quest_digestion"
-        android:layout_width="match_parent"
-        android:inputType="textMultiLine"
-        android:layout_height="wrap_content"
-        android:hint="@string/quest_digestion"/>
+        <EditText
+            android:id="@+id/et_quest_diet"
+            style="@style/FragmentEditorFieldStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/quest_diet"
+            android:inputType="textMultiLine" />
 
-    <EditText
-        android:id="@+id/et_quest_way_of_life"
-        android:layout_width="match_parent"
-        android:inputType="textMultiLine"
-        android:layout_height="wrap_content"
-        android:hint="@string/quest_way_of_life"/>
+        <EditText
+            android:id="@+id/et_quest_digestion"
+            style="@style/FragmentEditorFieldStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/quest_digestion"
+            android:inputType="textMultiLine" />
 
-    <EditText
-        android:id="@+id/et_quest_sleep"
-        android:layout_width="match_parent"
-        android:inputType="textMultiLine"
-        android:layout_height="wrap_content"
-        android:hint="@string/quest_sleep"/>
+        <EditText
+            android:id="@+id/et_quest_way_of_life"
+            style="@style/FragmentEditorFieldStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/quest_way_of_life"
+            android:inputType="textMultiLine" />
 
-    <EditText
-        android:id="@+id/et_quest_symptoms"
-        android:layout_width="match_parent"
-        android:inputType="textMultiLine"
-        android:layout_height="wrap_content"
-        android:hint="@string/quest_symptoms"/>
+        <EditText
+            android:id="@+id/et_quest_sleep"
+            style="@style/FragmentEditorFieldStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/quest_sleep"
+            android:inputType="textMultiLine" />
 
-    <EditText
-        android:id="@+id/et_quest_medication"
-        android:layout_width="match_parent"
-        android:inputType="textMultiLine"
-        android:layout_height="wrap_content"
-        android:hint="@string/quest_medication"/>
+        <EditText
+            android:id="@+id/et_quest_symptoms"
+            style="@style/FragmentEditorFieldStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/quest_symptoms"
+            android:inputType="textMultiLine" />
 
-    <EditText
-        android:id="@+id/et_quest_events"
-        android:layout_width="match_parent"
-        android:inputType="textMultiLine"
-        android:layout_height="wrap_content"
-        android:hint="@string/quest_events"/>
+        <EditText
+            android:id="@+id/et_quest_medication"
+            style="@style/FragmentEditorFieldStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/quest_medication"
+            android:inputType="textMultiLine" />
 
-    <EditText
-        android:id="@+id/et_quest_emotional"
-        android:layout_width="match_parent"
-        android:inputType="textMultiLine"
-        android:layout_height="wrap_content"
-        android:hint="@string/quest_emotional"/>
+        <EditText
+            android:id="@+id/et_quest_events"
+            style="@style/FragmentEditorFieldStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/quest_events"
+            android:inputType="textMultiLine" />
 
-    <EditText
-        android:id="@+id/et_quest_psychological"
-        android:layout_width="match_parent"
-        android:inputType="textMultiLine"
-        android:layout_height="wrap_content"
-        android:hint="@string/quest_psychological"/>
+        <EditText
+            android:id="@+id/et_quest_emotional"
+            style="@style/FragmentEditorFieldStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/quest_emotional"
+            android:inputType="textMultiLine" />
 
-    <EditText
-        android:id="@+id/et_quest_gynecological"
-        android:layout_width="match_parent"
-        android:inputType="textMultiLine"
-        android:layout_height="wrap_content"
-        android:hint="@string/quest_gynecological"/>
+        <EditText
+            android:id="@+id/et_quest_psychological"
+            style="@style/FragmentEditorFieldStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/quest_psychological"
+            android:inputType="textMultiLine" />
 
-</LinearLayout>
+        <EditText
+            android:id="@+id/et_quest_gynecological"
+            style="@style/FragmentEditorFieldStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/quest_gynecological"
+            android:inputType="textMultiLine" />
+
+    </LinearLayout>
+</ScrollView>

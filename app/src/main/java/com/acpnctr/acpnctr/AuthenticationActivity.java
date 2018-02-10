@@ -45,7 +45,8 @@ public class AuthenticationActivity extends AppCompatActivity {
                         .createSignInIntentBuilder()
                         .setIsSmartLockEnabled(false) // TODO: change to true for production?
                         .setAvailableProviders(providers)
-                        .setLogo(R.drawable.ic_account_circle_black_36dp)
+                        // .setLogo(R.mipmap.ic_launcher_round)
+                        .setTheme(R.style.AppTheme_Login)
                         .build(),
                 RC_SIGN_IN);
     }
@@ -58,7 +59,7 @@ public class AuthenticationActivity extends AppCompatActivity {
 
             // successfully signed in
             if (resultCode == RESULT_OK){
-                Toast.makeText(AuthenticationActivity.this, "Signed in!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AuthenticationActivity.this, "Signed in!", Toast.LENGTH_SHORT).show(); // TODO: extract as a string
                 Intent dashboardIntent = new Intent(AuthenticationActivity.this, DashboardActivity.class);
                 startActivity(dashboardIntent);
                 finish();
@@ -67,22 +68,22 @@ public class AuthenticationActivity extends AppCompatActivity {
                 // signed in failed
                 if (response == null) {
                     // user pressed back button hence cancelled sign in
-                    Toast.makeText(AuthenticationActivity.this, "Signed in cancelled", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AuthenticationActivity.this, "Signed in cancelled", Toast.LENGTH_SHORT).show(); // TODO: extract as a string
                     return;
                 }
 
                 if (response.getErrorCode() == ErrorCodes.NO_NETWORK) {
-                    Toast.makeText(AuthenticationActivity.this, "Couldn't connect to network", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AuthenticationActivity.this, "Couldn't connect to network", Toast.LENGTH_SHORT).show(); // TODO: extract as a string
                     return;
                 }
 
                 if (response.getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
-                    Toast.makeText(AuthenticationActivity.this, "Something went wrong :/", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AuthenticationActivity.this, "Something went wrong :/", Toast.LENGTH_SHORT).show(); // TODO: extract as a string
                     return;
                 }
             }
 
-            Toast.makeText(AuthenticationActivity.this, "Ooops...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(AuthenticationActivity.this, "Ooops...", Toast.LENGTH_SHORT).show(); // TODO: extract as a string
         }
     }
 }

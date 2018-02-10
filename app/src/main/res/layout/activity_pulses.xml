@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context="com.acpnctr.acpnctr.PulsesActivity">
+
+        <CheckBox
+            android:id="@+id/cb_eurythmy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/pulses_eurythmy_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/et_pulses_beatpm"
+            android:layout_width="139dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:hint="@string/pulses_beatpm_hint"
+            android:inputType="number"
+            app:layout_constraintStart_toStartOf="@+id/cb_eurythmy"
+            app:layout_constraintTop_toBottomOf="@+id/cb_eurythmy" />
+
+        <EditText
+            android:id="@+id/et_pulses_breathpm"
+            android:layout_width="139dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/pulses_breathpm_hint"
+            android:inputType="number"
+            app:layout_constraintStart_toStartOf="@+id/et_pulses_beatpm"
+            app:layout_constraintTop_toBottomOf="@+id/et_pulses_beatpm" />
+
+        <TextView
+            android:id="@+id/tv_pulses_beat_per_breath"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display3"
+            app:layout_constraintBottom_toBottomOf="@+id/et_pulses_breathpm"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/et_pulses_beatpm"
+            app:layout_constraintVertical_bias="0.592"
+            tools:text="7" />
+
+        <android.support.constraint.Group
+            android:id="@+id/group_eurythmy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="et_pulses_breathpm,et_pulses_beatpm,tv_pulses_beat_per_breath" />
+
+        <CheckBox
+            android:id="@+id/cb_28_types"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:text="@string/pulses_28_types_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_pulses_breathpm" />
+
+        <GridView
+            android:id="@+id/gv_28_types"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cb_28_types" />
+
+
+    </android.support.constraint.ConstraintLayout>
+
+</ScrollView>

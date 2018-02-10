@@ -53,6 +53,34 @@
         <item>@string/RM_24</item>
 
         <!-- ###### DU MAI ###### -->
+        <item>@string/DM_1</item>
+        <item>@string/DM_2</item>
+        <item>@string/DM_3</item>
+        <item>@string/DM_4</item>
+        <item>@string/DM_5</item>
+        <item>@string/DM_6</item>
+        <item>@string/DM_7</item>
+        <item>@string/DM_8</item>
+        <item>@string/DM_9</item>
+        <item>@string/DM_10</item>
+        <item>@string/DM_11</item>
+        <item>@string/DM_12</item>
+        <item>@string/DM_13</item>
+        <item>@string/DM_14</item>
+        <item>@string/DM_15</item>
+        <item>@string/DM_16</item>
+        <item>@string/DM_17</item>
+        <item>@string/DM_18</item>
+        <item>@string/DM_19</item>
+        <item>@string/DM_20</item>
+        <item>@string/DM_21</item>
+        <item>@string/DM_22</item>
+        <item>@string/DM_23</item>
+        <item>@string/DM_24</item>
+        <item>@string/DM_25</item>
+        <item>@string/DM_26</item>
+        <item>@string/DM_27</item>
+        <item>@string/DM_28</item>
 
         <!-- ###### LUNG ###### -->
 

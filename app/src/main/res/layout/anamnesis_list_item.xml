@@ -31,12 +31,7 @@
     </LinearLayout>
 
     <!--This View serves as a visual divider between list items-->
-    <!-- TODO: factorize out this view to style -->
     <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:background="#dadada" />
+        style="@style/DividerViewStyle"/>
 
 </LinearLayout>

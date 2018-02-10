@@ -32,7 +32,7 @@ import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_USERS;
 
 public class ObservationActivity extends AppCompatActivity {
 
-    public static final String LOG_TAG = ObservationActivity.class.getSimpleName();
+    private static final String LOG_TAG = ObservationActivity.class.getSimpleName();
 
     // Firebase instance variable
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
