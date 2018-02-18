@@ -9,7 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 
-import com.acpnctr.acpnctr.models.Session;
+import com.acpnctr.acpnctr.utils.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -93,43 +93,43 @@ public class QuestionnaireActivity extends AppCompatActivity {
                             // store all data to a Map
                             Map<String, Object> sessionMap = documentSnapshot.getData();
                             // get questionnaire data and display them to edit views
-                            Map<String, String> questionMap = (Map<String, String>) sessionMap.get(Session.QUEST_KEY);
+                            Map<String, String> questionMap = (Map<String, String>) sessionMap.get(Constants.QUEST_KEY);
                             if (questionMap != null){
-                                if(questionMap.containsKey(Session.QUEST_YIN_YANG_KEY)){
-                                    mYinyang.setText(questionMap.get(Session.QUEST_YIN_YANG_KEY));
+                                if(questionMap.containsKey(Constants.QUEST_YIN_YANG_KEY)){
+                                    mYinyang.setText(questionMap.get(Constants.QUEST_YIN_YANG_KEY));
                                 }
-                                if(questionMap.containsKey(Session.QUEST_FIVE_PHASES_KEY)){
-                                    mFivephases.setText(questionMap.get(Session.QUEST_FIVE_PHASES_KEY));
+                                if(questionMap.containsKey(Constants.QUEST_FIVE_PHASES_KEY)){
+                                    mFivephases.setText(questionMap.get(Constants.QUEST_FIVE_PHASES_KEY));
                                 }
-                                if(questionMap.containsKey(Session.QUEST_DIET_KEY)){
-                                    mDiet.setText(questionMap.get(Session.QUEST_DIET_KEY));
+                                if(questionMap.containsKey(Constants.QUEST_DIET_KEY)){
+                                    mDiet.setText(questionMap.get(Constants.QUEST_DIET_KEY));
                                 }
-                                if(questionMap.containsKey(Session.QUEST_DIGESTION_KEY)){
-                                    mDigestion.setText(questionMap.get(Session.QUEST_DIGESTION_KEY));
+                                if(questionMap.containsKey(Constants.QUEST_DIGESTION_KEY)){
+                                    mDigestion.setText(questionMap.get(Constants.QUEST_DIGESTION_KEY));
                                 }
-                                if(questionMap.containsKey(Session.QUEST_WAY_OF_LIFE_KEY)){
-                                    mWayOfLife.setText(questionMap.get(Session.QUEST_WAY_OF_LIFE_KEY));
+                                if(questionMap.containsKey(Constants.QUEST_WAY_OF_LIFE_KEY)){
+                                    mWayOfLife.setText(questionMap.get(Constants.QUEST_WAY_OF_LIFE_KEY));
                                 }
-                                if(questionMap.containsKey(Session.QUEST_SLEEP_KEY)){
-                                    mSleep.setText(questionMap.get(Session.QUEST_SLEEP_KEY));
+                                if(questionMap.containsKey(Constants.QUEST_SLEEP_KEY)){
+                                    mSleep.setText(questionMap.get(Constants.QUEST_SLEEP_KEY));
                                 }
-                                if(questionMap.containsKey(Session.QUEST_SYMPTOMS_KEY)){
-                                    mSymptoms.setText(questionMap.get(Session.QUEST_SYMPTOMS_KEY));
+                                if(questionMap.containsKey(Constants.QUEST_SYMPTOMS_KEY)){
+                                    mSymptoms.setText(questionMap.get(Constants.QUEST_SYMPTOMS_KEY));
                                 }
-                                if(questionMap.containsKey(Session.QUEST_MEDICATION_KEY)){
-                                    mMedication.setText(questionMap.get(Session.QUEST_MEDICATION_KEY));
+                                if(questionMap.containsKey(Constants.QUEST_MEDICATION_KEY)){
+                                    mMedication.setText(questionMap.get(Constants.QUEST_MEDICATION_KEY));
                                 }
-                                if(questionMap.containsKey(Session.QUEST_EVENTS_KEY)){
-                                    mEvents.setText(questionMap.get(Session.QUEST_EVENTS_KEY));
+                                if(questionMap.containsKey(Constants.QUEST_EVENTS_KEY)){
+                                    mEvents.setText(questionMap.get(Constants.QUEST_EVENTS_KEY));
                                 }
-                                if(questionMap.containsKey(Session.QUEST_EMOTIONAL_KEY)){
-                                    mEmotional.setText(questionMap.get(Session.QUEST_EMOTIONAL_KEY));
+                                if(questionMap.containsKey(Constants.QUEST_EMOTIONAL_KEY)){
+                                    mEmotional.setText(questionMap.get(Constants.QUEST_EMOTIONAL_KEY));
                                 }
-                                if(questionMap.containsKey(Session.QUEST_PSYCHOLOGICAL_KEY)){
-                                    mPsychological.setText(questionMap.get(Session.QUEST_PSYCHOLOGICAL_KEY));
+                                if(questionMap.containsKey(Constants.QUEST_PSYCHOLOGICAL_KEY)){
+                                    mPsychological.setText(questionMap.get(Constants.QUEST_PSYCHOLOGICAL_KEY));
                                 }
-                                if(questionMap.containsKey(Session.QUEST_GYNECOLOGICAL_KEY)){
-                                    mGynecological.setText(questionMap.get(Session.QUEST_GYNECOLOGICAL_KEY));
+                                if(questionMap.containsKey(Constants.QUEST_GYNECOLOGICAL_KEY)){
+                                    mGynecological.setText(questionMap.get(Constants.QUEST_GYNECOLOGICAL_KEY));
                                 }
                             } else {
                                 Log.d(LOG_TAG, "No questionnaire data yet!");
@@ -175,21 +175,21 @@ public class QuestionnaireActivity extends AppCompatActivity {
         // create a hashmap to store data fetched from UI
         Map<String, String> questionMap = new HashMap<>();
 
-        questionMap.put(Session.QUEST_YIN_YANG_KEY, mYinyang.getText().toString().trim());
-        questionMap.put(Session.QUEST_FIVE_PHASES_KEY, mFivephases.getText().toString().trim());
-        questionMap.put(Session.QUEST_DIET_KEY, mDiet.getText().toString().trim());
-        questionMap.put(Session.QUEST_DIGESTION_KEY, mDigestion.getText().toString().trim());
-        questionMap.put(Session.QUEST_WAY_OF_LIFE_KEY, mWayOfLife.getText().toString().trim());
-        questionMap.put(Session.QUEST_SLEEP_KEY, mSleep.getText().toString().trim());
-        questionMap.put(Session.QUEST_SYMPTOMS_KEY, mSymptoms.getText().toString().trim());
-        questionMap.put(Session.QUEST_MEDICATION_KEY, mMedication.getText().toString().trim());
-        questionMap.put(Session.QUEST_EVENTS_KEY, mEvents.getText().toString().trim());
-        questionMap.put(Session.QUEST_EMOTIONAL_KEY, mEmotional.getText().toString().trim());
-        questionMap.put(Session.QUEST_PSYCHOLOGICAL_KEY, mPsychological.getText().toString().trim());
-        questionMap.put(Session.QUEST_GYNECOLOGICAL_KEY, mGynecological.getText().toString().trim());
+        questionMap.put(Constants.QUEST_YIN_YANG_KEY, mYinyang.getText().toString().trim());
+        questionMap.put(Constants.QUEST_FIVE_PHASES_KEY, mFivephases.getText().toString().trim());
+        questionMap.put(Constants.QUEST_DIET_KEY, mDiet.getText().toString().trim());
+        questionMap.put(Constants.QUEST_DIGESTION_KEY, mDigestion.getText().toString().trim());
+        questionMap.put(Constants.QUEST_WAY_OF_LIFE_KEY, mWayOfLife.getText().toString().trim());
+        questionMap.put(Constants.QUEST_SLEEP_KEY, mSleep.getText().toString().trim());
+        questionMap.put(Constants.QUEST_SYMPTOMS_KEY, mSymptoms.getText().toString().trim());
+        questionMap.put(Constants.QUEST_MEDICATION_KEY, mMedication.getText().toString().trim());
+        questionMap.put(Constants.QUEST_EVENTS_KEY, mEvents.getText().toString().trim());
+        questionMap.put(Constants.QUEST_EMOTIONAL_KEY, mEmotional.getText().toString().trim());
+        questionMap.put(Constants.QUEST_PSYCHOLOGICAL_KEY, mPsychological.getText().toString().trim());
+        questionMap.put(Constants.QUEST_GYNECOLOGICAL_KEY, mGynecological.getText().toString().trim());
 
         // write data to the batch
-        batch.update(sessionDoc, Session.QUEST_KEY, questionMap);
+        batch.update(sessionDoc, Constants.QUEST_KEY, questionMap);
 
         // commit the batch
         batch.commit()

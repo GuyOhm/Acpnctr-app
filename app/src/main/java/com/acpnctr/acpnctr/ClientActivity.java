@@ -128,11 +128,6 @@ public class ClientActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            // action menu in the app bar
-            case R.id.action_create_data:
-                return true;
-            case R.id.action_get_data:
-                return true;
             // Respond to a click on the "Up" arrow button in the app bar
             case android.R.id.home:
                 // If the client hasn't changed, continue with navigating up to parent activity

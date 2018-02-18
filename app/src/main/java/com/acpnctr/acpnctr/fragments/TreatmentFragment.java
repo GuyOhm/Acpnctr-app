@@ -352,7 +352,7 @@ public class TreatmentFragment extends Fragment {
                 .document(sClientid)
                 .collection(FIRESTORE_COLLECTION_SESSIONS)
                 .document(sSessionid)
-                .update(Session.SESSION_TREATMENT_LIST_KEY, mAbbreviationsList)
+                .update(Constants.SESSION_TREATMENT_LIST_KEY, mAbbreviationsList)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

@@ -150,10 +150,25 @@
             android:id="@+id/tv_eurythmy_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/white"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/btn_add_pulses"
             app:layout_constraintTop_toBottomOf="@+id/btn_add_pulses"
             tools:text="Beat per Breath: 7" />
+
+        <TextView
+            android:id="@+id/tv_28_pulse_types_value"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/tv_eurythmy_value"
+            app:layout_constraintTop_toBottomOf="@+id/tv_eurythmy_value"
+            tools:text="Pulse types: Feou, Che" />
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

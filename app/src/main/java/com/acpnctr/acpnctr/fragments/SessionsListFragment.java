@@ -23,6 +23,7 @@ import com.acpnctr.acpnctr.adapters.SessionAdapter;
 import com.acpnctr.acpnctr.models.Session;
 import com.acpnctr.acpnctr.utils.Constants;
 import com.acpnctr.acpnctr.utils.FirebaseUtil;
+import com.acpnctr.acpnctr.utils.SingleToast;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -56,7 +57,7 @@ public class SessionsListFragment extends Fragment implements SessionAdapter.OnS
     // Recycler view variable to display the user's clients list
     private RecyclerView mSessionsList;
 
-    // loading indicator
+    // Loading indicator
     private ProgressBar mLoadingIndicator;
 
     public SessionsListFragment() {
@@ -161,12 +162,12 @@ public class SessionsListFragment extends Fragment implements SessionAdapter.OnS
     }
 
     @Override
-    public void onSessionRated(float rating, int position) {
+    public void onSessionRated(final float rating, int position) {
         // get the id of the session that has been rated
         String sessionid = FirebaseUtil.getIdFromSnapshot(mAdapter, position);
         // build the HashMap with the sessionRating key and it's value
         HashMap<String, Object> map = new HashMap<>();
-        map.put(Session.SESSION_RATING_KEY, rating);
+        map.put(Constants.SESSION_RATING_KEY, rating);
         // path to the session document on firestore
         DocumentReference sessionDoc = db.collection(FIRESTORE_COLLECTION_USERS)
                 .document(sUid)
@@ -179,7 +180,15 @@ public class SessionsListFragment extends Fragment implements SessionAdapter.OnS
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(getActivity(), getString(R.string.session_rated_successful), Toast.LENGTH_SHORT).show();
+                        if (rating <= 1){
+                            SingleToast.show(getActivity(), getString(R.string.session_rated_no_improvement), Toast.LENGTH_SHORT);
+                        } else if (rating > 1 && rating <= 2){
+                            SingleToast.show(getActivity(), getString(R.string.session_rated_small_improvement), Toast.LENGTH_SHORT);
+                        } else if (rating > 2 && rating <= 3){
+                            SingleToast.show(getActivity(), getString(R.string.session_rated_good_improvement), Toast.LENGTH_SHORT);
+                        } else if (rating > 3 && rating <= 4){
+                            SingleToast.show(getActivity(), getString(R.string.session_rated_total_improvement), Toast.LENGTH_SHORT);
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

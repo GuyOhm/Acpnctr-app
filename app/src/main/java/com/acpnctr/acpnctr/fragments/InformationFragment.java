@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.acpnctr.acpnctr.R;
 import com.acpnctr.acpnctr.models.Client;
+import com.acpnctr.acpnctr.utils.DateFormatUtil;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -253,14 +254,24 @@ public class InformationFragment extends Fragment {
         String email = clientEmailEditText.getText().toString().trim();
 
 
-        // Check if name and gender has been edited
+        // Check if name, gender and DOB has been edited
         if (TextUtils.isEmpty(name)) {
             Toast.makeText(getActivity(), getString(R.string.client_info_name_needed), Toast.LENGTH_SHORT).show();
+            // return early
+            return;
+        } else if (TextUtils.isEmpty(dob)) {
+            Toast.makeText(getActivity(), getString(R.string.client_info_dob_needed), Toast.LENGTH_SHORT).show();
             // return early
             return;
         } else if (clientGender == Client.GENDER_UNKNOWN) {
             Toast.makeText(getActivity(), getString(R.string.client_info_gender_needed), Toast.LENGTH_SHORT).show();
             // return early
+            return;
+        }
+
+        // check that dob format is valid
+        if (!DateFormatUtil.validate(dob)){
+            Toast.makeText(getActivity(), getString(R.string.date_format_not_valid), Toast.LENGTH_SHORT).show();
             return;
         }
 

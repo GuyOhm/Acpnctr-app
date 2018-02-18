@@ -1,56 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:attr/selectableItemBackground"
-    android:orientation="vertical">
+    android:background="?android:attr/selectableItemBackground">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+
+    <TextView
+        android:id="@+id/tv_sessions_list_date"
+        style="@style/ListItemPrimaryText"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="13 novembre 2017" />
 
-        <TextView
-            android:id="@+id/tv_sessions_list_date"
-            style="@style/ListItemPrimaryText"
-            android:layout_width="0dp"
-            android:layout_gravity="center_vertical|start"
-            android:layout_weight="1"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingTop="8dp"
-            tools:text="13 novembre 2017" />
+    <RatingBar
+        android:id="@+id/rb_session_rating"
+        style="@style/Widget.AppCompat.RatingBar.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:isIndicator="false"
+        android:numStars="4"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_sessions_list_date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_sessions_list_date" />
 
-        <RatingBar
-            android:id="@+id/rb_session_rating"
-            style="@style/Widget.AppCompat.RatingBar.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|end"
-            android:isIndicator="false"
-            android:paddingRight="@dimen/activity_horizontal_margin" />
-
-    </LinearLayout>
 
     <TextView
         android:id="@+id/tv_sessions_list_goal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ellipsize="end"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
         android:singleLine="true"
+        app:layout_constraintStart_toStartOf="@+id/tv_sessions_list_date"
+        app:layout_constraintTop_toBottomOf="@+id/tv_sessions_list_date"
         tools:text="tendinite coude gauche" />
 
     <TextView
         android:id="@+id/tv_session_list_treatment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:ellipsize="end"
-        android:paddingBottom="8dp"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
         android:singleLine="true"
+        app:layout_constraintBottom_toBottomOf="@id/view"
+        app:layout_constraintStart_toStartOf="@+id/tv_sessions_list_goal"
+        app:layout_constraintTop_toBottomOf="@+id/tv_sessions_list_goal"
+        app:layout_constraintVertical_bias="0.0"
         tools:text="5TR, 10TR, 8TR, 4GI, 34VB, 3F " />
 
-    <View style="@style/DividerViewStyle" />
+    <!--This View serves as a visual divider between list items-->
+    <View
+        android:id="@+id/view"
+        style="@style/DividerViewStyle"
+        android:layout_marginEnd="@dimen/divider_view_horizontal_padding"
+        android:layout_marginStart="@dimen/divider_view_horizontal_padding"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

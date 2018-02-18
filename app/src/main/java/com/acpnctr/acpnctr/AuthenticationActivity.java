@@ -59,31 +59,30 @@ public class AuthenticationActivity extends AppCompatActivity {
 
             // successfully signed in
             if (resultCode == RESULT_OK){
-                Toast.makeText(AuthenticationActivity.this, "Signed in!", Toast.LENGTH_SHORT).show(); // TODO: extract as a string
                 Intent dashboardIntent = new Intent(AuthenticationActivity.this, DashboardActivity.class);
-                startActivity(dashboardIntent);
+                setResult(RESULT_OK, dashboardIntent);
                 finish();
                 return;
             } else {
                 // signed in failed
                 if (response == null) {
                     // user pressed back button hence cancelled sign in
-                    Toast.makeText(AuthenticationActivity.this, "Signed in cancelled", Toast.LENGTH_SHORT).show(); // TODO: extract as a string
+                    Toast.makeText(AuthenticationActivity.this, R.string.auth_sign_in_cancelled, Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 if (response.getErrorCode() == ErrorCodes.NO_NETWORK) {
-                    Toast.makeText(AuthenticationActivity.this, "Couldn't connect to network", Toast.LENGTH_SHORT).show(); // TODO: extract as a string
+                    Toast.makeText(AuthenticationActivity.this, R.string.auth_no_network, Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 if (response.getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
-                    Toast.makeText(AuthenticationActivity.this, "Something went wrong :/", Toast.LENGTH_SHORT).show(); // TODO: extract as a string
+                    Toast.makeText(AuthenticationActivity.this, R.string.auth_unknown_error, Toast.LENGTH_SHORT).show();
                     return;
                 }
             }
 
-            Toast.makeText(AuthenticationActivity.this, "Ooops...", Toast.LENGTH_SHORT).show(); // TODO: extract as a string
+            Toast.makeText(AuthenticationActivity.this, R.string.auth_ooops, Toast.LENGTH_SHORT).show();
         }
     }
 }

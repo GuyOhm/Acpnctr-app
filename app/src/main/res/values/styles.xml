@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat">
@@ -9,12 +9,18 @@
         <item name="android:windowBackground">@color/colorPrimary</item>
         <item name="actionBarStyle">@style/CustomActionBarStyle</item>
         <item name="buttonStyle">@style/AppTheme.Button</item>
+        <item name="radioButtonStyle">@style/AppTheme.RadioButton</item>
     </style>
 
     <!-- Button style -->
     <style name="AppTheme.Button" parent="Widget.AppCompat.Button">
         <item name="android:background">@android:color/white</item>
         <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <!-- Radio Button style -->
+    <style name="AppTheme.RadioButton" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:colorControlNormal">@color/colorAccent</item>
     </style>
 
     <!-- TabLayout style -->

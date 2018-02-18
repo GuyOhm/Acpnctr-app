@@ -2,6 +2,7 @@ package com.acpnctr.acpnctr.fragments;
 
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -91,8 +92,7 @@ public class FourStepsFragment extends Fragment {
     // for pulses data
     private TextView mEurythmyTextView;
     private Map<String, Object> mPulsesMap;
-
-    // TODO: finish Pulses/28 forms
+    private TextView m28PulseTypesTextView;
 
     private static boolean sessionDataHasChanged = false;
 
@@ -132,7 +132,7 @@ public class FourStepsFragment extends Fragment {
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_four_steps, container, false);
@@ -150,6 +150,7 @@ public class FourStepsFragment extends Fragment {
         ListView palpationContainer = rootView.findViewById(R.id.lv_palpation_container);
         Button addPulses = rootView.findViewById(R.id.btn_add_pulses);
         mEurythmyTextView = rootView.findViewById(R.id.tv_eurythmy_value);
+        m28PulseTypesTextView = rootView.findViewById(R.id.tv_28_pulse_types_value);
 
         // set up OnTouchListeners on them
         goalEditText.setOnTouchListener(sessionTouchListener);
@@ -171,6 +172,9 @@ public class FourStepsFragment extends Fragment {
             if (intent.hasExtra(Constants.INTENT_SELECTED_SESSION_ID)) {
                 Session selectedSession = intent.getParcelableExtra(Constants.INTENT_SELECTED_SESSION);
                 onSessionSelectedInitialize(selectedSession);
+            } else {
+                // this is a new session, set session date to today date as a suggestion
+                dateEditText.setText(DateFormatUtil.getCurrentDate());
             }
         }
 
@@ -285,7 +289,7 @@ public class FourStepsFragment extends Fragment {
                     Map<String, Object> sessionMap = documentSnapshot.getData();
 
                     // [START - GET AND SET QUESTIONNAIRE DATA]
-                    mQuestionMap = (Map<String, String>) sessionMap.get(Session.QUEST_KEY);
+                    mQuestionMap = (Map<String, String>) sessionMap.get(Constants.QUEST_KEY);
                     if (mQuestionMap != null) {
                         mQuestionArray.clear();
                         for (Map.Entry<String, String> entry : mQuestionMap.entrySet()) {
@@ -302,7 +306,7 @@ public class FourStepsFragment extends Fragment {
                     // [END - GET AND SET QUESTIONNAIRE DATA]
 
                     // [START - GET AND SET OBSERVATION DATA]
-                    mObservationMap = (Map<String, String>) sessionMap.get(Session.OBS_KEY);
+                    mObservationMap = (Map<String, String>) sessionMap.get(Constants.OBS_KEY);
                     if (mObservationMap != null) {
                         mObservationArray.clear();
                         for (Map.Entry<String, String> entry : mObservationMap.entrySet()) {
@@ -319,7 +323,7 @@ public class FourStepsFragment extends Fragment {
                     // [END - GET AND SET OBSERVATION DATA]
 
                     // [START - GET AND SET AUSCULTATION DATA]
-                    mAuscultationMap = (Map<String, String>) sessionMap.get(Session.AUSC_KEY);
+                    mAuscultationMap = (Map<String, String>) sessionMap.get(Constants.AUSC_KEY);
                     if (mAuscultationMap != null) {
                         mAuscultationArray.clear();
                         for (Map.Entry<String, String> entry : mAuscultationMap.entrySet()) {
@@ -336,7 +340,7 @@ public class FourStepsFragment extends Fragment {
                     // [END - GET AND SET AUSCULTATION DATA]
 
                     // [START - GET AND SET PALPATION DATA]
-                    mPalpationMap = (Map<String, String>) sessionMap.get(Session.PALP_KEY);
+                    mPalpationMap = (Map<String, String>) sessionMap.get(Constants.PALP_KEY);
                     if (mPalpationMap != null) {
                         mPalpationArray.clear();
                         for (Map.Entry<String, String> entry : mPalpationMap.entrySet()) {
@@ -353,20 +357,48 @@ public class FourStepsFragment extends Fragment {
                     // [END - GET AND SET PALPATION DATA]
 
                     // [START - GET AND SET PULSES DATA]
-                    mPulsesMap = (Map<String, Object>) sessionMap.get(Session.PULSES_KEY);
+                    mPulsesMap = (Map<String, Object>) sessionMap.get(Constants.PULSES_KEY);
                     if (mPulsesMap != null){
-                        Map<String, String> eurythmyMap = (Map<String, String>) mPulsesMap.get(Session.PULSES_EURYTHMY_KEY);
-                        if (eurythmyMap != null && eurythmyMap.containsKey(Session.PULSES_EURYTHMY_BPB_KEY)){
+                        // get eurythmy data if any
+                        Map<String, String> eurythmyMap = (Map<String, String>) mPulsesMap.get(Constants.PULSES_EURYTHMY_KEY);
+                        if (eurythmyMap != null && eurythmyMap.containsKey(Constants.PULSES_EURYTHMY_BPB_KEY)){
                             mEurythmyTextView.setVisibility(View.VISIBLE);
                             StringBuilder eurythmyString = new StringBuilder();
-                            // TODO: TEST STRING BUILDER
-                            eurythmyString
-                                    .append(getString(R.string.pulses_beat_per_breath_label))
-                                    .append(eurythmyMap.get(Session.PULSES_EURYTHMY_BPB_KEY));
-                            mEurythmyTextView.setText(eurythmyString);
+                            Activity activity = getActivity();
+                            if (activity != null && isAdded()) {
+                                eurythmyString
+                                        .append(activity.getString(R.string.pulses_eurythmy_value_label))
+                                        .append(" ")
+                                        .append(eurythmyMap.get(Constants.PULSES_EURYTHMY_BPB_KEY))
+                                        .append(" ")
+                                        .append(getResources().getString(R.string.pulses_beat_per_breath_label));
+                                mEurythmyTextView.setText(eurythmyString);
+                            }
                         } else {
                             mEurythmyTextView.setVisibility(View.GONE);
                         }
+
+                        // get 28 Pulse Types data if any
+                        Map<String, Boolean> pulseTypesMap = (Map<String, Boolean>) mPulsesMap.get(Constants.PULSES_28_TYPES_KEY);
+                        if (pulseTypesMap != null){
+                            m28PulseTypesTextView.setVisibility(View.VISIBLE);
+                            StringBuilder typeString = new StringBuilder();
+                            Activity activity = getActivity();
+                            if (activity != null && isAdded()) {
+                                typeString
+                                        .append(getResources().getString(R.string.pulses_28_types_value_label))
+                                        .append(" ");
+                                for (Map.Entry<String, Boolean> entry : pulseTypesMap.entrySet()) {
+                                    typeString
+                                            .append(entry.getKey())
+                                            .append(" / ");
+                                }
+                                m28PulseTypesTextView.setText(typeString);
+                            }
+                        } else {
+                            m28PulseTypesTextView.setVisibility(View.GONE);
+                        }
+
                     } else {
                         Log.d(LOG_TAG, "No pulses data yet!");
                     }
@@ -417,12 +449,21 @@ public class FourStepsFragment extends Fragment {
         Session session = new Session();
         session.setGoal(mSessionGoal);
         long sessionTimestamp = 0;
-        // TODO: ensure date is valid
-        try {
-            sessionTimestamp = DateFormatUtil.convertStringToTimestamp(mSessionDate) * 1000; // to millisec
-            session.setTimestampCreated(sessionTimestamp);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        // Ensure date is valid
+        if (DateFormatUtil.validate(mSessionDate)){
+            try {
+                // convert to timestamp in millisec
+                sessionTimestamp = DateFormatUtil.convertStringToTimestamp(mSessionDate) * 1000;
+                session.setTimestampCreated(sessionTimestamp);
+            } catch (ParseException e) {
+                e.printStackTrace();
+                Toast.makeText(getActivity(), getString(R.string.date_format_not_valid), Toast.LENGTH_SHORT).show();
+                return;
+            }
+        } else {
+            // date is not valid
+            Toast.makeText(getActivity(), getString(R.string.date_format_not_valid), Toast.LENGTH_SHORT).show();
+            return;
         }
 
         if (isNewSession) {
@@ -446,8 +487,8 @@ public class FourStepsFragment extends Fragment {
 
         // update date and session
         if(sessionDataHasChanged) {
-            batch.update(sessionDoc, Session.SESSION_TIMESTAMP, timestamp);
-            batch.update(sessionDoc, Session.SESSION_GOAL, goal);
+            batch.update(sessionDoc, Constants.SESSION_TIMESTAMP, timestamp);
+            batch.update(sessionDoc, Constants.SESSION_GOAL, goal);
         }
 
         // commit the batch if there is any changes

@@ -1,5 +1,7 @@
 package com.acpnctr.acpnctr;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,14 +23,17 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.acpnctr.acpnctr.adapters.ClientAdapter;
 import com.acpnctr.acpnctr.models.Client;
 import com.acpnctr.acpnctr.models.User;
+import com.acpnctr.acpnctr.utils.AcpnctrUtil;
 import com.acpnctr.acpnctr.utils.Constants;
 import com.acpnctr.acpnctr.utils.FirebaseUtil;
+import com.acpnctr.acpnctr.utils.SingleToast;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -48,6 +54,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import static android.text.InputType.TYPE_TEXT_FLAG_CAP_WORDS;
 import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_CLIENTS;
 import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_USERS;
 import static com.acpnctr.acpnctr.utils.Constants.INTENT_EXTRA_UID;
@@ -65,8 +72,17 @@ public class DashboardActivity extends AppCompatActivity
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirestoreRecyclerAdapter mAdapter;
 
+    // Request code for authentication
+    public static final int AUTH_REQUEST = 101;
+
     // Flag that indicates if the user has already signed in hence has already a document in db
     private static boolean isAlreadyInDatabase = false;
+
+    // Flag to indicate if the user is making a search on client
+    private boolean isSearchingClient = false;
+
+    // Member variable for search text
+    private String mSearchText;
 
     // Member variable for uid
     private String mUid;
@@ -138,10 +154,7 @@ public class DashboardActivity extends AppCompatActivity
                     mLoadingIndicator.setVisibility(View.VISIBLE);
 
                     // fetch data from firestore and display clients list
-                    CollectionReference clientsCollection = db.collection(FIRESTORE_COLLECTION_USERS)
-                            .document(mUid)
-                            .collection(FIRESTORE_COLLECTION_CLIENTS);
-                    loadClientsList(clientsCollection);
+                    loadClientsList();
 
                     // initialize user's data in the drawer's navigation header
                     onSignedInInitializeNavHeader(user);
@@ -183,6 +196,7 @@ public class DashboardActivity extends AppCompatActivity
 
         mNavigationView = findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
+        mNavigationView.setCheckedItem(R.id.nav_dashboard);
         // [ END - Side Navigation Drawer ]
     }
 
@@ -206,11 +220,28 @@ public class DashboardActivity extends AppCompatActivity
         emailView.setText(email);
     }
 
-    private void loadClientsList(CollectionReference clientsCollection) {
+    private void loadClientsList() {
+        CollectionReference clientsCollection = db.collection(FIRESTORE_COLLECTION_USERS)
+                .document(mUid)
+                .collection(FIRESTORE_COLLECTION_CLIENTS);
+
+        // declare the appropriate query;
+        Query query;
 
         // query firestore for the user's clients
-        Query query = clientsCollection
-                .orderBy("timestampCreated", Query.Direction.DESCENDING);
+        if (!isSearchingClient) {
+            // for the entire collection
+            query = clientsCollection
+                    .orderBy(Client.CLIENT_TIMESTAMP_KEY, Query.Direction.DESCENDING);
+        } else {
+            // for a search string
+            query = clientsCollection
+                    .whereGreaterThanOrEqualTo(Client.CLIENT_NAME_KEY, mSearchText)
+                    .whereLessThanOrEqualTo(Client.CLIENT_NAME_KEY, AcpnctrUtil.zeefyForSearch(mSearchText))
+                    .orderBy(Client.CLIENT_NAME_KEY, Query.Direction.ASCENDING);
+
+            Log.d(LOG_TAG, "zeefy string is: " + AcpnctrUtil.zeefyForSearch(mSearchText));
+        }
 
         // configure recycler adapter options
         FirestoreRecyclerOptions<Client> options = new FirestoreRecyclerOptions.Builder<Client>()
@@ -272,10 +303,11 @@ public class DashboardActivity extends AppCompatActivity
         String email = user.getEmail();
         String fullname = user.getDisplayName();
         List<String> authProvider = user.getProviders();
+        String phone = user.getPhoneNumber();
         long timestampCreated = System.currentTimeMillis();
 
         // create document for the new user in firestore db
-        User userModel = new User(mUid, fullname, email, authProvider != null ? authProvider.get(0) : null, timestampCreated);
+        User userModel = new User(mUid, fullname, email, phone, authProvider != null ? authProvider.get(0) : null, timestampCreated);
         userDoc
                 .set(userModel, SetOptions.merge())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -297,9 +329,8 @@ public class DashboardActivity extends AppCompatActivity
      * Starts AuthentificationActivity for authentication
      */
     private void launchAuthentication() {
-        // TODO: launch activity for result to display toat here and see it this fixes login bug...
         Intent authIntent = new Intent(DashboardActivity.this, AuthenticationActivity.class);
-        startActivity(authIntent);
+        startActivityForResult(authIntent, AUTH_REQUEST);
     }
 
     @Override
@@ -352,28 +383,45 @@ public class DashboardActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        
+        // Set a search interface in action bar using SearchView widget as per:
+        // https://developer.android.com/guide/topics/search/search-dialog.html
+        // Get the SearchView and set the searchable configuration
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        // Assumes current activity is the searchable activity
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+        searchView.setQueryHint(getString(R.string.search_client_hint));
+        searchView.setInputType(TYPE_TEXT_FLAG_CAP_WORDS);
+        searchClient(searchView);
         return true;
     }
 
     /**
-     * Handles action bar menu navigation
-     *
-     * @param item that is clicked
-     * @return true when item is clicked
+     * Handle search client
+     * @param searchView
      */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id){
-            case R.id.action_logout:
-                signUserOut();
+    private void searchClient(SearchView searchView) {
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                mSearchText = s;
+                if (!TextUtils.isEmpty(mSearchText)){
+                    isSearchingClient = true;
+                } else {
+                    isSearchingClient = false;
+                }
+                loadClientsList();
                 return true;
-            case R.id.action_signin:
-                launchAuthentication();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+            }
+        });
     }
 
     /**
@@ -386,7 +434,7 @@ public class DashboardActivity extends AppCompatActivity
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         // user is signed out
-                        Toast.makeText(DashboardActivity.this, "You\'ve successfully signed out", Toast.LENGTH_SHORT).show(); // TODO: extract as a string
+                        Toast.makeText(DashboardActivity.this, R.string.auth_signed_out, Toast.LENGTH_SHORT).show();
                         isAlreadyInDatabase = false;
                     }
                 });
@@ -408,17 +456,37 @@ public class DashboardActivity extends AppCompatActivity
             case R.id.nav_dashboard:
                 break;
             case R.id.nav_account:
+                SingleToast.show(DashboardActivity.this, getString(R.string.coming_soon), Toast.LENGTH_SHORT);
                 break;
             case R.id.nav_settings:
+                SingleToast.show(DashboardActivity.this, getString(R.string.coming_soon), Toast.LENGTH_SHORT);
                 break;
             case R.id.nav_stats:
+                SingleToast.show(DashboardActivity.this, getString(R.string.coming_soon), Toast.LENGTH_SHORT);
                 break;
             case R.id.nav_tools:
+                SingleToast.show(DashboardActivity.this, getString(R.string.coming_soon), Toast.LENGTH_SHORT);
+                break;
+            case R.id.nav_signout:
+                signUserOut();
                 break;
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode){
+            case AUTH_REQUEST:
+                if (resultCode == RESULT_OK){
+                    Toast.makeText(DashboardActivity.this, R.string.auth_signed_in, Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid request code, " + requestCode);
+        }
     }
 }

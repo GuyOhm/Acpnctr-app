@@ -9,7 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 
-import com.acpnctr.acpnctr.models.Session;
+import com.acpnctr.acpnctr.utils.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -90,40 +90,40 @@ public class ObservationActivity extends AppCompatActivity {
                             // store all data to a Map
                             Map<String, Object> sessionMap = documentSnapshot.getData();
                             // get observation data and display them to edit views
-                            Map<String, String> observationMap = (Map<String, String>) sessionMap.get(Session.OBS_KEY);
+                            Map<String, String> observationMap = (Map<String, String>) sessionMap.get(Constants.OBS_KEY);
                             if (observationMap != null){
-                                if(observationMap.containsKey(Session.OBS_BEHAVIOUR_KEY)){
-                                    mBehaviour.setText(observationMap.get(Session.OBS_BEHAVIOUR_KEY));
+                                if(observationMap.containsKey(Constants.OBS_BEHAVIOUR_KEY)){
+                                    mBehaviour.setText(observationMap.get(Constants.OBS_BEHAVIOUR_KEY));
                                 }
-                                if(observationMap.containsKey(Session.OBS_TONGUE_KEY)){
-                                    mTongue.setText(observationMap.get(Session.OBS_TONGUE_KEY));
+                                if(observationMap.containsKey(Constants.OBS_TONGUE_KEY)){
+                                    mTongue.setText(observationMap.get(Constants.OBS_TONGUE_KEY));
                                 }
-                                if(observationMap.containsKey(Session.OBS_LIPS_KEY)){
-                                    mLips.setText(observationMap.get(Session.OBS_LIPS_KEY));
+                                if(observationMap.containsKey(Constants.OBS_LIPS_KEY)){
+                                    mLips.setText(observationMap.get(Constants.OBS_LIPS_KEY));
                                 }
-                                if(observationMap.containsKey(Session.OBS_LIMB_KEY)){
-                                    mLimb.setText(observationMap.get(Session.OBS_LIMB_KEY));
+                                if(observationMap.containsKey(Constants.OBS_LIMB_KEY)){
+                                    mLimb.setText(observationMap.get(Constants.OBS_LIMB_KEY));
                                 }
-                                if(observationMap.containsKey(Session.OBS_MERIDIAN_KEY)){
-                                    mMeridian.setText(observationMap.get(Session.OBS_MERIDIAN_KEY));
+                                if(observationMap.containsKey(Constants.OBS_MERIDIAN_KEY)){
+                                    mMeridian.setText(observationMap.get(Constants.OBS_MERIDIAN_KEY));
                                 }
-                                if(observationMap.containsKey(Session.OBS_MORPHOLOGY_KEY)){
-                                    mMorphology.setText(observationMap.get(Session.OBS_MORPHOLOGY_KEY));
+                                if(observationMap.containsKey(Constants.OBS_MORPHOLOGY_KEY)){
+                                    mMorphology.setText(observationMap.get(Constants.OBS_MORPHOLOGY_KEY));
                                 }
-                                if(observationMap.containsKey(Session.OBS_NAILS_KEY)){
-                                    mNails.setText(observationMap.get(Session.OBS_NAILS_KEY));
+                                if(observationMap.containsKey(Constants.OBS_NAILS_KEY)){
+                                    mNails.setText(observationMap.get(Constants.OBS_NAILS_KEY));
                                 }
-                                if(observationMap.containsKey(Session.OBS_SKIN_KEY)){
-                                    mSkin.setText(observationMap.get(Session.OBS_SKIN_KEY));
+                                if(observationMap.containsKey(Constants.OBS_SKIN_KEY)){
+                                    mSkin.setText(observationMap.get(Constants.OBS_SKIN_KEY));
                                 }
-                                if(observationMap.containsKey(Session.OBS_HAIRINESS_KEY)){
-                                    mHairiness.setText(observationMap.get(Session.OBS_HAIRINESS_KEY));
+                                if(observationMap.containsKey(Constants.OBS_HAIRINESS_KEY)){
+                                    mHairiness.setText(observationMap.get(Constants.OBS_HAIRINESS_KEY));
                                 }
-                                if(observationMap.containsKey(Session.OBS_COMPLEXION_KEY)){
-                                    mComplexion.setText(observationMap.get(Session.OBS_COMPLEXION_KEY));
+                                if(observationMap.containsKey(Constants.OBS_COMPLEXION_KEY)){
+                                    mComplexion.setText(observationMap.get(Constants.OBS_COMPLEXION_KEY));
                                 }
-                                if(observationMap.containsKey(Session.OBS_EYES_KEY)){
-                                    mEyes.setText(observationMap.get(Session.OBS_EYES_KEY));
+                                if(observationMap.containsKey(Constants.OBS_EYES_KEY)){
+                                    mEyes.setText(observationMap.get(Constants.OBS_EYES_KEY));
                                 }
                             } else {
                                 Log.d(LOG_TAG, "No Observation data yet!");
@@ -169,20 +169,20 @@ public class ObservationActivity extends AppCompatActivity {
         // create a hashmap to store data fetched from UI
         Map<String, String> observationMap = new HashMap<>();
 
-        observationMap.put(Session.OBS_BEHAVIOUR_KEY, mBehaviour.getText().toString().trim());
-        observationMap.put(Session.OBS_TONGUE_KEY, mTongue.getText().toString().trim());
-        observationMap.put(Session.OBS_LIPS_KEY, mLips.getText().toString().trim());
-        observationMap.put(Session.OBS_LIMB_KEY, mLimb.getText().toString().trim());
-        observationMap.put(Session.OBS_MERIDIAN_KEY, mMeridian.getText().toString().trim());
-        observationMap.put(Session.OBS_MORPHOLOGY_KEY, mMorphology.getText().toString().trim());
-        observationMap.put(Session.OBS_NAILS_KEY, mNails.getText().toString().trim());
-        observationMap.put(Session.OBS_SKIN_KEY, mSkin.getText().toString().trim());
-        observationMap.put(Session.OBS_HAIRINESS_KEY, mHairiness.getText().toString().trim());
-        observationMap.put(Session.OBS_COMPLEXION_KEY, mComplexion.getText().toString().trim());
-        observationMap.put(Session.OBS_EYES_KEY, mEyes.getText().toString().trim());
+        observationMap.put(Constants.OBS_BEHAVIOUR_KEY, mBehaviour.getText().toString().trim());
+        observationMap.put(Constants.OBS_TONGUE_KEY, mTongue.getText().toString().trim());
+        observationMap.put(Constants.OBS_LIPS_KEY, mLips.getText().toString().trim());
+        observationMap.put(Constants.OBS_LIMB_KEY, mLimb.getText().toString().trim());
+        observationMap.put(Constants.OBS_MERIDIAN_KEY, mMeridian.getText().toString().trim());
+        observationMap.put(Constants.OBS_MORPHOLOGY_KEY, mMorphology.getText().toString().trim());
+        observationMap.put(Constants.OBS_NAILS_KEY, mNails.getText().toString().trim());
+        observationMap.put(Constants.OBS_SKIN_KEY, mSkin.getText().toString().trim());
+        observationMap.put(Constants.OBS_HAIRINESS_KEY, mHairiness.getText().toString().trim());
+        observationMap.put(Constants.OBS_COMPLEXION_KEY, mComplexion.getText().toString().trim());
+        observationMap.put(Constants.OBS_EYES_KEY, mEyes.getText().toString().trim());
 
         // write data to the batch
-        batch.update(sessionDoc, Session.OBS_KEY, observationMap);
+        batch.update(sessionDoc, Constants.OBS_KEY, observationMap);
 
         // commit the batch
         batch.commit()

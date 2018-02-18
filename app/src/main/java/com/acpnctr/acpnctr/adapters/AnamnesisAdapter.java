@@ -1,7 +1,6 @@
 package com.acpnctr.acpnctr.adapters;
 
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +8,7 @@ import android.widget.TextView;
 
 import com.acpnctr.acpnctr.R;
 import com.acpnctr.acpnctr.models.Anamnesis;
+import com.acpnctr.acpnctr.utils.DateFormatUtil;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
@@ -60,10 +60,11 @@ public class AnamnesisAdapter extends FirestoreRecyclerAdapter<Anamnesis,
         }
 
         public void bind(Anamnesis anamnesis) {
-            if (TextUtils.isEmpty(anamnesis.getDate())) {
+            if (anamnesis.getTimestamp() == 0) {
                 anamnesisDateTextView.setText(R.string.anam_empty_date);
             } else {
-                anamnesisDateTextView.setText(anamnesis.getDate());
+                anamnesisDateTextView.setText(
+                        DateFormatUtil.convertTimestampToString(anamnesis.getTimestamp()));
             }
             anamnesisHistoryTextView.setText(anamnesis.getHistory());
         }

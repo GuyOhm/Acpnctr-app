@@ -10,23 +10,5 @@
         android:title="@string/action_save"
         app:showAsAction="always" />
 
-    <item
-        android:id="@+id/action_create_data"
-        android:orderInCategory="100"
-        android:title="@string/action_create_data"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_get_data"
-        android:orderInCategory="100"
-        android:title="@string/action_get_data"
-        app:showAsAction="never" />
-
 </menu>
 

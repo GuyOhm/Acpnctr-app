@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
-import com.acpnctr.acpnctr.models.Session;
+import com.acpnctr.acpnctr.utils.Constants;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -88,18 +88,18 @@ public class FivePhasesActivity extends AppCompatActivity {
 
                 if (documentSnapshot != null && documentSnapshot.exists()){
                     Map<String, Boolean> wuxing = (Map<String, Boolean>) documentSnapshot.getData()
-                            .get(Session.WUXING_KEY);
+                            .get(Constants.WUXING_KEY);
                     if (wuxing != null) {
-                        mWoodEarth.setChecked(wuxing.get(Session.WUXING_WOOD_TO_EARTH_KEY));
-                        mWoodMetal.setChecked(wuxing.get(Session.WUXING_WOOD_TO_METAL_KEY));
-                        mFireMetal.setChecked(wuxing.get(Session.WUXING_FIRE_TO_METAL_KEY));
-                        mFireWater.setChecked(wuxing.get(Session.WUXING_FIRE_TO_WATER_KEY));
-                        mEarthWater.setChecked(wuxing.get(Session.WUXING_EARTH_TO_WATER_KEY));
-                        mEarthWood.setChecked(wuxing.get(Session.WUXING_EARTH_TO_WOOD_KEY));
-                        mMetalWood.setChecked(wuxing.get(Session.WUXING_METAL_TO_WOOD_KEY));
-                        mMetalFire.setChecked(wuxing.get(Session.WUXING_METAL_TO_FIRE_KEY));
-                        mWaterFire.setChecked(wuxing.get(Session.WUXING_WATER_TO_FIRE_KEY));
-                        mWaterEarth.setChecked(wuxing.get(Session.WUXING_WATER_TO_EARTH_KEY));
+                        mWoodEarth.setChecked(wuxing.get(Constants.WUXING_WOOD_TO_EARTH_KEY));
+                        mWoodMetal.setChecked(wuxing.get(Constants.WUXING_WOOD_TO_METAL_KEY));
+                        mFireMetal.setChecked(wuxing.get(Constants.WUXING_FIRE_TO_METAL_KEY));
+                        mFireWater.setChecked(wuxing.get(Constants.WUXING_FIRE_TO_WATER_KEY));
+                        mEarthWater.setChecked(wuxing.get(Constants.WUXING_EARTH_TO_WATER_KEY));
+                        mEarthWood.setChecked(wuxing.get(Constants.WUXING_EARTH_TO_WOOD_KEY));
+                        mMetalWood.setChecked(wuxing.get(Constants.WUXING_METAL_TO_WOOD_KEY));
+                        mMetalFire.setChecked(wuxing.get(Constants.WUXING_METAL_TO_FIRE_KEY));
+                        mWaterFire.setChecked(wuxing.get(Constants.WUXING_WATER_TO_FIRE_KEY));
+                        mWaterEarth.setChecked(wuxing.get(Constants.WUXING_WATER_TO_EARTH_KEY));
                     }
                 } else {
                     Log.d(LOG_TAG, "Current data: null");
@@ -311,34 +311,34 @@ public class FivePhasesActivity extends AppCompatActivity {
                 .document(sSessionid);
         // create a hashmap and put data to be send to firestore
         Map<String, Boolean> wuxingMap = new HashMap<>();
-        wuxingMap.put(Session.WUXING_WOOD_TO_EARTH_KEY, mWoodEarth.isChecked());
-        wuxingMap.put(Session.WUXING_WOOD_TO_METAL_KEY, mWoodMetal.isChecked());
-        wuxingMap.put(Session.WUXING_FIRE_TO_METAL_KEY, mFireMetal.isChecked());
-        wuxingMap.put(Session.WUXING_FIRE_TO_WATER_KEY, mFireWater.isChecked());
-        wuxingMap.put(Session.WUXING_EARTH_TO_WATER_KEY, mEarthWater.isChecked());
-        wuxingMap.put(Session.WUXING_EARTH_TO_WOOD_KEY, mEarthWood.isChecked());
-        wuxingMap.put(Session.WUXING_METAL_TO_WOOD_KEY, mMetalWood.isChecked());
-        wuxingMap.put(Session.WUXING_METAL_TO_FIRE_KEY, mMetalFire.isChecked());
-        wuxingMap.put(Session.WUXING_WATER_TO_FIRE_KEY, mWaterFire.isChecked());
-        wuxingMap.put(Session.WUXING_WATER_TO_EARTH_KEY, mWaterEarth.isChecked());
+        wuxingMap.put(Constants.WUXING_WOOD_TO_EARTH_KEY, mWoodEarth.isChecked());
+        wuxingMap.put(Constants.WUXING_WOOD_TO_METAL_KEY, mWoodMetal.isChecked());
+        wuxingMap.put(Constants.WUXING_FIRE_TO_METAL_KEY, mFireMetal.isChecked());
+        wuxingMap.put(Constants.WUXING_FIRE_TO_WATER_KEY, mFireWater.isChecked());
+        wuxingMap.put(Constants.WUXING_EARTH_TO_WATER_KEY, mEarthWater.isChecked());
+        wuxingMap.put(Constants.WUXING_EARTH_TO_WOOD_KEY, mEarthWood.isChecked());
+        wuxingMap.put(Constants.WUXING_METAL_TO_WOOD_KEY, mMetalWood.isChecked());
+        wuxingMap.put(Constants.WUXING_METAL_TO_FIRE_KEY, mMetalFire.isChecked());
+        wuxingMap.put(Constants.WUXING_WATER_TO_FIRE_KEY, mWaterFire.isChecked());
+        wuxingMap.put(Constants.WUXING_WATER_TO_EARTH_KEY, mWaterEarth.isChecked());
         // save data to firestore session document
-        sessionForDiag.update(Session.WUXING_KEY, wuxingMap)
+        sessionForDiag.update(Constants.WUXING_KEY, wuxingMap)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Intent returnIntent = new Intent();
                         // store checkboxes' state into a bundle
                         Bundle wuxingBundle = new Bundle();
-                        wuxingBundle.putBoolean(Session.WUXING_WOOD_TO_EARTH_KEY, mWoodEarth.isChecked());
-                        wuxingBundle.putBoolean(Session.WUXING_WOOD_TO_METAL_KEY, mWoodMetal.isChecked());
-                        wuxingBundle.putBoolean(Session.WUXING_FIRE_TO_METAL_KEY, mFireMetal.isChecked());
-                        wuxingBundle.putBoolean(Session.WUXING_FIRE_TO_WATER_KEY, mFireWater.isChecked());
-                        wuxingBundle.putBoolean(Session.WUXING_EARTH_TO_WATER_KEY, mEarthWater.isChecked());
-                        wuxingBundle.putBoolean(Session.WUXING_EARTH_TO_WOOD_KEY, mEarthWood.isChecked());
-                        wuxingBundle.putBoolean(Session.WUXING_METAL_TO_WOOD_KEY, mMetalWood.isChecked());
-                        wuxingBundle.putBoolean(Session.WUXING_METAL_TO_FIRE_KEY, mMetalFire.isChecked());
-                        wuxingBundle.putBoolean(Session.WUXING_WATER_TO_FIRE_KEY, mWaterFire.isChecked());
-                        wuxingBundle.putBoolean(Session.WUXING_WATER_TO_EARTH_KEY, mWaterEarth.isChecked());
+                        wuxingBundle.putBoolean(Constants.WUXING_WOOD_TO_EARTH_KEY, mWoodEarth.isChecked());
+                        wuxingBundle.putBoolean(Constants.WUXING_WOOD_TO_METAL_KEY, mWoodMetal.isChecked());
+                        wuxingBundle.putBoolean(Constants.WUXING_FIRE_TO_METAL_KEY, mFireMetal.isChecked());
+                        wuxingBundle.putBoolean(Constants.WUXING_FIRE_TO_WATER_KEY, mFireWater.isChecked());
+                        wuxingBundle.putBoolean(Constants.WUXING_EARTH_TO_WATER_KEY, mEarthWater.isChecked());
+                        wuxingBundle.putBoolean(Constants.WUXING_EARTH_TO_WOOD_KEY, mEarthWood.isChecked());
+                        wuxingBundle.putBoolean(Constants.WUXING_METAL_TO_WOOD_KEY, mMetalWood.isChecked());
+                        wuxingBundle.putBoolean(Constants.WUXING_METAL_TO_FIRE_KEY, mMetalFire.isChecked());
+                        wuxingBundle.putBoolean(Constants.WUXING_WATER_TO_FIRE_KEY, mWaterFire.isChecked());
+                        wuxingBundle.putBoolean(Constants.WUXING_WATER_TO_EARTH_KEY, mWaterEarth.isChecked());
                         returnIntent.putExtras(wuxingBundle);
                         setResult(RESULT_OK, returnIntent);
                         finish();

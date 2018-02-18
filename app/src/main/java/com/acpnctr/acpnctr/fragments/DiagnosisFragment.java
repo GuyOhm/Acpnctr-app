@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.acpnctr.acpnctr.FivePhasesActivity;
 import com.acpnctr.acpnctr.R;
-import com.acpnctr.acpnctr.models.Session;
+import com.acpnctr.acpnctr.utils.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -186,24 +186,24 @@ public class DiagnosisFragment extends Fragment {
                     // store all data to a Map
                     Map<String, Object> sessionMap = documentSnapshot.getData();
                     // get bagang data
-                    Map<String, Boolean> bagang = (Map<String, Boolean>) sessionMap.get(Session.BAGANG_KEY);
+                    Map<String, Boolean> bagang = (Map<String, Boolean>) sessionMap.get(Constants.BAGANG_KEY);
                     if (bagang != null) {
                         showBagang();
-                        mBagangYin.setChecked(bagang.get(Session.BAGANG_YIN_KEY));
-                        mBagangYang.setChecked(bagang.get(Session.BAGANG_YANG_KEY));
-                        mBagangDeficiency.setChecked(bagang.get(Session.BAGANG_DEFICIENCY_KEY));
-                        mBagangExcess.setChecked(bagang.get(Session.BAGANG_EXCESS_KEY));
-                        mBagangCold.setChecked(bagang.get(Session.BAGANG_COLD_KEY));
-                        mBagangHeat.setChecked(bagang.get(Session.BAGANG_HEAT_KEY));
-                        mBagangInterior.setChecked(bagang.get(Session.BAGANG_INTERIOR_KEY));
-                        mBagangExterior.setChecked(bagang.get(Session.BAGANG_EXTERIOR_KEY));
+                        mBagangYin.setChecked(bagang.get(Constants.BAGANG_YIN_KEY));
+                        mBagangYang.setChecked(bagang.get(Constants.BAGANG_YANG_KEY));
+                        mBagangDeficiency.setChecked(bagang.get(Constants.BAGANG_DEFICIENCY_KEY));
+                        mBagangExcess.setChecked(bagang.get(Constants.BAGANG_EXCESS_KEY));
+                        mBagangCold.setChecked(bagang.get(Constants.BAGANG_COLD_KEY));
+                        mBagangHeat.setChecked(bagang.get(Constants.BAGANG_HEAT_KEY));
+                        mBagangInterior.setChecked(bagang.get(Constants.BAGANG_INTERIOR_KEY));
+                        mBagangExterior.setChecked(bagang.get(Constants.BAGANG_EXTERIOR_KEY));
 
                     } else {
                         Log.d(LOG_TAG, "No bagang data yet!");
                         hideBagang();
                     }
                     // get wuxing (5 phases) data
-                    Map<String, Boolean> wuxing = (Map<String, Boolean>) sessionMap.get(Session.WUXING_KEY);
+                    Map<String, Boolean> wuxing = (Map<String, Boolean>) sessionMap.get(Constants.WUXING_KEY);
                     if (wuxing != null){
                         Bundle wuxingBundle = new Bundle();
                         for (Map.Entry<String, Boolean> entry : wuxing.entrySet()) {
@@ -288,16 +288,16 @@ public class DiagnosisFragment extends Fragment {
         if (hasBagangBeenEdited()) {
             // add data to a HashMap
             Map<String, Boolean> bagang = new HashMap<>();
-            bagang.put(Session.BAGANG_YIN_KEY, mBagangYin.isChecked());
-            bagang.put(Session.BAGANG_YANG_KEY, mBagangYang.isChecked());
-            bagang.put(Session.BAGANG_DEFICIENCY_KEY, mBagangDeficiency.isChecked());
-            bagang.put(Session.BAGANG_EXCESS_KEY, mBagangExcess.isChecked());
-            bagang.put(Session.BAGANG_COLD_KEY, mBagangCold.isChecked());
-            bagang.put(Session.BAGANG_HEAT_KEY, mBagangHeat.isChecked());
-            bagang.put(Session.BAGANG_INTERIOR_KEY, mBagangInterior.isChecked());
-            bagang.put(Session.BAGANG_EXTERIOR_KEY, mBagangExterior.isChecked());
+            bagang.put(Constants.BAGANG_YIN_KEY, mBagangYin.isChecked());
+            bagang.put(Constants.BAGANG_YANG_KEY, mBagangYang.isChecked());
+            bagang.put(Constants.BAGANG_DEFICIENCY_KEY, mBagangDeficiency.isChecked());
+            bagang.put(Constants.BAGANG_EXCESS_KEY, mBagangExcess.isChecked());
+            bagang.put(Constants.BAGANG_COLD_KEY, mBagangCold.isChecked());
+            bagang.put(Constants.BAGANG_HEAT_KEY, mBagangHeat.isChecked());
+            bagang.put(Constants.BAGANG_INTERIOR_KEY, mBagangInterior.isChecked());
+            bagang.put(Constants.BAGANG_EXTERIOR_KEY, mBagangExterior.isChecked());
 
-            batch.update(sessionForDiag, Session.BAGANG_KEY, bagang);
+            batch.update(sessionForDiag, Constants.BAGANG_KEY, bagang);
         }
 
         // Commit the batch (if and only if at least one system has been edited)
@@ -351,132 +351,132 @@ public class DiagnosisFragment extends Fragment {
 
     private void setWuxingImage(Bundle bundle) {
         // if wood attacks earth AND wood attacks metal
-        if (bundle.getBoolean(Session.WUXING_WOOD_TO_EARTH_KEY) &&
-                bundle.getBoolean(Session.WUXING_WOOD_TO_METAL_KEY)){
+        if (bundle.getBoolean(Constants.WUXING_WOOD_TO_EARTH_KEY) &&
+                bundle.getBoolean(Constants.WUXING_WOOD_TO_METAL_KEY)){
             mWuxingImage.setImageResource(R.drawable.phases_wood_earth_wood_metal);
 
         }
         // if only wood attacks earth
-        else if (bundle.getBoolean(Session.WUXING_WOOD_TO_EARTH_KEY) &&
-                !bundle.getBoolean(Session.WUXING_WOOD_TO_METAL_KEY) &&
-                !bundle.getBoolean(Session.WUXING_WATER_TO_EARTH_KEY)){
+        else if (bundle.getBoolean(Constants.WUXING_WOOD_TO_EARTH_KEY) &&
+                !bundle.getBoolean(Constants.WUXING_WOOD_TO_METAL_KEY) &&
+                !bundle.getBoolean(Constants.WUXING_WATER_TO_EARTH_KEY)){
             mWuxingImage.setImageResource(R.drawable.phases_wood_earth);
 
         }
         // if only wood attacks metal
-        else if (!bundle.getBoolean(Session.WUXING_WOOD_TO_EARTH_KEY) &&
-                bundle.getBoolean(Session.WUXING_WOOD_TO_METAL_KEY) &&
-                !bundle.getBoolean(Session.WUXING_FIRE_TO_METAL_KEY)){
+        else if (!bundle.getBoolean(Constants.WUXING_WOOD_TO_EARTH_KEY) &&
+                bundle.getBoolean(Constants.WUXING_WOOD_TO_METAL_KEY) &&
+                !bundle.getBoolean(Constants.WUXING_FIRE_TO_METAL_KEY)){
             mWuxingImage.setImageResource(R.drawable.phases_wood_metal);
 
         }
         // if wood attacks metal AND fire attacks metal
-        else if (bundle.getBoolean(Session.WUXING_WOOD_TO_METAL_KEY) &&
-                bundle.getBoolean(Session.WUXING_FIRE_TO_METAL_KEY)){
+        else if (bundle.getBoolean(Constants.WUXING_WOOD_TO_METAL_KEY) &&
+                bundle.getBoolean(Constants.WUXING_FIRE_TO_METAL_KEY)){
             mWuxingImage.setImageResource(R.drawable.phases_wood_metal_fire_metal);
 
         }
         // if only fire attacks metal
-        else if (bundle.getBoolean(Session.WUXING_FIRE_TO_METAL_KEY) &&
-                !bundle.getBoolean(Session.WUXING_FIRE_TO_WATER_KEY) &&
-                !bundle.getBoolean(Session.WUXING_WOOD_TO_METAL_KEY)){
+        else if (bundle.getBoolean(Constants.WUXING_FIRE_TO_METAL_KEY) &&
+                !bundle.getBoolean(Constants.WUXING_FIRE_TO_WATER_KEY) &&
+                !bundle.getBoolean(Constants.WUXING_WOOD_TO_METAL_KEY)){
             mWuxingImage.setImageResource(R.drawable.phases_fire_metal);
 
         }
         // if only fire attacks water
-        else if (!bundle.getBoolean(Session.WUXING_FIRE_TO_METAL_KEY) &&
-                bundle.getBoolean(Session.WUXING_FIRE_TO_WATER_KEY) &&
-                !bundle.getBoolean(Session.WUXING_EARTH_TO_WATER_KEY)){
+        else if (!bundle.getBoolean(Constants.WUXING_FIRE_TO_METAL_KEY) &&
+                bundle.getBoolean(Constants.WUXING_FIRE_TO_WATER_KEY) &&
+                !bundle.getBoolean(Constants.WUXING_EARTH_TO_WATER_KEY)){
             mWuxingImage.setImageResource(R.drawable.phases_fire_water);
 
         }
         // if fire attacks metal AND fire attacks water
-        else if (bundle.getBoolean(Session.WUXING_FIRE_TO_METAL_KEY) &&
-                bundle.getBoolean(Session.WUXING_FIRE_TO_WATER_KEY)){
+        else if (bundle.getBoolean(Constants.WUXING_FIRE_TO_METAL_KEY) &&
+                bundle.getBoolean(Constants.WUXING_FIRE_TO_WATER_KEY)){
             mWuxingImage.setImageResource(R.drawable.phases_fire_metal_fire_water);
 
         }
         // if only earth attacks water
-        else if (bundle.getBoolean(Session.WUXING_EARTH_TO_WATER_KEY) &&
-                !bundle.getBoolean(Session.WUXING_EARTH_TO_WOOD_KEY) &&
-                !bundle.getBoolean(Session.WUXING_FIRE_TO_WATER_KEY)){
+        else if (bundle.getBoolean(Constants.WUXING_EARTH_TO_WATER_KEY) &&
+                !bundle.getBoolean(Constants.WUXING_EARTH_TO_WOOD_KEY) &&
+                !bundle.getBoolean(Constants.WUXING_FIRE_TO_WATER_KEY)){
             mWuxingImage.setImageResource(R.drawable.phases_earth_water);
 
         }
         // if only earth attacks wood
-        else if (!bundle.getBoolean(Session.WUXING_EARTH_TO_WATER_KEY) &&
-                bundle.getBoolean(Session.WUXING_EARTH_TO_WOOD_KEY) &&
-                !bundle.getBoolean(Session.WUXING_METAL_TO_WOOD_KEY)){
+        else if (!bundle.getBoolean(Constants.WUXING_EARTH_TO_WATER_KEY) &&
+                bundle.getBoolean(Constants.WUXING_EARTH_TO_WOOD_KEY) &&
+                !bundle.getBoolean(Constants.WUXING_METAL_TO_WOOD_KEY)){
             mWuxingImage.setImageResource(R.drawable.phases_earth_wood);
 
         }
         // if earth attacks water AND wood
-        else if (bundle.getBoolean(Session.WUXING_EARTH_TO_WATER_KEY) &&
-                bundle.getBoolean(Session.WUXING_EARTH_TO_WOOD_KEY)){
+        else if (bundle.getBoolean(Constants.WUXING_EARTH_TO_WATER_KEY) &&
+                bundle.getBoolean(Constants.WUXING_EARTH_TO_WOOD_KEY)){
             mWuxingImage.setImageResource(R.drawable.phases_earth_water_earth_wood);
 
         }
         // if earth attacks water AND fire attacks water
-        else if (bundle.getBoolean(Session.WUXING_EARTH_TO_WATER_KEY) &&
-                bundle.getBoolean(Session.WUXING_FIRE_TO_WATER_KEY)){
+        else if (bundle.getBoolean(Constants.WUXING_EARTH_TO_WATER_KEY) &&
+                bundle.getBoolean(Constants.WUXING_FIRE_TO_WATER_KEY)){
             mWuxingImage.setImageResource(R.drawable.phases_earth_water_fire_water);
 
         }
         // if only metal attacks wood
-        else if (bundle.getBoolean(Session.WUXING_METAL_TO_WOOD_KEY) &&
-                !bundle.getBoolean(Session.WUXING_METAL_TO_FIRE_KEY) &&
-                !bundle.getBoolean(Session.WUXING_EARTH_TO_WOOD_KEY)){
+        else if (bundle.getBoolean(Constants.WUXING_METAL_TO_WOOD_KEY) &&
+                !bundle.getBoolean(Constants.WUXING_METAL_TO_FIRE_KEY) &&
+                !bundle.getBoolean(Constants.WUXING_EARTH_TO_WOOD_KEY)){
             mWuxingImage.setImageResource(R.drawable.phases_metal_wood);
 
         }
         // if only metal attacks fire
-        else if (!bundle.getBoolean(Session.WUXING_METAL_TO_WOOD_KEY) &&
-                bundle.getBoolean(Session.WUXING_METAL_TO_FIRE_KEY) &&
-                !bundle.getBoolean(Session.WUXING_WATER_TO_FIRE_KEY)){
+        else if (!bundle.getBoolean(Constants.WUXING_METAL_TO_WOOD_KEY) &&
+                bundle.getBoolean(Constants.WUXING_METAL_TO_FIRE_KEY) &&
+                !bundle.getBoolean(Constants.WUXING_WATER_TO_FIRE_KEY)){
             mWuxingImage.setImageResource(R.drawable.phases_metal_fire);
 
         }
         // if metal attacks fire AND wood
-        else if (bundle.getBoolean(Session.WUXING_METAL_TO_WOOD_KEY) &&
-                bundle.getBoolean(Session.WUXING_METAL_TO_FIRE_KEY)){
+        else if (bundle.getBoolean(Constants.WUXING_METAL_TO_WOOD_KEY) &&
+                bundle.getBoolean(Constants.WUXING_METAL_TO_FIRE_KEY)){
             mWuxingImage.setImageResource(R.drawable.phases_metal_wood_metal_fire);
 
         }
         // if metal attacks wood and earth attacks wood
-        else if (bundle.getBoolean(Session.WUXING_METAL_TO_WOOD_KEY) &&
-                bundle.getBoolean(Session.WUXING_EARTH_TO_WOOD_KEY)){
+        else if (bundle.getBoolean(Constants.WUXING_METAL_TO_WOOD_KEY) &&
+                bundle.getBoolean(Constants.WUXING_EARTH_TO_WOOD_KEY)){
             mWuxingImage.setImageResource(R.drawable.phases_metal_wood_earth_wood);
 
         }
         // if only water attacks fire
-        else if (bundle.getBoolean(Session.WUXING_WATER_TO_FIRE_KEY) &&
-                !bundle.getBoolean(Session.WUXING_WATER_TO_EARTH_KEY) &&
-                !bundle.getBoolean(Session.WUXING_METAL_TO_FIRE_KEY)){
+        else if (bundle.getBoolean(Constants.WUXING_WATER_TO_FIRE_KEY) &&
+                !bundle.getBoolean(Constants.WUXING_WATER_TO_EARTH_KEY) &&
+                !bundle.getBoolean(Constants.WUXING_METAL_TO_FIRE_KEY)){
             mWuxingImage.setImageResource(R.drawable.phases_water_fire);
 
         }
         // if only water attacks earth
-        else if (!bundle.getBoolean(Session.WUXING_WATER_TO_FIRE_KEY) &&
-                bundle.getBoolean(Session.WUXING_WATER_TO_EARTH_KEY) &&
-                !bundle.getBoolean(Session.WUXING_WOOD_TO_EARTH_KEY)){
+        else if (!bundle.getBoolean(Constants.WUXING_WATER_TO_FIRE_KEY) &&
+                bundle.getBoolean(Constants.WUXING_WATER_TO_EARTH_KEY) &&
+                !bundle.getBoolean(Constants.WUXING_WOOD_TO_EARTH_KEY)){
             mWuxingImage.setImageResource(R.drawable.phases_water_earth);
 
         }
         // if water attacks fire AND earth
-        else if (bundle.getBoolean(Session.WUXING_WATER_TO_FIRE_KEY) &&
-                bundle.getBoolean(Session.WUXING_WATER_TO_EARTH_KEY)){
+        else if (bundle.getBoolean(Constants.WUXING_WATER_TO_FIRE_KEY) &&
+                bundle.getBoolean(Constants.WUXING_WATER_TO_EARTH_KEY)){
             mWuxingImage.setImageResource(R.drawable.phases_water_fire_water_earth);
 
         }
         // if water attacks fire AND metal attacks fire
-        else if (bundle.getBoolean(Session.WUXING_WATER_TO_FIRE_KEY) &&
-                bundle.getBoolean(Session.WUXING_METAL_TO_FIRE_KEY)){
+        else if (bundle.getBoolean(Constants.WUXING_WATER_TO_FIRE_KEY) &&
+                bundle.getBoolean(Constants.WUXING_METAL_TO_FIRE_KEY)){
             mWuxingImage.setImageResource(R.drawable.phases_water_fire_metal_fire);
 
         }
         // if water attacks earth AND wood attacks earth
-        else if (bundle.getBoolean(Session.WUXING_WATER_TO_EARTH_KEY) &&
-                bundle.getBoolean(Session.WUXING_WOOD_TO_EARTH_KEY)){
+        else if (bundle.getBoolean(Constants.WUXING_WATER_TO_EARTH_KEY) &&
+                bundle.getBoolean(Constants.WUXING_WOOD_TO_EARTH_KEY)){
             mWuxingImage.setImageResource(R.drawable.phases_water_earth_wood_earth);
         }
     }

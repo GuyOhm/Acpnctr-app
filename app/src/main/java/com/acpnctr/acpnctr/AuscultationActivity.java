@@ -9,7 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 
-import com.acpnctr.acpnctr.models.Session;
+import com.acpnctr.acpnctr.utils.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -80,25 +80,25 @@ public class AuscultationActivity extends AppCompatActivity {
                             // store all data to a Map
                             Map<String, Object> sessionMap = documentSnapshot.getData();
                             // get auscultation data and display them to edit views
-                            Map<String, String> auscultationMap = (Map<String, String>) sessionMap.get(Session.AUSC_KEY);
+                            Map<String, String> auscultationMap = (Map<String, String>) sessionMap.get(Constants.AUSC_KEY);
                             if (auscultationMap != null){
-                                if(auscultationMap.containsKey(Session.AUSC_BLOOD_PRESSURE_KEY)){
-                                    mBloodPressure.setText(auscultationMap.get(Session.AUSC_BLOOD_PRESSURE_KEY));
+                                if(auscultationMap.containsKey(Constants.AUSC_BLOOD_PRESSURE_KEY)){
+                                    mBloodPressure.setText(auscultationMap.get(Constants.AUSC_BLOOD_PRESSURE_KEY));
                                 }
-                                if(auscultationMap.containsKey(Session.AUSC_ABDOMEN_KEY)){
-                                    mAbdomen.setText(auscultationMap.get(Session.AUSC_ABDOMEN_KEY));
+                                if(auscultationMap.containsKey(Constants.AUSC_ABDOMEN_KEY)){
+                                    mAbdomen.setText(auscultationMap.get(Constants.AUSC_ABDOMEN_KEY));
                                 }
-                                if(auscultationMap.containsKey(Session.AUSC_SMELL_KEY)){
-                                    mSmell.setText(auscultationMap.get(Session.AUSC_SMELL_KEY));
+                                if(auscultationMap.containsKey(Constants.AUSC_SMELL_KEY)){
+                                    mSmell.setText(auscultationMap.get(Constants.AUSC_SMELL_KEY));
                                 }
-                                if(auscultationMap.containsKey(Session.AUSC_BREATHING_KEY)){
-                                    mBreathing.setText(auscultationMap.get(Session.AUSC_BREATHING_KEY));
+                                if(auscultationMap.containsKey(Constants.AUSC_BREATHING_KEY)){
+                                    mBreathing.setText(auscultationMap.get(Constants.AUSC_BREATHING_KEY));
                                 }
-                                if(auscultationMap.containsKey(Session.AUSC_COUGH_KEY)){
-                                    mBreathing.setText(auscultationMap.get(Session.AUSC_COUGH_KEY));
+                                if(auscultationMap.containsKey(Constants.AUSC_COUGH_KEY)){
+                                    mBreathing.setText(auscultationMap.get(Constants.AUSC_COUGH_KEY));
                                 }
-                                if(auscultationMap.containsKey(Session.AUSC_VOICE_KEY)){
-                                    mVoice.setText(auscultationMap.get(Session.AUSC_VOICE_KEY));
+                                if(auscultationMap.containsKey(Constants.AUSC_VOICE_KEY)){
+                                    mVoice.setText(auscultationMap.get(Constants.AUSC_VOICE_KEY));
                                 }
                             } else {
                                 Log.d(LOG_TAG, "No Auscultation data yet!");
@@ -144,15 +144,15 @@ public class AuscultationActivity extends AppCompatActivity {
         // create a hashmap to store data fetched from UI
         Map<String, String> auscultationMap = new HashMap<>();
 
-        auscultationMap.put(Session.AUSC_BLOOD_PRESSURE_KEY, mBloodPressure.getText().toString().trim());
-        auscultationMap.put(Session.AUSC_ABDOMEN_KEY, mAbdomen.getText().toString().trim());
-        auscultationMap.put(Session.AUSC_SMELL_KEY, mSmell.getText().toString().trim());
-        auscultationMap.put(Session.AUSC_BREATHING_KEY, mBreathing.getText().toString().trim());
-        auscultationMap.put(Session.AUSC_COUGH_KEY, mCough.getText().toString().trim());
-        auscultationMap.put(Session.AUSC_VOICE_KEY, mVoice.getText().toString().trim());
+        auscultationMap.put(Constants.AUSC_BLOOD_PRESSURE_KEY, mBloodPressure.getText().toString().trim());
+        auscultationMap.put(Constants.AUSC_ABDOMEN_KEY, mAbdomen.getText().toString().trim());
+        auscultationMap.put(Constants.AUSC_SMELL_KEY, mSmell.getText().toString().trim());
+        auscultationMap.put(Constants.AUSC_BREATHING_KEY, mBreathing.getText().toString().trim());
+        auscultationMap.put(Constants.AUSC_COUGH_KEY, mCough.getText().toString().trim());
+        auscultationMap.put(Constants.AUSC_VOICE_KEY, mVoice.getText().toString().trim());
 
         // write data to the batch
-        batch.update(sessionDoc, Session.AUSC_KEY, auscultationMap);
+        batch.update(sessionDoc, Constants.AUSC_KEY, auscultationMap);
 
         // commit the batch
         batch.commit()

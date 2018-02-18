@@ -37,6 +37,7 @@ public class ClientAdapter extends FirestoreRecyclerAdapter<Client, ClientAdapte
     public ClientAdapter(FirestoreRecyclerOptions<Client> options, OnClientSelectedListener listener) {
         super(options);
         mListener = listener;
+
     }
 
     @Override

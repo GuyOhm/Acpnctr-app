@@ -6,24 +6,24 @@ package com.acpnctr.acpnctr.models;
 
 public class Anamnesis {
 
-    private String date;
+    private long timestamp;
     private String history;
 
     // Empty constructor required by firebase firestore
     public Anamnesis() {
     }
 
-    public Anamnesis(String date, String history) {
-        this.date = date;
+    public Anamnesis(long timestamp, String history) {
+        this.timestamp = timestamp;
         this.history = history;
     }
 
-    public String getDate() {
-        return date;
+    public long getTimestamp() {
+        return timestamp;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 
     public String getHistory() {

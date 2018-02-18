@@ -9,7 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 
-import com.acpnctr.acpnctr.models.Session;
+import com.acpnctr.acpnctr.utils.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -75,16 +75,16 @@ public class PalpationActivity extends AppCompatActivity {
                             // store all data to a Map
                             Map<String, Object> sessionMap = documentSnapshot.getData();
                             // get palpation data and display them to edit views
-                            Map<String, String> palpationMap = (Map<String, String>) sessionMap.get(Session.PALP_KEY);
+                            Map<String, String> palpationMap = (Map<String, String>) sessionMap.get(Constants.PALP_KEY);
                             if (palpationMap != null){
-                                if(palpationMap.containsKey(Session.PALP_ABDOMEN_KEY)){
-                                    mAbdomen.setText(palpationMap.get(Session.PALP_ABDOMEN_KEY));
+                                if(palpationMap.containsKey(Constants.PALP_ABDOMEN_KEY)){
+                                    mAbdomen.setText(palpationMap.get(Constants.PALP_ABDOMEN_KEY));
                                 }
-                                if(palpationMap.containsKey(Session.PALP_MERIDIAN_KEY)){
-                                    mMeridian.setText(palpationMap.get(Session.PALP_MERIDIAN_KEY));
+                                if(palpationMap.containsKey(Constants.PALP_MERIDIAN_KEY)){
+                                    mMeridian.setText(palpationMap.get(Constants.PALP_MERIDIAN_KEY));
                                 }
-                                if(palpationMap.containsKey(Session.PALP_POINT_KEY)){
-                                    mPoint.setText(palpationMap.get(Session.PALP_POINT_KEY));
+                                if(palpationMap.containsKey(Constants.PALP_POINT_KEY)){
+                                    mPoint.setText(palpationMap.get(Constants.PALP_POINT_KEY));
                                 }
 
                             } else {
@@ -131,12 +131,12 @@ public class PalpationActivity extends AppCompatActivity {
         // create a hashmap to store data fetched from UI
         Map<String, String> palpationMap = new HashMap<>();
 
-        palpationMap.put(Session.PALP_ABDOMEN_KEY, mAbdomen.getText().toString().trim());
-        palpationMap.put(Session.PALP_MERIDIAN_KEY, mMeridian.getText().toString().trim());
-        palpationMap.put(Session.PALP_POINT_KEY, mPoint.getText().toString().trim());
+        palpationMap.put(Constants.PALP_ABDOMEN_KEY, mAbdomen.getText().toString().trim());
+        palpationMap.put(Constants.PALP_MERIDIAN_KEY, mMeridian.getText().toString().trim());
+        palpationMap.put(Constants.PALP_POINT_KEY, mPoint.getText().toString().trim());
 
         // write data to the batch
-        batch.update(sessionDoc, Session.PALP_KEY, palpationMap);
+        batch.update(sessionDoc, Constants.PALP_KEY, palpationMap);
 
         // commit the batch
         batch.commit()

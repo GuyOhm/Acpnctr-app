@@ -9,6 +9,11 @@ public class User {
     private String uid;
     private String fullname;
     private String email;
+    private String phone;
+    private String address;
+    private String zipCode;
+    private String city;
+    private String country;
     private String authProvider;
     private long timestampCreated;
 
@@ -16,10 +21,11 @@ public class User {
     public User() {
     }
 
-    public User(String uid, String fullname, String email, String authProvider, long timestampCreated) {
+    public User(String uid, String fullname, String email, String phone, String authProvider, long timestampCreated) {
         this.uid = uid;
         this.fullname = fullname;
         this.email = email;
+        this.phone = phone;
         this.authProvider = authProvider;
         this.timestampCreated = timestampCreated;
     }
@@ -62,5 +68,45 @@ public class User {
 
     public void setTimestampCreated(long timestampCreated) {
         this.timestampCreated = timestampCreated;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 }

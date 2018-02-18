@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.acpnctr.acpnctr.R;
 import com.acpnctr.acpnctr.adapters.AnamnesisAdapter;
 import com.acpnctr.acpnctr.models.Anamnesis;
+import com.acpnctr.acpnctr.utils.DateFormatUtil;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -31,6 +32,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+
+import java.text.ParseException;
 
 import static com.acpnctr.acpnctr.ClientActivity.isNewClient;
 import static com.acpnctr.acpnctr.ClientActivity.sClientid;
@@ -93,12 +96,31 @@ public class AnamnesisFragment extends Fragment {
                     // get data from the UI
                     String date = editTextDate.getText().toString().trim();
                     String history = editTextHistory.getText().toString().trim();
+                    // declare and initialize a timestamp to store the converted data
+                    long timestamp = 0;
 
+                    // validate date format if any
+                    if (!TextUtils.isEmpty(date)){
+                        if (DateFormatUtil.validate(date)){
+                            try {
+                                timestamp = DateFormatUtil.convertStringToTimestamp(date);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                                Toast.makeText(getActivity(), getString(R.string.date_format_not_valid), Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                        } else {
+                            // date is not valid
+                            Toast.makeText(getActivity(), getString(R.string.date_format_not_valid), Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
 
+                    // if history is not empty save data
                     if (!TextUtils.isEmpty(history)) {
                         // the user has entered a history
                         // create a new {@link Anamnesis} object with fetched data
-                        Anamnesis anamnesis = new Anamnesis(date, history);
+                        Anamnesis anamnesis = new Anamnesis(timestamp*1000, history);
 
                         // build the firestore path
                         CollectionReference anamCollection = db.collection(FIRESTORE_COLLECTION_USERS)
@@ -141,7 +163,7 @@ public class AnamnesisFragment extends Fragment {
 
         // query firestore for the client's anamesis
         Query query = anamCollection
-                .orderBy("date", Query.Direction.ASCENDING);
+                .orderBy("timestamp", Query.Direction.ASCENDING);
 
         // configure recycler adapter options
         FirestoreRecyclerOptions<Anamnesis> options = new FirestoreRecyclerOptions.Builder<Anamnesis>()
