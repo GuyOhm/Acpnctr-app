@@ -15,6 +15,6 @@
         android:layout_width="@dimen/loading_indicator"
         android:layout_height="@dimen/loading_indicator"
         android:layout_centerInParent="true"
-        android:visibility="visible" />
+        android:visibility="invisible" />
 
 </RelativeLayout>

@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/quest_yin_yang"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine|textCapSentences" />
 
         <EditText
             android:id="@+id/et_quest_5_phases"
@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/quest_5_phases"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine|textCapSentences" />
 
         <EditText
             android:id="@+id/et_quest_diet"
@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/quest_diet"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine|textCapSentences" />
 
         <EditText
             android:id="@+id/et_quest_digestion"
@@ -44,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/quest_digestion"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine|textCapSentences" />
 
         <EditText
             android:id="@+id/et_quest_way_of_life"
@@ -52,7 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/quest_way_of_life"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine|textCapSentences" />
 
         <EditText
             android:id="@+id/et_quest_sleep"
@@ -60,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/quest_sleep"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine|textCapSentences" />
 
         <EditText
             android:id="@+id/et_quest_symptoms"
@@ -68,7 +68,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/quest_symptoms"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine|textCapSentences" />
 
         <EditText
             android:id="@+id/et_quest_medication"
@@ -76,7 +76,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/quest_medication"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine|textCapSentences" />
 
         <EditText
             android:id="@+id/et_quest_events"
@@ -84,7 +84,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/quest_events"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine|textCapSentences" />
 
         <EditText
             android:id="@+id/et_quest_emotional"
@@ -92,7 +92,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/quest_emotional"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine|textCapSentences" />
 
         <EditText
             android:id="@+id/et_quest_psychological"
@@ -100,7 +100,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/quest_psychological"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine|textCapSentences" />
 
         <EditText
             android:id="@+id/et_quest_gynecological"
@@ -108,7 +108,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/quest_gynecological"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine|textCapSentences" />
 
     </LinearLayout>
 </ScrollView>

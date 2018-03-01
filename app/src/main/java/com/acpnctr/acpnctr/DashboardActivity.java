@@ -239,8 +239,6 @@ public class DashboardActivity extends AppCompatActivity
                     .whereGreaterThanOrEqualTo(Client.CLIENT_NAME_KEY, mSearchText)
                     .whereLessThanOrEqualTo(Client.CLIENT_NAME_KEY, AcpnctrUtil.zeefyForSearch(mSearchText))
                     .orderBy(Client.CLIENT_NAME_KEY, Query.Direction.ASCENDING);
-
-            Log.d(LOG_TAG, "zeefy string is: " + AcpnctrUtil.zeefyForSearch(mSearchText));
         }
 
         // configure recycler adapter options
@@ -262,8 +260,10 @@ public class DashboardActivity extends AppCompatActivity
             @Override
             public void onError(FirebaseFirestoreException e) {
                 Log.d(LOG_TAG, "Error while loading data for clients list" + e);
-                Toast.makeText(DashboardActivity.this, getString(R.string.clients_list_error),
-                        Toast.LENGTH_SHORT).show();
+                if (mAuth.getCurrentUser() != null) {
+                    Toast.makeText(DashboardActivity.this, getString(R.string.clients_list_error),
+                            Toast.LENGTH_SHORT).show();
+                }
             }
         };
 

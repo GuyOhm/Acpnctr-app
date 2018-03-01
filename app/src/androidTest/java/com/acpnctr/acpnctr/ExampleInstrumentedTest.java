@@ -1,4 +1,4 @@
-package com.example.acpnctr.acpnctr;
+package com.acpnctr.acpnctr;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.android.acpnctr", appContext.getPackageName());
+        assertEquals("com.acpnctr.acpnctr", appContext.getPackageName());
     }
 }

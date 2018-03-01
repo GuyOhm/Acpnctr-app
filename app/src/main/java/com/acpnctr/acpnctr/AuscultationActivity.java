@@ -49,6 +49,7 @@ public class AuscultationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auscultation);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close_white_24dp);
 
         // get references to our views
         mBloodPressure = findViewById(R.id.et_ausc_blood_pressure);

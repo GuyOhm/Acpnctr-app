@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name" translatable="false">Acpnctr</string>
-    <string name="app_date_format">dd/MM/yyyy</string>
     <string name="date_format_not_valid">Please enter a valid date</string>
     <string name="search_client_hint">Search client</string>
     <string name="coming_soon">Coming soon!</string>
@@ -11,7 +10,7 @@
     <string name="auth_sign_in_cancelled">Signed in cancelled</string>
     <string name="auth_no_network">Couldn\'t connect to network</string>
     <string name="auth_unknown_error">Something went wrong :/</string>
-    <string name="auth_ooops">Ooops…</string>
+    <string name="auth_ooops" translatable="false">Ooops…</string>
 
     <!-- Navigation drawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -21,11 +20,9 @@
     <string name="nav_settings">Settings</string>
     <string name="nav_stats">Stats</string>
     <string name="nav_tools">Tools</string>
-    <string name="nav_signout">Signout</string>
+    <string name="nav_signout">Sign out</string>
 
     <string name="search_title">Search</string>
-    <string name="action_settings">Settings</string>
-    <string name="action_create_data">Create data</string>
     <string name="title_activity_client">Client file</string>
     <string name="title_activity_session">Session</string>
 
@@ -55,7 +52,6 @@
     <string name="hint_client_information_email">email</string>
 
     <!-- Title when adding a new client through the fab -->
-    <string name="add_client_activity_title">Add a client</string>
 
     <!-- Labels for gender dropdown menu -->
     <string name="gender_unknown">Unknown</string>
@@ -93,10 +89,8 @@
 
     <!-- Dialog button text for the option to keep editing the current client -->
     <string name="keep_editing">Keep Editing</string>
-    <string name="action_get_data">Get data</string>
 
     <!-- sessions list -->
-    <string name="session_list_item">Session item</string>
 
     <!-- Dashboard clients list -->
     <string name="clients_list_error">Error loading clients list</string>
@@ -104,10 +98,8 @@
 
     <string name="history_hint">history</string>
     <string name="btn_add">add</string>
-    <string name="anam_empty_date">#</string>
+    <string name="anam_empty_date" translatable="false">#</string>
     <string name="session_saved">Session saved</string>
-    <string name="btn_session_date">Session date</string>
-    <string name="four_steps_category_information">Information</string>
     <string name="hint_session_goal">session goal</string>
     <string name="session_date_needed">Please enter a date</string>
     <string name="session_goal_needed">Please enter a goal</string>
@@ -274,7 +266,7 @@
     <string name="pulses_28_types_toan" translatable="false">Toan</string>
     <string name="pulses_28_types_toan_transl">Short</string>
     <string name="pulses_28_types_taé" translatable="false">Taé</string>
-    <string name="pulses_28_types_taé_transl" translatable="false">Intermittent</string>
+    <string name="pulses_28_types_taé_transl">Intermittent</string>
     <string name="pulses_saved">Pulses saved</string>
 
     <!-- Acupuncture points for treatment (abbreviation + chinese name) -->
@@ -335,16 +327,336 @@
     <string name="DM_28" translatable="false">DM 28 - yinjiao</string>
 
     <!-- ###### LUNG ###### -->
-    <string name="P_1">P 1 - zhongfu</string>
-    <string name="P_2">P 2 - yunmen</string>
-    <string name="P_3">P 3 - tianfu</string>
-    <string name="P_4">P 4 - xiabai</string>
-    <string name="P_5">P 5 - chize</string>
-    <string name="P_6">P 6 - kongzui</string>
-    <string name="P_7">P 7 - lieque</string>
-    <string name="P_8">P 8 - jingqu</string>
-    <string name="P_9">P 9 - taiyuan</string>
-    <string name="P_10">P 10 - yuji</string>
-    <string name="P_11">P 11 - shaoshang</string>
+    <string name="LU_1">LU 1 - zhongfu</string>
+    <string name="LU_2">LU 2 - yunmen</string>
+    <string name="LU_3">LU 3 - tianfu</string>
+    <string name="LU_4">LU 4 - xiabai</string>
+    <string name="LU_5">LU 5 - chize</string>
+    <string name="LU_6">LU 6 - kongzui</string>
+    <string name="LU_7">LU 7 - lieque</string>
+    <string name="LU_8">LU 8 - jingqu</string>
+    <string name="LU_9">LU 9 - taiyuan</string>
+    <string name="LU_10">LU 10 - yuji</string>
+    <string name="LU_11">LU 11 - shaoshang</string>
+
+    <!-- ###### LARGE INTESTINE ###### -->
+    <string name="L_I_1">L.I. 1 - shangyang</string>
+    <string name="L_I_2">L.I. 2 - erjian</string>
+    <string name="L_I_3">L.I. 3 - sanjian</string>
+    <string name="L_I_4">L.I. 4 - hegu</string>
+    <string name="L_I_5">L.I. 5 - yangxi</string>
+    <string name="L_I_6">L.I. 6 - pianli</string>
+    <string name="L_I_7">L.I. 7 - wenliu</string>
+    <string name="L_I_8">L.I. 8 - xialian</string>
+    <string name="L_I_9">L.I. 9 - shanglian</string>
+    <string name="L_I_10">L.I. 10 - shousanli</string>
+    <string name="L_I_11">L.I. 11 - quchi</string>
+    <string name="L_I_12">L.I. 12 - zhouliao</string>
+    <string name="L_I_13">L.I. 13 - shouwuli</string>
+    <string name="L_I_14">L.I. 14 - binao</string>
+    <string name="L_I_15">L.I. 15 - jianyu</string>
+    <string name="L_I_16">L.I. 16 - jugu</string>
+    <string name="L_I_17">L.I. 17 - tianding</string>
+    <string name="L_I_18">L.I. 18 - futu</string>
+    <string name="L_I_19">L.I. 19 - kouheliao</string>
+    <string name="L_I_20">L.I. 20 - yingxiang</string>
+
+    <!-- ###### STOMACH ###### -->
+    <string name="ST_1">ST 1 - chengqi</string>
+    <string name="ST_2">ST 2 - sibai</string>
+    <string name="ST_3">ST 3 - juliao</string>
+    <string name="ST_4">ST 4 - dicang</string>
+    <string name="ST_5">ST 5 - daying</string>
+    <string name="ST_6">ST 6 - jiache</string>
+    <string name="ST_7">ST 7 - xiaguan</string>
+    <string name="ST_8">ST 8 - touwei</string>
+    <string name="ST_9">ST 9 - renying</string>
+    <string name="ST_10">ST 10 - shuitu</string>
+    <string name="ST_11">ST 11 - qishe</string>
+    <string name="ST_12">ST 12 - quepen</string>
+    <string name="ST_13">ST 13 - qihu</string>
+    <string name="ST_14">ST 14 - kufang</string>
+    <string name="ST_15">ST 15 - wuyi</string>
+    <string name="ST_16">ST 16 - yingchuang</string>
+    <string name="ST_17">ST 17 - ruzhong</string>
+    <string name="ST_18">ST 18 - rugen</string>
+    <string name="ST_19">ST 19 - burong</string>
+    <string name="ST_20">ST 20 - chengman</string>
+    <string name="ST_21">ST 21 - liangmen</string>
+    <string name="ST_22">ST 22 - guanmen</string>
+    <string name="ST_23">ST 23 - taiyi</string>
+    <string name="ST_24">ST 24 - huaroumen</string>
+    <string name="ST_25">ST 25 - tianshu</string>
+    <string name="ST_26">ST 26 - wailing</string>
+    <string name="ST_27">ST 27 - daju</string>
+    <string name="ST_28">ST 28 - shuidao</string>
+    <string name="ST_29">ST 29 - guilai</string>
+    <string name="ST_30">ST 30 - qichong</string>
+    <string name="ST_31">ST 31 - biguan</string>
+    <string name="ST_32">ST 32 - futu</string>
+    <string name="ST_33">ST 33 - yinshi</string>
+    <string name="ST_34">ST 34 - liangqiu</string>
+    <string name="ST_35">ST 35 - dubi</string>
+    <string name="ST_36">ST 36 - zusanli</string>
+    <string name="ST_37">ST 37 - shangjuxu</string>
+    <string name="ST_38">ST 38 - tiaokou</string>
+    <string name="ST_39">ST 39 - xiajuxu</string>
+    <string name="ST_40">ST 40 - fenglong</string>
+    <string name="ST_41">ST 41 - jiexi</string>
+    <string name="ST_42">ST 42 - chongyang</string>
+    <string name="ST_43">ST 43 - xiangu</string>
+    <string name="ST_44">ST 44 - neiting</string>
+    <string name="ST_45">ST 45 - lidui</string>
+
+    <!-- ###### SPLEEN ###### -->
+    <string name="SP_1">SP 1 - yinbai</string>
+    <string name="SP_2">SP 2 - dadu</string>
+    <string name="SP_3">SP 3 - taibai</string>
+    <string name="SP_4">SP 4 - gongsun</string>
+    <string name="SP_5">SP 5 - shangqiu</string>
+    <string name="SP_6">SP 6 - sanyinjiao</string>
+    <string name="SP_7">SP 7 - lougu</string>
+    <string name="SP_8">SP 8 - diji</string>
+    <string name="SP_9">SP 9 - yinlingquan</string>
+    <string name="SP_10">SP 10 - xuehai</string>
+    <string name="SP_11">SP 11 - jimen</string>
+    <string name="SP_12">SP 12 - chongmen</string>
+    <string name="SP_13">SP 13 - fushe</string>
+    <string name="SP_14">SP 14 - fujie</string>
+    <string name="SP_15">SP 15 - daheng</string>
+    <string name="SP_16">SP 16 - fuai</string>
+    <string name="SP_17">SP 17 - shidou</string>
+    <string name="SP_18">SP 18 - tianxi</string>
+    <string name="SP_19">SP 19 - xiongxiang</string>
+    <string name="SP_20">SP 20 - zhourong</string>
+    <string name="SP_21">SP 21 - dabao</string>
+
+    <!-- ###### HEART ###### -->
+    <string name="HE_1">HE 1 - jiquan</string>
+    <string name="HE_2">HE 2 - qingling</string>
+    <string name="HE_3">HE 3 - shaohai</string>
+    <string name="HE_4">HE 4 - lingdao</string>
+    <string name="HE_5">HE 5 - tongli</string>
+    <string name="HE_6">HE 6 - yinxi</string>
+    <string name="HE_7">HE 7 - shenmen</string>
+    <string name="HE_8">HE 8 - shaofu</string>
+    <string name="HE_9">HE 9 - shaochong</string>
+
+    <!-- ###### SMALL INTESTINE ###### -->
+    <string name="S_I_1">S.I. 1 - shaoze</string>
+    <string name="S_I_2">S.I. 2 - qiangu</string>
+    <string name="S_I_3">S.I. 3 - houxi</string>
+    <string name="S_I_4">S.I. 4 - wanggu</string>
+    <string name="S_I_5">S.I. 5 - yangqu</string>
+    <string name="S_I_6">S.I. 6 - yanglao</string>
+    <string name="S_I_7">S.I. 7 - zhizheng</string>
+    <string name="S_I_8">S.I. 8 - xiaohai</string>
+    <string name="S_I_9">S.I. 9 - jianzhen</string>
+    <string name="S_I_10">S.I. 10 - naoshu</string>
+    <string name="S_I_11">S.I. 11 - tianzong</string>
+    <string name="S_I_12">S.I. 12 - bingfeng</string>
+    <string name="S_I_13">S.I. 13 - quyuan</string>
+    <string name="S_I_14">S.I. 14 - jianwaishu</string>
+    <string name="S_I_15">S.I. 15 - jianzhongshu</string>
+    <string name="S_I_16">S.I. 16 - tianchuang</string>
+    <string name="S_I_17">S.I. 17 - tianrong</string>
+    <string name="S_I_18">S.I. 18 - quanliao</string>
+    <string name="S_I_19">S.I. 19 - tingong</string>
+
+    <!-- ###### BLADDER ###### -->
+    <string name="BL_1">BL 1 - jingming</string>
+    <string name="BL_2">BL 2 - zanzhu</string>
+    <string name="BL_3">BL 3 - meichong</string>
+    <string name="BL_4">BL 4 - qucha</string>
+    <string name="BL_5">BL 5 - wuchu</string>
+    <string name="BL_6">BL 6 - chengguan</string>
+    <string name="BL_7">BL 7 - tongtian</string>
+    <string name="BL_8">BL 8 - luoque</string>
+    <string name="BL_9">BL 9 - yuzhen</string>
+    <string name="BL_10">BL 10 - tianzhu</string>
+    <string name="BL_11">BL 11 - dazhu</string>
+    <string name="BL_12">BL 12 - fengmen</string>
+    <string name="BL_13">BL 13 - feishu</string>
+    <string name="BL_14">BL 14 - jueyinshu</string>
+    <string name="BL_15">BL 15 - xinshu</string>
+    <string name="BL_16">BL 16 - dushu</string>
+    <string name="BL_17">BL 17 - geshu</string>
+    <string name="BL_18">BL 18 - ganshu</string>
+    <string name="BL_19">BL 19 - danshu</string>
+    <string name="BL_20">BL 20 - pishu</string>
+    <string name="BL_21">BL 21 - weishu</string>
+    <string name="BL_22">BL 22 - sanjiaoshu</string>
+    <string name="BL_23">BL 23 - shenshu</string>
+    <string name="BL_24">BL 24 - qihaishu</string>
+    <string name="BL_25">BL 25 - dachangshu</string>
+    <string name="BL_26">BL 26 - guanyuanshu</string>
+    <string name="BL_27">BL 27 - xiaochangshu</string>
+    <string name="BL_28">BL 28 - pangguangshu</string>
+    <string name="BL_29">BL 29 - zhonglüshu</string>
+    <string name="BL_30">BL 30 - baihuanshu</string>
+    <string name="BL_31">BL 31 - shangliao</string>
+    <string name="BL_32">BL 32 - ciliao</string>
+    <string name="BL_33">BL 33 - zhongliao</string>
+    <string name="BL_34">BL 34 - xialiao</string>
+    <string name="BL_35">BL 35 - huiyang</string>
+    <string name="BL_36">BL 36 - chengfu</string>
+    <string name="BL_37">BL 37 - yinmen</string>
+    <string name="BL_38">BL 38 - fuxi</string>
+    <string name="BL_39">BL 39 - weiyang</string>
+    <string name="BL_40">BL 40 - weizhong</string>
+    <string name="BL_41">BL 41 - fufen</string>
+    <string name="BL_42">BL 42 - pohu</string>
+    <string name="BL_43">BL 43 - gaohuang</string>
+    <string name="BL_44">BL 44 - shentang</string>
+    <string name="BL_45">BL 45 - yixi</string>
+    <string name="BL_46">BL 46 - geguan</string>
+    <string name="BL_47">BL 47 - hunmen</string>
+    <string name="BL_48">BL 48 - yanggang</string>
+    <string name="BL_49">BL 49 - yishe</string>
+    <string name="BL_50">BL 50 - weicang</string>
+    <string name="BL_51">BL 51 - huangmen</string>
+    <string name="BL_52">BL 52 - zhishi</string>
+    <string name="BL_53">BL 53 - baohuang</string>
+    <string name="BL_54">BL 54 - zhibian</string>
+    <string name="BL_55">BL 55 - heyang</string>
+    <string name="BL_56">BL 56 - chengjin</string>
+    <string name="BL_57">BL 57 - chengshan</string>
+    <string name="BL_58">BL 58 - feiyang</string>
+    <string name="BL_59">BL 59 - fuyang</string>
+    <string name="BL_60">BL 60 - kunlun</string>
+    <string name="BL_61">BL 61 - pucan</string>
+    <string name="BL_62">BL 62 - shenmai</string>
+    <string name="BL_63">BL 63 - jinmen</string>
+    <string name="BL_64">BL 64 - jinggu</string>
+    <string name="BL_65">BL 65 - shugu</string>
+    <string name="BL_66">BL 66 - zutonggu</string>
+    <string name="BL_67">BL 67 - zhiyin</string>
+
+    <!-- ###### KIDNEY ###### -->
+    <string name="KID_1">KID 1 - yongquan</string>
+    <string name="KID_2">KID 2 - rangu</string>
+    <string name="KID_3">KID 3 - taixi</string>
+    <string name="KID_4">KID 4 - dazhong</string>
+    <string name="KID_5">KID 5 - shuiquan</string>
+    <string name="KID_6">KID 6 - zhaohai</string>
+    <string name="KID_7">KID 7 - fuliu</string>
+    <string name="KID_8">KID 8 - jiaoxin</string>
+    <string name="KID_9">KID 9 - zhubin</string>
+    <string name="KID_10">KID 10 - yingu</string>
+    <string name="KID_11">KID 11 - henggu</string>
+    <string name="KID_12">KID 12 - dahe</string>
+    <string name="KID_13">KID 13 - qixue</string>
+    <string name="KID_14">KID 14 - siman</string>
+    <string name="KID_15">KID 15 - zhongzhu</string>
+    <string name="KID_16">KID 16 - huangshu</string>
+    <string name="KID_17">KID 17 - shangqu</string>
+    <string name="KID_18">KID 18 - shiguan</string>
+    <string name="KID_19">KID 19 - yindu</string>
+    <string name="KID_20">KID 20 - futonggu</string>
+    <string name="KID_21">KID 21 - youmen</string>
+    <string name="KID_22">KID 22 - bulang</string>
+    <string name="KID_23">KID 23 - shenfeng</string>
+    <string name="KID_24">KID 24 - lingxu</string>
+    <string name="KID_25">KID 25 - shencang</string>
+    <string name="KID_26">KID 26 - yuzhong</string>
+    <string name="KID_27">KID 27 - shufu</string>
+
+    <!-- ###### PERICARDUM ###### -->
+    <string name="P_1">P 1 - tianchi</string>
+    <string name="P_2">P 2 - tianquan</string>
+    <string name="P_3">P 3 - quze</string>
+    <string name="P_4">P 4 - ximen</string>
+    <string name="P_5">P 5 - jianshi</string>
+    <string name="P_6">P 6 - neiguan</string>
+    <string name="P_7">P 7 - daling</string>
+    <string name="P_8">P 8 - laogong</string>
+    <string name="P_9">P 9 - zhongchong</string>
+
+    <!-- ###### TRIPLE BURNER ###### -->
+    <string name="T_B_1">T.B. 1 - guanchong</string>
+    <string name="T_B_2">T.B. 2 - yemen</string>
+    <string name="T_B_3">T.B. 3 - zhongzhu</string>
+    <string name="T_B_4">T.B. 4 - yangchi</string>
+    <string name="T_B_5">T.B. 5 - waiguan</string>
+    <string name="T_B_6">T.B. 6 - zhigou</string>
+    <string name="T_B_7">T.B. 7 - huizong</string>
+    <string name="T_B_8">T.B. 8 - sanyangluo</string>
+    <string name="T_B_9">T.B. 9 - sidu</string>
+    <string name="T_B_10">T.B. 10 - tianjing</string>
+    <string name="T_B_11">T.B. 11 - qinglengyuan</string>
+    <string name="T_B_12">T.B. 12 - xiaoluo</string>
+    <string name="T_B_13">T.B. 13 - naohui</string>
+    <string name="T_B_14">T.B. 14 - jianliao</string>
+    <string name="T_B_15">T.B. 15 - tianliao</string>
+    <string name="T_B_16">T.B. 16 - tianyou</string>
+    <string name="T_B_17">T.B. 17 - yifeng</string>
+    <string name="T_B_18">T.B. 18 - qimai</string>
+    <string name="T_B_19">T.B. 19 - luxi</string>
+    <string name="T_B_20">T.B. 20 - jiaosun</string>
+    <string name="T_B_21">T.B. 21 - ermen</string>
+    <string name="T_B_22">T.B. 22 - erheliao</string>
+    <string name="T_B_23">T.B. 23 - sizhukong</string>
+
+    <!-- ###### GALL BLADDER ###### -->
+    <string name="G_B_1">G.B. 1 - tongziliao</string>
+    <string name="G_B_2">G.B. 2 - tinghui</string>
+    <string name="G_B_3">G.B. 3 - shangguan</string>
+    <string name="G_B_4">G.B. 4 - hanyan</string>
+    <string name="G_B_5">G.B. 5 - xuanlu</string>
+    <string name="G_B_6">G.B. 6 - xuanli</string>
+    <string name="G_B_7">G.B. 7 - qubin</string>
+    <string name="G_B_8">G.B. 8 - shuaigu</string>
+    <string name="G_B_9">G.B. 9 - tianchong</string>
+    <string name="G_B_10">G.B. 10 - fubai</string>
+    <string name="G_B_11">G.B. 11 - touqiaoyin</string>
+    <string name="G_B_12">G.B. 12 - wangu</string>
+    <string name="G_B_13">G.B. 13 - benshen</string>
+    <string name="G_B_14">G.B. 14 - yangbai</string>
+    <string name="G_B_15">G.B. 15 - toulinqi</string>
+    <string name="G_B_16">G.B. 16 - muchuang</string>
+    <string name="G_B_17">G.B. 17 - zhengying</string>
+    <string name="G_B_18">G.B. 18 - chengling</string>
+    <string name="G_B_19">G.B. 19 - naokong</string>
+    <string name="G_B_20">G.B. 20 - fengchi</string>
+    <string name="G_B_21">G.B. 21 - jianjing</string>
+    <string name="G_B_22">G.B. 22 - yuanye</string>
+    <string name="G_B_23">G.B. 23 - zhejin</string>
+    <string name="G_B_24">G.B. 24 - riyue</string>
+    <string name="G_B_25">G.B. 25 - jingmen</string>
+    <string name="G_B_26">G.B. 26 - daimai</string>
+    <string name="G_B_27">G.B. 27 - wushu</string>
+    <string name="G_B_28">G.B. 28 - weidao</string>
+    <string name="G_B_29">G.B. 29 - juliao</string>
+    <string name="G_B_30">G.B. 30 - huantiao</string>
+    <string name="G_B_31">G.B. 31 - fengshi</string>
+    <string name="G_B_32">G.B. 32 - zhongdu</string>
+    <string name="G_B_33">G.B. 33 - xiyangguan</string>
+    <string name="G_B_34">G.B. 34 - yanglingquan</string>
+    <string name="G_B_35">G.B. 35 - yangjiao</string>
+    <string name="G_B_36">G.B. 36 - waiqiu</string>
+    <string name="G_B_37">G.B. 37 - guangming</string>
+    <string name="G_B_38">G.B. 38 - yangfu</string>
+    <string name="G_B_39">G.B. 39 - xuanzhong</string>
+    <string name="G_B_40">G.B. 40 - qiuxu</string>
+    <string name="G_B_41">G.B. 41 - zulinqi</string>
+    <string name="G_B_42">G.B. 42 - diwuhui</string>
+    <string name="G_B_43">G.B. 43 - jiaxi</string>
+    <string name="G_B_44">G.B. 44 - zuqiaoyin</string>
+
+    <!-- ###### LIVER ###### -->
+    <string name="LIV_1">LIV 1 - dadun</string>
+    <string name="LIV_2">LIV 2 - xingjian</string>
+    <string name="LIV_3">LIV 3 - taichong</string>
+    <string name="LIV_4">LIV 4 - zhongfeng</string>
+    <string name="LIV_5">LIV 5 - ligou</string>
+    <string name="LIV_6">LIV 6 - zhongdu</string>
+    <string name="LIV_7">LIV 7 - xiguan</string>
+    <string name="LIV_8">LIV 8 - ququan</string>
+    <string name="LIV_9">LIV 9 - yinbao</string>
+    <string name="LIV_10">LIV 10 - zuwuli</string>
+    <string name="LIV_11">LIV 11 - yinlian</string>
+    <string name="LIV_12">LIV 12 - jimai</string>
+    <string name="LIV_13">LIV 13 - zhangmen</string>
+    <string name="LIV_14">LIV 14 - qimen</string>
 
 </resources>

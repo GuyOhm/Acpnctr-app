@@ -170,7 +170,7 @@ public class ClientActivity extends AppCompatActivity {
         builder.setNegativeButton(R.string.keep_editing, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked the "Keep editing" button, so dismiss the dialog
-                // and continue editing the pet.
+                // and continue editing.
                 if (dialog != null) {
                     dialog.dismiss();
                 }

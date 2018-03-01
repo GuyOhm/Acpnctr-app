@@ -26,6 +26,7 @@ import com.acpnctr.acpnctr.utils.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -51,6 +52,7 @@ public class PulsesActivity extends AppCompatActivity {
 
     // Firebase instance variable
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseAuth mAuth;
 
     // create an array of PulseType object for the 28 types of pulses
     private PulseType[] pulseTypes = AcpnctrUtil.createPulseTypesArray();
@@ -79,6 +81,7 @@ public class PulsesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pulses);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close_white_24dp);
 
         // Get references to our views
         mEurythmyCheckbox = findViewById(R.id.cb_eurythmy);

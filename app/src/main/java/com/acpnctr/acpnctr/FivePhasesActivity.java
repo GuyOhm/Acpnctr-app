@@ -52,6 +52,7 @@ public class FivePhasesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_five_phases);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close_white_24dp);
 
         // Get reference to our views
         mWoodEarth = findViewById(R.id.wood_to_earth);

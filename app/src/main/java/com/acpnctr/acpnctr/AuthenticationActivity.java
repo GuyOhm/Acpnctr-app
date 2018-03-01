@@ -34,8 +34,8 @@ public class AuthenticationActivity extends AppCompatActivity {
     private void launchSignInFlow() {
         // choose providers for signing in
         List<AuthUI.IdpConfig> providers = Arrays.asList(
-                new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
-                new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()
+                new AuthUI.IdpConfig.EmailBuilder().build(),
+                new AuthUI.IdpConfig.GoogleBuilder().build()
         );
 
         // create and launch sign in intent
@@ -43,10 +43,12 @@ public class AuthenticationActivity extends AppCompatActivity {
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
-                        .setIsSmartLockEnabled(false) // TODO: change to true for production?
+                        .setIsSmartLockEnabled(!BuildConfig.DEBUG, true)
                         .setAvailableProviders(providers)
-                        // .setLogo(R.mipmap.ic_launcher_round)
+                        .setLogo(R.drawable.ic_logo_loginpage)
                         .setTheme(R.style.AppTheme_Login)
+                        // .setTosUrl("https://superapp.example.com/terms-of-service.html")
+                        // .setPrivacyPolicyUrl("https://superapp.example.com/privacy-policy.html")
                         .build(),
                 RC_SIGN_IN);
     }

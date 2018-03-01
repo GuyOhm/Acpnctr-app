@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/ausc_blood_pressure"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine|textCapSentences" />
 
         <EditText
             android:id="@+id/et_ausc_abdomen"
@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/ausc_abdomen"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine|textCapSentences" />
 
         <EditText
             android:id="@+id/et_ausc_smell"
@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/ausc_smell"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine|textCapSentences" />
 
         <EditText
             android:id="@+id/et_ausc_breathing"
@@ -44,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/ausc_breathing"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine|textCapSentences" />
 
         <EditText
             android:id="@+id/et_ausc_cough"
@@ -52,7 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/ausc_cough"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine|textCapSentences" />
 
         <EditText
             android:id="@+id/et_ausc_voice"
@@ -60,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/ausc_voice"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine|textCapSentences" />
 
     </LinearLayout>
 

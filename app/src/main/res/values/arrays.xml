@@ -83,7 +83,368 @@
         <item>@string/DM_28</item>
 
         <!-- ###### LUNG ###### -->
+        <item>@string/LU_1</item>
+        <item>@string/LU_2</item>
+        <item>@string/LU_3</item>
+        <item>@string/LU_4</item>
+        <item>@string/LU_5</item>
+        <item>@string/LU_6</item>
+        <item>@string/LU_7</item>
+        <item>@string/LU_8</item>
+        <item>@string/LU_9</item>
+        <item>@string/LU_10</item>
+        <item>@string/LU_11</item>
+
+        <!-- ###### LARGE INTESTINE ###### -->
+        <item>@string/L_I_1</item>
+        <item>@string/L_I_2</item>
+        <item>@string/L_I_3</item>
+        <item>@string/L_I_4</item>
+        <item>@string/L_I_5</item>
+        <item>@string/L_I_6</item>
+        <item>@string/L_I_7</item>
+        <item>@string/L_I_8</item>
+        <item>@string/L_I_9</item>
+        <item>@string/L_I_10</item>
+        <item>@string/L_I_11</item>
+        <item>@string/L_I_12</item>
+        <item>@string/L_I_13</item>
+        <item>@string/L_I_14</item>
+        <item>@string/L_I_15</item>
+        <item>@string/L_I_16</item>
+        <item>@string/L_I_17</item>
+        <item>@string/L_I_18</item>
+        <item>@string/L_I_19</item>
+        <item>@string/L_I_20</item>
+
+        <!-- ###### STOMACH ###### -->
+        <item>@string/ST_1</item>
+        <item>@string/ST_2</item>
+        <item>@string/ST_3</item>
+        <item>@string/ST_4</item>
+        <item>@string/ST_5</item>
+        <item>@string/ST_6</item>
+        <item>@string/ST_7</item>
+        <item>@string/ST_8</item>
+        <item>@string/ST_9</item>
+        <item>@string/ST_10</item>
+        <item>@string/ST_11</item>
+        <item>@string/ST_12</item>
+        <item>@string/ST_13</item>
+        <item>@string/ST_14</item>
+        <item>@string/ST_15</item>
+        <item>@string/ST_16</item>
+        <item>@string/ST_17</item>
+        <item>@string/ST_18</item>
+        <item>@string/ST_19</item>
+        <item>@string/ST_20</item>
+        <item>@string/ST_21</item>
+        <item>@string/ST_22</item>
+        <item>@string/ST_23</item>
+        <item>@string/ST_24</item>
+        <item>@string/ST_25</item>
+        <item>@string/ST_26</item>
+        <item>@string/ST_27</item>
+        <item>@string/ST_28</item>
+        <item>@string/ST_29</item>
+        <item>@string/ST_30</item>
+        <item>@string/ST_31</item>
+        <item>@string/ST_32</item>
+        <item>@string/ST_33</item>
+        <item>@string/ST_34</item>
+        <item>@string/ST_35</item>
+        <item>@string/ST_36</item>
+        <item>@string/ST_37</item>
+        <item>@string/ST_38</item>
+        <item>@string/ST_39</item>
+        <item>@string/ST_40</item>
+        <item>@string/ST_41</item>
+        <item>@string/ST_42</item>
+        <item>@string/ST_43</item>
+        <item>@string/ST_44</item>
+        <item>@string/ST_45</item>
+
+        <!-- ###### SPLEEN ###### -->
+        <item>@string/SP_1</item>
+        <item>@string/SP_2</item>
+        <item>@string/SP_3</item>
+        <item>@string/SP_4</item>
+        <item>@string/SP_5</item>
+        <item>@string/SP_6</item>
+        <item>@string/SP_7</item>
+        <item>@string/SP_8</item>
+        <item>@string/SP_9</item>
+        <item>@string/SP_10</item>
+        <item>@string/SP_11</item>
+        <item>@string/SP_12</item>
+        <item>@string/SP_13</item>
+        <item>@string/SP_14</item>
+        <item>@string/SP_15</item>
+        <item>@string/SP_16</item>
+        <item>@string/SP_17</item>
+        <item>@string/SP_18</item>
+        <item>@string/SP_19</item>
+        <item>@string/SP_20</item>
+        <item>@string/SP_21</item>
+
+        <!-- ###### HEART ###### -->
+        <item>@string/HE_1</item>
+        <item>@string/HE_2</item>
+        <item>@string/HE_3</item>
+        <item>@string/HE_4</item>
+        <item>@string/HE_5</item>
+        <item>@string/HE_6</item>
+        <item>@string/HE_7</item>
+        <item>@string/HE_8</item>
+        <item>@string/HE_9</item>
+
+        <!-- ###### SMALL INTESTINE ###### -->
+        <item>@string/S_I_1</item>
+        <item>@string/S_I_2</item>
+        <item>@string/S_I_3</item>
+        <item>@string/S_I_4</item>
+        <item>@string/S_I_5</item>
+        <item>@string/S_I_6</item>
+        <item>@string/S_I_7</item>
+        <item>@string/S_I_8</item>
+        <item>@string/S_I_9</item>
+        <item>@string/S_I_10</item>
+        <item>@string/S_I_11</item>
+        <item>@string/S_I_12</item>
+        <item>@string/S_I_13</item>
+        <item>@string/S_I_14</item>
+        <item>@string/S_I_15</item>
+        <item>@string/S_I_16</item>
+        <item>@string/S_I_17</item>
+        <item>@string/S_I_18</item>
+        <item>@string/S_I_19</item>
+
+        <!-- ###### BLADDER ###### -->
+        <item>@string/BL_1</item>
+        <item>@string/BL_2</item>
+        <item>@string/BL_3</item>
+        <item>@string/BL_4</item>
+        <item>@string/BL_5</item>
+        <item>@string/BL_6</item>
+        <item>@string/BL_7</item>
+        <item>@string/BL_8</item>
+        <item>@string/BL_9</item>
+        <item>@string/BL_10</item>
+        <item>@string/BL_11</item>
+        <item>@string/BL_12</item>
+        <item>@string/BL_13</item>
+        <item>@string/BL_14</item>
+        <item>@string/BL_15</item>
+        <item>@string/BL_16</item>
+        <item>@string/BL_17</item>
+        <item>@string/BL_18</item>
+        <item>@string/BL_19</item>
+        <item>@string/BL_20</item>
+        <item>@string/BL_21</item>
+        <item>@string/BL_22</item>
+        <item>@string/BL_23</item>
+        <item>@string/BL_24</item>
+        <item>@string/BL_25</item>
+        <item>@string/BL_26</item>
+        <item>@string/BL_27</item>
+        <item>@string/BL_28</item>
+        <item>@string/BL_29</item>
+        <item>@string/BL_30</item>
+        <item>@string/BL_31</item>
+        <item>@string/BL_32</item>
+        <item>@string/BL_33</item>
+        <item>@string/BL_34</item>
+        <item>@string/BL_35</item>
+        <item>@string/BL_36</item>
+        <item>@string/BL_37</item>
+        <item>@string/BL_38</item>
+        <item>@string/BL_39</item>
+        <item>@string/BL_40</item>
+        <item>@string/BL_41</item>
+        <item>@string/BL_42</item>
+        <item>@string/BL_43</item>
+        <item>@string/BL_44</item>
+        <item>@string/BL_45</item>
+        <item>@string/BL_46</item>
+        <item>@string/BL_47</item>
+        <item>@string/BL_48</item>
+        <item>@string/BL_49</item>
+        <item>@string/BL_50</item>
+        <item>@string/BL_51</item>
+        <item>@string/BL_52</item>
+        <item>@string/BL_53</item>
+        <item>@string/BL_54</item>
+        <item>@string/BL_55</item>
+        <item>@string/BL_56</item>
+        <item>@string/BL_57</item>
+        <item>@string/BL_58</item>
+        <item>@string/BL_59</item>
+        <item>@string/BL_60</item>
+        <item>@string/BL_61</item>
+        <item>@string/BL_62</item>
+        <item>@string/BL_63</item>
+        <item>@string/BL_64</item>
+        <item>@string/BL_65</item>
+        <item>@string/BL_66</item>
+        <item>@string/BL_67</item>
+
+        <!-- ###### KIDNEY ###### -->
+        <item>@string/KID_1</item>
+        <item>@string/KID_2</item>
+        <item>@string/KID_3</item>
+        <item>@string/KID_4</item>
+        <item>@string/KID_5</item>
+        <item>@string/KID_6</item>
+        <item>@string/KID_7</item>
+        <item>@string/KID_8</item>
+        <item>@string/KID_9</item>
+        <item>@string/KID_10</item>
+        <item>@string/KID_11</item>
+        <item>@string/KID_12</item>
+        <item>@string/KID_13</item>
+        <item>@string/KID_14</item>
+        <item>@string/KID_15</item>
+        <item>@string/KID_16</item>
+        <item>@string/KID_17</item>
+        <item>@string/KID_18</item>
+        <item>@string/KID_19</item>
+        <item>@string/KID_20</item>
+        <item>@string/KID_21</item>
+        <item>@string/KID_22</item>
+        <item>@string/KID_23</item>
+        <item>@string/KID_24</item>
+        <item>@string/KID_25</item>
+        <item>@string/KID_26</item>
+        <item>@string/KID_27</item>
+
+        <!-- ###### PERICARDUM ###### -->
+        <item>@string/P_1</item>
+        <item>@string/P_2</item>
+        <item>@string/P_3</item>
+        <item>@string/P_4</item>
+        <item>@string/P_5</item>
+        <item>@string/P_6</item>
+        <item>@string/P_7</item>
+        <item>@string/P_8</item>
+        <item>@string/P_9</item>
+
+        <!-- ###### TRIPLE BURNER ###### -->
+        <item>@string/T_B_1</item>
+        <item>@string/T_B_2</item>
+        <item>@string/T_B_3</item>
+        <item>@string/T_B_4</item>
+        <item>@string/T_B_5</item>
+        <item>@string/T_B_6</item>
+        <item>@string/T_B_7</item>
+        <item>@string/T_B_8</item>
+        <item>@string/T_B_9</item>
+        <item>@string/T_B_10</item>
+        <item>@string/T_B_11</item>
+        <item>@string/T_B_12</item>
+        <item>@string/T_B_13</item>
+        <item>@string/T_B_14</item>
+        <item>@string/T_B_15</item>
+        <item>@string/T_B_16</item>
+        <item>@string/T_B_17</item>
+        <item>@string/T_B_18</item>
+        <item>@string/T_B_19</item>
+        <item>@string/T_B_20</item>
+        <item>@string/T_B_21</item>
+        <item>@string/T_B_22</item>
+        <item>@string/T_B_23</item>
+
+        <!-- ###### GALL BLADDER ###### -->
+        <item>@string/G_B_1</item>
+        <item>@string/G_B_2</item>
+        <item>@string/G_B_3</item>
+        <item>@string/G_B_4</item>
+        <item>@string/G_B_5</item>
+        <item>@string/G_B_6</item>
+        <item>@string/G_B_7</item>
+        <item>@string/G_B_8</item>
+        <item>@string/G_B_9</item>
+        <item>@string/G_B_10</item>
+        <item>@string/G_B_11</item>
+        <item>@string/G_B_12</item>
+        <item>@string/G_B_13</item>
+        <item>@string/G_B_14</item>
+        <item>@string/G_B_15</item>
+        <item>@string/G_B_16</item>
+        <item>@string/G_B_17</item>
+        <item>@string/G_B_18</item>
+        <item>@string/G_B_19</item>
+        <item>@string/G_B_20</item>
+        <item>@string/G_B_21</item>
+        <item>@string/G_B_22</item>
+        <item>@string/G_B_23</item>
+        <item>@string/G_B_24</item>
+        <item>@string/G_B_25</item>
+        <item>@string/G_B_26</item>
+        <item>@string/G_B_27</item>
+        <item>@string/G_B_28</item>
+        <item>@string/G_B_29</item>
+        <item>@string/G_B_30</item>
+        <item>@string/G_B_31</item>
+        <item>@string/G_B_32</item>
+        <item>@string/G_B_33</item>
+        <item>@string/G_B_34</item>
+        <item>@string/G_B_35</item>
+        <item>@string/G_B_36</item>
+        <item>@string/G_B_37</item>
+        <item>@string/G_B_38</item>
+        <item>@string/G_B_39</item>
+        <item>@string/G_B_40</item>
+        <item>@string/G_B_41</item>
+        <item>@string/G_B_42</item>
+        <item>@string/G_B_43</item>
+        <item>@string/G_B_44</item>
+
+        <!-- ###### LIVER ###### -->
+        <item>@string/LIV_1</item>
+        <item>@string/LIV_2</item>
+        <item>@string/LIV_3</item>
+        <item>@string/LIV_4</item>
+        <item>@string/LIV_5</item>
+        <item>@string/LIV_6</item>
+        <item>@string/LIV_7</item>
+        <item>@string/LIV_8</item>
+        <item>@string/LIV_9</item>
+        <item>@string/LIV_10</item>
+        <item>@string/LIV_11</item>
+        <item>@string/LIV_12</item>
+        <item>@string/LIV_13</item>
+        <item>@string/LIV_14</item>
 
     </string-array>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </resources>

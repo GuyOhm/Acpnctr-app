@@ -22,7 +22,7 @@
             android:name=".DashboardActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ClientActivity"
             android:label="@string/title_activity_client"

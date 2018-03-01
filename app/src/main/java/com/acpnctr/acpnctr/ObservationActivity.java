@@ -54,6 +54,7 @@ public class ObservationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_observation);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close_white_24dp);
 
         // get references to our views
         mBehaviour = findViewById(R.id.et_obs_behaviour);

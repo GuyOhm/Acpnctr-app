@@ -13,7 +13,8 @@
         style="@style/AppTheme.TabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabGravity="fill" />
+        app:tabGravity="fill"
+        app:tabMaxWidth="0dp"/>
 
     <FrameLayout
         android:id="@+id/content_client"

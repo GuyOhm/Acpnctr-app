@@ -2,7 +2,6 @@ package com.acpnctr.acpnctr.fragments;
 
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -364,10 +363,9 @@ public class FourStepsFragment extends Fragment {
                         if (eurythmyMap != null && eurythmyMap.containsKey(Constants.PULSES_EURYTHMY_BPB_KEY)){
                             mEurythmyTextView.setVisibility(View.VISIBLE);
                             StringBuilder eurythmyString = new StringBuilder();
-                            Activity activity = getActivity();
-                            if (activity != null && isAdded()) {
+                            if (getActivity() != null && isAdded()) {
                                 eurythmyString
-                                        .append(activity.getString(R.string.pulses_eurythmy_value_label))
+                                        .append(getResources().getString(R.string.pulses_eurythmy_value_label))
                                         .append(" ")
                                         .append(eurythmyMap.get(Constants.PULSES_EURYTHMY_BPB_KEY))
                                         .append(" ")
@@ -383,14 +381,13 @@ public class FourStepsFragment extends Fragment {
                         if (pulseTypesMap != null){
                             m28PulseTypesTextView.setVisibility(View.VISIBLE);
                             StringBuilder typeString = new StringBuilder();
-                            Activity activity = getActivity();
-                            if (activity != null && isAdded()) {
+                            if (getActivity() != null && isAdded()) {
                                 typeString
                                         .append(getResources().getString(R.string.pulses_28_types_value_label))
                                         .append(" ");
                                 for (Map.Entry<String, Boolean> entry : pulseTypesMap.entrySet()) {
                                     typeString
-                                            .append(entry.getKey())
+                                            .append(entry.getKey().toUpperCase())
                                             .append(" / ");
                                 }
                                 m28PulseTypesTextView.setText(typeString);

@@ -1,4 +1,4 @@
-package com.example.acpnctr.acpnctr;
+package com.acpnctr.acpnctr;
 
 import org.junit.Test;
 

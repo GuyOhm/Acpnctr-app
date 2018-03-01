@@ -12,7 +12,7 @@
     <dimen name="loading_indicator">42dp</dimen>
     <dimen name="ic_no_client">80dp</dimen>
     <dimen name="ic_no_client_margin">32dp</dimen>
-    <dimen name="ic_client_list_item">50dp</dimen>
+    <dimen name="ic_client_list_item">40dp</dimen>
     <!-- button -->
     <dimen name="btn_margin_top">16dp</dimen>
     <dimen name="btn_margin_bottom">16dp</dimen>

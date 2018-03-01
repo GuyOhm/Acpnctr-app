@@ -52,7 +52,6 @@ public class AnamnesisFragment extends Fragment {
     // Firebase instance variable
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    private Button buttonAdd;
     private EditText editTextDate;
     private EditText editTextHistory;
 
@@ -82,7 +81,7 @@ public class AnamnesisFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_anamnesis, container, false);
 
         // hook our members var to the corresponding layout element
-        buttonAdd = rootView.findViewById(R.id.btn_add_history);
+        Button buttonAdd = rootView.findViewById(R.id.btn_add_history);
         editTextDate = rootView.findViewById(R.id.et_history_date);
         editTextHistory = rootView.findViewById(R.id.et_history_text);
         mAnamnesisList = rootView.findViewById(R.id.rv_anamnesis_list);
@@ -131,8 +130,6 @@ public class AnamnesisFragment extends Fragment {
 
                         addAnamnesisDocument(anamnesis, anamCollection);
 
-                        displayAnamnesisItems();
-
                     } else {
                         Toast.makeText(getActivity(), R.string.client_anam_no_history, Toast.LENGTH_SHORT).show();
                     }
@@ -146,6 +143,7 @@ public class AnamnesisFragment extends Fragment {
 
         // Display list of histories from firestore
         if (sClientid != null){
+            mLoadingIndicator.setVisibility(View.VISIBLE);
             displayAnamnesisItems();
         }
 
@@ -181,8 +179,10 @@ public class AnamnesisFragment extends Fragment {
             @Override
             public void onError(FirebaseFirestoreException e) {
                 Log.d(LOG_TAG, "Error while loading data for clients list" + e);
-                Toast.makeText(getActivity(), getString(R.string.clients_list_error),
-                        Toast.LENGTH_SHORT).show();
+                if(getActivity() != null && isAdded()) {
+                    Toast.makeText(getActivity(), getString(R.string.clients_list_error),
+                            Toast.LENGTH_SHORT).show();
+                }
             }
         };
 

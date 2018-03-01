@@ -82,6 +82,7 @@ public class SessionsListFragment extends Fragment implements SessionAdapter.OnS
         mLoadingIndicator = rootView.findViewById(R.id.pb_sessions_list_loading_indicator);
 
         if (sClientid != null) {
+            mLoadingIndicator.setVisibility(View.VISIBLE);
             displaySessionsList();
         }
 
@@ -98,7 +99,7 @@ public class SessionsListFragment extends Fragment implements SessionAdapter.OnS
 
         // query firestore for the client's sessions
         Query query = sessionsCollection
-                .orderBy("timestampCreated", Query.Direction.DESCENDING);
+                .orderBy(Constants.SESSION_TIMESTAMP, Query.Direction.DESCENDING);
 
         // configure recycler adapter options
         FirestoreRecyclerOptions<Session> options = new FirestoreRecyclerOptions.Builder<Session>()

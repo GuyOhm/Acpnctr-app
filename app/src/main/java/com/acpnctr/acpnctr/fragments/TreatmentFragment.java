@@ -203,6 +203,7 @@ public class TreatmentFragment extends Fragment {
         initializeStimulationButtons();
 
         if (!isNewSession){
+            mLoadingIndicator.setVisibility(View.VISIBLE);
             displayTreatment();
         }
 
@@ -290,8 +291,10 @@ public class TreatmentFragment extends Fragment {
             @Override
             public void onError(FirebaseFirestoreException e) {
                 Log.d(LOG_TAG, "Error while loading data for treatment" + e);
-                Toast.makeText(getActivity(), getString(R.string.treatment_list_error),
-                        Toast.LENGTH_SHORT).show();
+                if (getActivity() != null && isAdded()) {
+                    Toast.makeText(getActivity(), getString(R.string.treatment_list_error),
+                            Toast.LENGTH_SHORT).show();
+                }
             }
         };
 

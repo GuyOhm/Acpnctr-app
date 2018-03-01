@@ -26,7 +26,7 @@ public class Client implements Parcelable{
     public static final int ACQUI_CONFRERE = 4;
     public static final int ACQUI_OFFLINE = 5;
 
-    // key constants (not sure if I'll be using them
+    // key constants (not sure if I'll be using them)
     public static final String CLIENT_NAME_KEY = "clientName";
     public static final String CLIENT_DOB_KEY = "clientDOB";
     public static final String CLIENT_PHONE_KEY = "clientPhone";

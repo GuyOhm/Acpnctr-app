@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/ic_client"
+        android:layout_width="@dimen/ic_client_list_item"
+        android:layout_height="@dimen/ic_client_list_item"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_client" />
+
+    <TextView
+        android:id="@+id/tv_client_list_name"
+        style="@style/ListItemPrimaryText"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/ic_client"
+        app:layout_constraintStart_toEndOf="@+id/ic_client"
+        app:layout_constraintTop_toTopOf="@+id/ic_client"
+        tools:text="John Doe" />
+
+    <TextView
+        android:id="@+id/tv_client_list_last_session"
+        style="@style/ListItemSecondaryText"
+        android:layout_marginEnd="48dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_client_list_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="January 1st 2017" />
+
+    <!--This View serves as a visual divider between list items-->
+    <View
+        android:id="@+id/view"
+        style="@style/DividerViewStyle"
+        android:layout_marginEnd="@dimen/divider_view_horizontal_padding"
+        android:layout_marginStart="@dimen/divider_view_horizontal_padding"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

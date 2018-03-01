@@ -46,6 +46,7 @@ public class PalpationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_palpation);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close_white_24dp);
 
         // get references to our views
         mAbdomen = findViewById(R.id.et_palp_abdomen);

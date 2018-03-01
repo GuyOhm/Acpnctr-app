@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/obs_behaviour"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine|textCapSentences" />
 
         <EditText
             android:id="@+id/et_obs_tongue"
@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/obs_tongue"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine|textCapSentences" />
 
         <EditText
             android:id="@+id/et_obs_lips"
@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/obs_lips"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine|textCapSentences" />
 
         <EditText
             android:id="@+id/et_obs_limb"
@@ -44,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/obs_limb"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine|textCapSentences" />
 
         <EditText
             android:id="@+id/et_obs_meridian"
@@ -52,7 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/obs_meridian"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine|textCapSentences" />
 
         <EditText
             android:id="@+id/et_obs_morphology"
@@ -60,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/obs_morphology"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine|textCapSentences" />
 
         <EditText
             android:id="@+id/et_obs_nails"
@@ -68,7 +68,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/obs_nails"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine|textCapSentences" />
 
         <EditText
             android:id="@+id/et_obs_skin"
@@ -76,7 +76,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/obs_skin"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine|textCapSentences" />
 
         <EditText
             android:id="@+id/et_obs_hairiness"
@@ -84,7 +84,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/obs_hairiness"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine|textCapSentences" />
 
         <EditText
             android:id="@+id/et_obs_complexion"
@@ -92,7 +92,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/obs_complexion"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine|textCapSentences" />
 
         <EditText
             android:id="@+id/et_obs_eyes"
@@ -100,7 +100,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/obs_eyes"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine|textCapSentences" />
 
     </LinearLayout>
 
