@@ -14,11 +14,12 @@ acupuncture points).
 ## Built with
 * Firebase Authentication
 * Firebase Firestore
+* FirebaseUI
 
 ## License
 All right reserved, ©Acpnctr 2018
 
-## Acknoledgement
+## Acknowledgement
 Work in progress... :)
 
 
