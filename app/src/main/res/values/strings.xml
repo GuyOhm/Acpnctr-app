@@ -51,8 +51,6 @@
     <string name="hint_client_information_phone">phone</string>
     <string name="hint_client_information_email">email</string>
 
-    <!-- Title when adding a new client through the fab -->
-
     <!-- Labels for gender dropdown menu -->
     <string name="gender_unknown">Unknown</string>
     <string name="gender_male">Male</string>
@@ -80,6 +78,8 @@
     <string name="new_client_not_saved">Please save new client first</string>
     <string name="client_anam_no_history">Please enter a history</string>
     <string name="generic_data_insert_failed">Error adding data</string>
+    <string name="generic_data_load_failed">Error loading data</string>
+    <string name="sessions_list_load_failed">Error loading sessions list</string>
 
     <!-- Dialog message when user is leaving editor but hasn't saved changes  -->
     <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>

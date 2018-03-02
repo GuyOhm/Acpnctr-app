@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.acpnctr.acpnctr.utils.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -31,8 +31,6 @@ import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_SESSIONS;
 import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_USERS;
 
 public class PalpationActivity extends AppCompatActivity {
-
-    private static final String LOG_TAG = PalpationActivity.class.getSimpleName();
 
     // Firebase instance variable
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -65,11 +63,12 @@ public class PalpationActivity extends AppCompatActivity {
                 .document(sClientid)
                 .collection(FIRESTORE_COLLECTION_SESSIONS)
                 .document(sSessionid)
-                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                .addSnapshotListener(PalpationActivity.this, new EventListener<DocumentSnapshot>() {
                     @Override
                     public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
                         if (e != null){
-                            Log.w(LOG_TAG, "Listen failed" , e);
+                            Toast.makeText(PalpationActivity.this,
+                                    R.string.generic_data_load_failed, Toast.LENGTH_SHORT).show();
                         }
 
                         if (documentSnapshot != null && documentSnapshot.exists()){
@@ -87,12 +86,7 @@ public class PalpationActivity extends AppCompatActivity {
                                 if(palpationMap.containsKey(Constants.PALP_POINT_KEY)){
                                     mPoint.setText(palpationMap.get(Constants.PALP_POINT_KEY));
                                 }
-
-                            } else {
-                                Log.d(LOG_TAG, "No Palpation data yet!");
                             }
-                        } else {
-                            Log.d(LOG_TAG, "Current data: null");
                         }
                     }
                 });
@@ -144,7 +138,6 @@ public class PalpationActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Log.d(LOG_TAG, "palpation saved!");
                         Intent returnIntent = new Intent();
                         setResult(RESULT_OK, returnIntent);
                         finish();
@@ -153,7 +146,8 @@ public class PalpationActivity extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w(LOG_TAG, "error updating session: " + e);
+                        Toast.makeText(PalpationActivity.this,
+                                R.string.generic_data_insert_failed, Toast.LENGTH_SHORT).show();
                     }
                 });
     }

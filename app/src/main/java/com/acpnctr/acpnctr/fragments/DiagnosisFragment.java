@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,8 +44,6 @@ import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_USERS;
  * {@link Fragment} to display diagnosis of a session.
  */
 public class DiagnosisFragment extends Fragment {
-
-    private static final String LOG_TAG = DiagnosisFragment.class.getSimpleName();
 
     // Firebase instance variable
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -175,50 +172,50 @@ public class DiagnosisFragment extends Fragment {
                 .document(sSessionid);
 
         // listen to the session document snapshot and initialize data
-        sessionDoc.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
-                if (e != null){
-                    Log.w(LOG_TAG, "Listen failed" , e);
-                }
+        if (getActivity() != null && isAdded()) {
+            sessionDoc.addSnapshotListener(getActivity(), new EventListener<DocumentSnapshot>() {
+                @Override
+                public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
+                    if (e != null) {
+                        Toast.makeText(getActivity(), R.string.generic_data_load_failed, Toast.LENGTH_SHORT).show();
+                    }
 
-                if (documentSnapshot != null && documentSnapshot.exists()){
-                    // store all data to a Map
-                    Map<String, Object> sessionMap = documentSnapshot.getData();
-                    // get bagang data
-                    Map<String, Boolean> bagang = (Map<String, Boolean>) sessionMap.get(Constants.BAGANG_KEY);
-                    if (bagang != null) {
-                        showBagang();
-                        mBagangYin.setChecked(bagang.get(Constants.BAGANG_YIN_KEY));
-                        mBagangYang.setChecked(bagang.get(Constants.BAGANG_YANG_KEY));
-                        mBagangDeficiency.setChecked(bagang.get(Constants.BAGANG_DEFICIENCY_KEY));
-                        mBagangExcess.setChecked(bagang.get(Constants.BAGANG_EXCESS_KEY));
-                        mBagangCold.setChecked(bagang.get(Constants.BAGANG_COLD_KEY));
-                        mBagangHeat.setChecked(bagang.get(Constants.BAGANG_HEAT_KEY));
-                        mBagangInterior.setChecked(bagang.get(Constants.BAGANG_INTERIOR_KEY));
-                        mBagangExterior.setChecked(bagang.get(Constants.BAGANG_EXTERIOR_KEY));
+                    if (documentSnapshot != null && documentSnapshot.exists()) {
+                        // store all data to a Map
+                        Map<String, Object> sessionMap = documentSnapshot.getData();
+                        // get bagang data
+                        Map<String, Boolean> bagang = (Map<String, Boolean>) sessionMap.get(Constants.BAGANG_KEY);
+                        if (bagang != null) {
+                            showBagang();
+                            mBagangYin.setChecked(bagang.get(Constants.BAGANG_YIN_KEY));
+                            mBagangYang.setChecked(bagang.get(Constants.BAGANG_YANG_KEY));
+                            mBagangDeficiency.setChecked(bagang.get(Constants.BAGANG_DEFICIENCY_KEY));
+                            mBagangExcess.setChecked(bagang.get(Constants.BAGANG_EXCESS_KEY));
+                            mBagangCold.setChecked(bagang.get(Constants.BAGANG_COLD_KEY));
+                            mBagangHeat.setChecked(bagang.get(Constants.BAGANG_HEAT_KEY));
+                            mBagangInterior.setChecked(bagang.get(Constants.BAGANG_INTERIOR_KEY));
+                            mBagangExterior.setChecked(bagang.get(Constants.BAGANG_EXTERIOR_KEY));
 
+                        } else {
+                            hideBagang();
+                        }
+                        // get wuxing (5 phases) data
+                        Map<String, Boolean> wuxing = (Map<String, Boolean>) sessionMap.get(Constants.WUXING_KEY);
+                        if (wuxing != null) {
+                            Bundle wuxingBundle = new Bundle();
+                            for (Map.Entry<String, Boolean> entry : wuxing.entrySet()) {
+                                wuxingBundle.putBoolean(entry.getKey(), entry.getValue());
+                            }
+                            setWuxingImage(wuxingBundle);
+                        }
+
+                        // session hasn't been saved yet
                     } else {
-                        Log.d(LOG_TAG, "No bagang data yet!");
                         hideBagang();
                     }
-                    // get wuxing (5 phases) data
-                    Map<String, Boolean> wuxing = (Map<String, Boolean>) sessionMap.get(Constants.WUXING_KEY);
-                    if (wuxing != null){
-                        Bundle wuxingBundle = new Bundle();
-                        for (Map.Entry<String, Boolean> entry : wuxing.entrySet()) {
-                            wuxingBundle.putBoolean(entry.getKey(), entry.getValue());
-                        }
-                        setWuxingImage(wuxingBundle);
-                    }
-
-                // session hasn't been saved yet
-                } else {
-                    Log.d(LOG_TAG, "Current data: null");
-                    hideBagang();
                 }
-            }
-        });
+            });
+        }
     }
 
     private void hideBagang() {
@@ -306,14 +303,13 @@ public class DiagnosisFragment extends Fragment {
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            Log.d(LOG_TAG, "batch successfully committed !");
                             Toast.makeText(getContext(), getString(R.string.diag_saved), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Log.w(LOG_TAG, "Error committing batch :/ ", e);
+                            Toast.makeText(getActivity(), R.string.generic_data_insert_failed, Toast.LENGTH_SHORT).show();
                         }
                     });
         }

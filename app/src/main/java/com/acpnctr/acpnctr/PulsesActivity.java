@@ -7,7 +7,6 @@ import android.support.constraint.Group;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -47,8 +46,6 @@ import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_SESSIONS;
 import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_USERS;
 
 public class PulsesActivity extends AppCompatActivity {
-
-    private static final String LOG_TAG = PulsesActivity.class.getSimpleName();
 
     // Firebase instance variable
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -250,11 +247,12 @@ public class PulsesActivity extends AppCompatActivity {
                 .document(sClientid)
                 .collection(FIRESTORE_COLLECTION_SESSIONS)
                 .document(sSessionid)
-                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                .addSnapshotListener(PulsesActivity.this, new EventListener<DocumentSnapshot>() {
                     @Override
                     public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
                         if (e != null){
-                            Log.w(LOG_TAG, "Listen failed" , e);
+                            Toast.makeText(PulsesActivity.this,
+                                    R.string.generic_data_load_failed, Toast.LENGTH_SHORT).show();
                         }
 
                         if (documentSnapshot != null && documentSnapshot.exists()){
@@ -278,7 +276,6 @@ public class PulsesActivity extends AppCompatActivity {
                                     }
                                     mEurythmyCheckbox.setChecked(true);
                                 } else {
-                                    Log.d(LOG_TAG, "No Eurythmy data yet!");
                                     hideEurythmy();
                                 }
 
@@ -297,7 +294,6 @@ public class PulsesActivity extends AppCompatActivity {
                                     mPulseTypesAdapter.notifyDataSetChanged();
 
                                 } else {
-                                    Log.d(LOG_TAG, "No 28 Pulse Types data yet!");
                                     hide28Types();
                                     // initialize 28 types hashmap to be able to receive data
                                     m28TypesMap = new HashMap<>();
@@ -305,14 +301,11 @@ public class PulsesActivity extends AppCompatActivity {
 
 
                             } else {
-                                Log.d(LOG_TAG, "No pulses data yet!");
                                 hideEurythmy();
                                 hide28Types();
                                 // initialize 28 types hashmap to be able to receive data
                                 m28TypesMap = new HashMap<>();
                             }
-                        } else {
-                            Log.d(LOG_TAG, "Current data: null");
                         }
                     }
                 });
@@ -398,7 +391,6 @@ public class PulsesActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Log.d(LOG_TAG, "pulses saved!");
                         Intent returnIntent = new Intent();
                         setResult(RESULT_OK, returnIntent);
                         finish();
@@ -407,7 +399,8 @@ public class PulsesActivity extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w(LOG_TAG, "error updating session: " + e);
+                        Toast.makeText(PulsesActivity.this,
+                                R.string.generic_data_insert_failed, Toast.LENGTH_SHORT).show();
                     }
                 });
     }

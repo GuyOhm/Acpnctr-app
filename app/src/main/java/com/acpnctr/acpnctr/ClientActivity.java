@@ -25,8 +25,6 @@ import static com.acpnctr.acpnctr.utils.Constants.INTENT_SELECTED_CLIENT_ID;
 
 public class ClientActivity extends AppCompatActivity {
 
-    private final static String LOG_TAG = ClientActivity.class.getSimpleName();
-
     // static member variables to be used by fragments
     public static String sUid;
     public static String sClientid;

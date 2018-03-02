@@ -16,7 +16,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -62,9 +61,6 @@ import static com.acpnctr.acpnctr.utils.Constants.INTENT_SELECTED_CLIENT;
 
 public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ClientAdapter.OnClientSelectedListener {
-
-    // Tag for the log messages
-    private static final String LOG_TAG = DashboardActivity.class.getSimpleName();
 
     // Firebase instance variables
     private FirebaseAuth mAuth;
@@ -135,17 +131,12 @@ public class DashboardActivity extends AppCompatActivity
                                     DocumentSnapshot snapshot = task.getResult();
                                     if (snapshot.exists()) {
                                         // the user already exists hence has a firestore document named by uid
-                                        Log.d(LOG_TAG, "user already exists in db: " + snapshot.getData());
                                         isAlreadyInDatabase = true;
 
                                     } else {
                                         // the user signs in for the first time
-                                        Log.d(LOG_TAG, "uid: " + mUid + " doesn't exist");
                                         createUserDocument(user, userDoc);
                                     }
-
-                                } else {
-                                    Log.d(LOG_TAG, "get failed with ", task.getException());
                                 }
                             }
                         });
@@ -225,7 +216,7 @@ public class DashboardActivity extends AppCompatActivity
                 .document(mUid)
                 .collection(FIRESTORE_COLLECTION_CLIENTS);
 
-        // declare the appropriate query;
+        // declare query variable
         Query query;
 
         // query firestore for the user's clients
@@ -259,7 +250,6 @@ public class DashboardActivity extends AppCompatActivity
 
             @Override
             public void onError(FirebaseFirestoreException e) {
-                Log.d(LOG_TAG, "Error while loading data for clients list" + e);
                 if (mAuth.getCurrentUser() != null) {
                     Toast.makeText(DashboardActivity.this, getString(R.string.clients_list_error),
                             Toast.LENGTH_SHORT).show();
@@ -313,14 +303,12 @@ public class DashboardActivity extends AppCompatActivity
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d(LOG_TAG, "DocumentSnapshot successfully written");
                         isAlreadyInDatabase = true;
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w(LOG_TAG, "Error writing the document", e);
                     }
                 });
     }

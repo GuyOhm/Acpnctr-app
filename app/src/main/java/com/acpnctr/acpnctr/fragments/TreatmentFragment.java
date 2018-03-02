@@ -11,7 +11,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.ImageViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -55,8 +54,6 @@ import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_USERS;
  * {@link Fragment} to display treatment given to a client during a specific session.
  */
 public class TreatmentFragment extends Fragment {
-
-    private static final String LOG_TAG = TreatmentFragment.class.getSimpleName();
 
     private AutoCompleteTextView acuPointActv;
 
@@ -290,7 +287,6 @@ public class TreatmentFragment extends Fragment {
 
             @Override
             public void onError(FirebaseFirestoreException e) {
-                Log.d(LOG_TAG, "Error while loading data for treatment" + e);
                 if (getActivity() != null && isAdded()) {
                     Toast.makeText(getActivity(), getString(R.string.treatment_list_error),
                             Toast.LENGTH_SHORT).show();
@@ -326,7 +322,6 @@ public class TreatmentFragment extends Fragment {
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        Log.d(LOG_TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
                         updateAbbreviationsList(point);
                         acuPointActv.setText("");
                     }
@@ -334,7 +329,7 @@ public class TreatmentFragment extends Fragment {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w(LOG_TAG, "Error adding document", e);
+                        Toast.makeText(getActivity(), R.string.generic_data_insert_failed, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -345,7 +340,6 @@ public class TreatmentFragment extends Fragment {
      *
      * @param point
      */
-    // TODO: OPTIMIZATION - move this operation to Cloud Functions
     private void updateAbbreviationsList(String point) {
         mAbbreviationsList.add(abbreviatePoint(point));
 
@@ -355,19 +349,7 @@ public class TreatmentFragment extends Fragment {
                 .document(sClientid)
                 .collection(FIRESTORE_COLLECTION_SESSIONS)
                 .document(sSessionid)
-                .update(Constants.SESSION_TREATMENT_LIST_KEY, mAbbreviationsList)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(LOG_TAG, "DocumentSnapshot successfully updated!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(LOG_TAG, "Error updating document", e);
-                    }
-                });
+                .update(Constants.SESSION_TREATMENT_LIST_KEY, mAbbreviationsList);
     }
 
     /**

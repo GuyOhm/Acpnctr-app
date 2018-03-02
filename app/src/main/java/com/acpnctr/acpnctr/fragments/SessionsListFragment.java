@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,8 +45,6 @@ import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_USERS;
  * A {@link Fragment} to display the sessions history of a client.
  */
 public class SessionsListFragment extends Fragment implements SessionAdapter.OnSessionSelectedListener{
-
-    private static final String LOG_TAG = SessionsListFragment.class.getSimpleName();
 
     // Firebase instance variable
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -116,7 +113,10 @@ public class SessionsListFragment extends Fragment implements SessionAdapter.OnS
 
             @Override
             public void onError(FirebaseFirestoreException e) {
-                Log.d("SessionsListFragment", "Error while loading sessions list" + e);
+                if (getActivity() != null && isAdded()){
+                    Toast.makeText(getActivity(),
+                            getString(R.string.sessions_list_load_failed), Toast.LENGTH_SHORT).show();
+                }
             }
         };
 
@@ -195,7 +195,6 @@ public class SessionsListFragment extends Fragment implements SessionAdapter.OnS
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w(LOG_TAG, getString(R.string.session_rated_failed) + e);
                         Toast.makeText(getActivity(), getString(R.string.session_rated_failed), Toast.LENGTH_SHORT).show();
                     }
                 });

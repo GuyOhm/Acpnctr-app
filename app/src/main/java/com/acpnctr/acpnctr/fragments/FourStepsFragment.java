@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -60,8 +59,6 @@ import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_USERS;
  * {@link Fragment} to display the 4 steps of a session.
  */
 public class FourStepsFragment extends Fragment {
-
-    private static final String LOG_TAG = FourStepsFragment.class.getSimpleName();
 
     // Firebase instance variable
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -270,143 +267,129 @@ public class FourStepsFragment extends Fragment {
 
     private void loadFourSteps() {
 
-        db.collection(FIRESTORE_COLLECTION_USERS)
-                .document(sUid)
-                .collection(FIRESTORE_COLLECTION_CLIENTS)
-                .document(sClientid)
-                .collection(FIRESTORE_COLLECTION_SESSIONS)
-                .document(sSessionid)
-                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
-                if (e != null){
-                    Log.w(LOG_TAG, "Listen failed" , e);
-                }
+        if (getActivity() != null && isAdded()) {
+            db.collection(FIRESTORE_COLLECTION_USERS)
+                    .document(sUid)
+                    .collection(FIRESTORE_COLLECTION_CLIENTS)
+                    .document(sClientid)
+                    .collection(FIRESTORE_COLLECTION_SESSIONS)
+                    .document(sSessionid)
+                    .addSnapshotListener(getActivity(), new EventListener<DocumentSnapshot>() {
+                        @Override
+                        public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
+                            if (e != null) {
+                                Toast.makeText(getActivity(), R.string.generic_data_load_failed,
+                                        Toast.LENGTH_SHORT).show();
+                            }
 
-                if (documentSnapshot != null && documentSnapshot.exists()){
-                    // Store all data to a Map
-                    Map<String, Object> sessionMap = documentSnapshot.getData();
+                            if (documentSnapshot != null && documentSnapshot.exists()) {
+                                // Store all data to a Map
+                                Map<String, Object> sessionMap = documentSnapshot.getData();
 
-                    // [START - GET AND SET QUESTIONNAIRE DATA]
-                    mQuestionMap = (Map<String, String>) sessionMap.get(Constants.QUEST_KEY);
-                    if (mQuestionMap != null) {
-                        mQuestionArray.clear();
-                        for (Map.Entry<String, String> entry : mQuestionMap.entrySet()) {
-                            if (!TextUtils.isEmpty(entry.getValue())) {
-                                mQuestionArray.add(entry.getValue());
-                            }
-                            if (mQuestionAdapter != null) {
-                                mQuestionAdapter.notifyDataSetChanged();
-                            }
-                        }
-                    } else {
-                        Log.d(LOG_TAG, "No questionnaire data yet!");
-                    }
-                    // [END - GET AND SET QUESTIONNAIRE DATA]
-
-                    // [START - GET AND SET OBSERVATION DATA]
-                    mObservationMap = (Map<String, String>) sessionMap.get(Constants.OBS_KEY);
-                    if (mObservationMap != null) {
-                        mObservationArray.clear();
-                        for (Map.Entry<String, String> entry : mObservationMap.entrySet()) {
-                            if (!TextUtils.isEmpty(entry.getValue())) {
-                                mObservationArray.add(entry.getValue());
-                            }
-                            if (mObservationAdapter != null) {
-                                mObservationAdapter.notifyDataSetChanged();
-                            }
-                        }
-                    } else {
-                        Log.d(LOG_TAG, "No observation data yet!");
-                    }
-                    // [END - GET AND SET OBSERVATION DATA]
-
-                    // [START - GET AND SET AUSCULTATION DATA]
-                    mAuscultationMap = (Map<String, String>) sessionMap.get(Constants.AUSC_KEY);
-                    if (mAuscultationMap != null) {
-                        mAuscultationArray.clear();
-                        for (Map.Entry<String, String> entry : mAuscultationMap.entrySet()) {
-                            if (!TextUtils.isEmpty(entry.getValue())) {
-                                mAuscultationArray.add(entry.getValue());
-                            }
-                            if (mAuscultationAdapter != null) {
-                                mAuscultationAdapter.notifyDataSetChanged();
-                            }
-                        }
-                    } else {
-                        Log.d(LOG_TAG, "No auscultation data yet!");
-                    }
-                    // [END - GET AND SET AUSCULTATION DATA]
-
-                    // [START - GET AND SET PALPATION DATA]
-                    mPalpationMap = (Map<String, String>) sessionMap.get(Constants.PALP_KEY);
-                    if (mPalpationMap != null) {
-                        mPalpationArray.clear();
-                        for (Map.Entry<String, String> entry : mPalpationMap.entrySet()) {
-                            if (!TextUtils.isEmpty(entry.getValue())) {
-                                mPalpationArray.add(entry.getValue());
-                            }
-                            if (mPalpationAdapter != null) {
-                                mPalpationAdapter.notifyDataSetChanged();
-                            }
-                        }
-                    } else {
-                        Log.d(LOG_TAG, "No palpation data yet!");
-                    }
-                    // [END - GET AND SET PALPATION DATA]
-
-                    // [START - GET AND SET PULSES DATA]
-                    mPulsesMap = (Map<String, Object>) sessionMap.get(Constants.PULSES_KEY);
-                    if (mPulsesMap != null){
-                        // get eurythmy data if any
-                        Map<String, String> eurythmyMap = (Map<String, String>) mPulsesMap.get(Constants.PULSES_EURYTHMY_KEY);
-                        if (eurythmyMap != null && eurythmyMap.containsKey(Constants.PULSES_EURYTHMY_BPB_KEY)){
-                            mEurythmyTextView.setVisibility(View.VISIBLE);
-                            StringBuilder eurythmyString = new StringBuilder();
-                            if (getActivity() != null && isAdded()) {
-                                eurythmyString
-                                        .append(getResources().getString(R.string.pulses_eurythmy_value_label))
-                                        .append(" ")
-                                        .append(eurythmyMap.get(Constants.PULSES_EURYTHMY_BPB_KEY))
-                                        .append(" ")
-                                        .append(getResources().getString(R.string.pulses_beat_per_breath_label));
-                                mEurythmyTextView.setText(eurythmyString);
-                            }
-                        } else {
-                            mEurythmyTextView.setVisibility(View.GONE);
-                        }
-
-                        // get 28 Pulse Types data if any
-                        Map<String, Boolean> pulseTypesMap = (Map<String, Boolean>) mPulsesMap.get(Constants.PULSES_28_TYPES_KEY);
-                        if (pulseTypesMap != null){
-                            m28PulseTypesTextView.setVisibility(View.VISIBLE);
-                            StringBuilder typeString = new StringBuilder();
-                            if (getActivity() != null && isAdded()) {
-                                typeString
-                                        .append(getResources().getString(R.string.pulses_28_types_value_label))
-                                        .append(" ");
-                                for (Map.Entry<String, Boolean> entry : pulseTypesMap.entrySet()) {
-                                    typeString
-                                            .append(entry.getKey().toUpperCase())
-                                            .append(" / ");
+                                // [START - GET AND SET QUESTIONNAIRE DATA]
+                                mQuestionMap = (Map<String, String>) sessionMap.get(Constants.QUEST_KEY);
+                                if (mQuestionMap != null) {
+                                    mQuestionArray.clear();
+                                    for (Map.Entry<String, String> entry : mQuestionMap.entrySet()) {
+                                        if (!TextUtils.isEmpty(entry.getValue())) {
+                                            mQuestionArray.add(entry.getValue());
+                                        }
+                                        if (mQuestionAdapter != null) {
+                                            mQuestionAdapter.notifyDataSetChanged();
+                                        }
+                                    }
                                 }
-                                m28PulseTypesTextView.setText(typeString);
+                                // [END - GET AND SET QUESTIONNAIRE DATA]
+
+                                // [START - GET AND SET OBSERVATION DATA]
+                                mObservationMap = (Map<String, String>) sessionMap.get(Constants.OBS_KEY);
+                                if (mObservationMap != null) {
+                                    mObservationArray.clear();
+                                    for (Map.Entry<String, String> entry : mObservationMap.entrySet()) {
+                                        if (!TextUtils.isEmpty(entry.getValue())) {
+                                            mObservationArray.add(entry.getValue());
+                                        }
+                                        if (mObservationAdapter != null) {
+                                            mObservationAdapter.notifyDataSetChanged();
+                                        }
+                                    }
+                                }
+                                // [END - GET AND SET OBSERVATION DATA]
+
+                                // [START - GET AND SET AUSCULTATION DATA]
+                                mAuscultationMap = (Map<String, String>) sessionMap.get(Constants.AUSC_KEY);
+                                if (mAuscultationMap != null) {
+                                    mAuscultationArray.clear();
+                                    for (Map.Entry<String, String> entry : mAuscultationMap.entrySet()) {
+                                        if (!TextUtils.isEmpty(entry.getValue())) {
+                                            mAuscultationArray.add(entry.getValue());
+                                        }
+                                        if (mAuscultationAdapter != null) {
+                                            mAuscultationAdapter.notifyDataSetChanged();
+                                        }
+                                    }
+                                }
+                                // [END - GET AND SET AUSCULTATION DATA]
+
+                                // [START - GET AND SET PALPATION DATA]
+                                mPalpationMap = (Map<String, String>) sessionMap.get(Constants.PALP_KEY);
+                                if (mPalpationMap != null) {
+                                    mPalpationArray.clear();
+                                    for (Map.Entry<String, String> entry : mPalpationMap.entrySet()) {
+                                        if (!TextUtils.isEmpty(entry.getValue())) {
+                                            mPalpationArray.add(entry.getValue());
+                                        }
+                                        if (mPalpationAdapter != null) {
+                                            mPalpationAdapter.notifyDataSetChanged();
+                                        }
+                                    }
+                                }
+                                // [END - GET AND SET PALPATION DATA]
+
+                                // [START - GET AND SET PULSES DATA]
+                                mPulsesMap = (Map<String, Object>) sessionMap.get(Constants.PULSES_KEY);
+                                if (mPulsesMap != null) {
+                                    // get eurythmy data if any
+                                    Map<String, String> eurythmyMap = (Map<String, String>) mPulsesMap.get(Constants.PULSES_EURYTHMY_KEY);
+                                    if (eurythmyMap != null && eurythmyMap.containsKey(Constants.PULSES_EURYTHMY_BPB_KEY)) {
+                                        mEurythmyTextView.setVisibility(View.VISIBLE);
+                                        StringBuilder eurythmyString = new StringBuilder();
+                                        if (getActivity() != null && isAdded()) {
+                                            eurythmyString
+                                                    .append(getResources().getString(R.string.pulses_eurythmy_value_label))
+                                                    .append(" ")
+                                                    .append(eurythmyMap.get(Constants.PULSES_EURYTHMY_BPB_KEY))
+                                                    .append(" ")
+                                                    .append(getResources().getString(R.string.pulses_beat_per_breath_label));
+                                            mEurythmyTextView.setText(eurythmyString);
+                                        }
+                                    } else {
+                                        mEurythmyTextView.setVisibility(View.GONE);
+                                    }
+
+                                    // get 28 Pulse Types data if any
+                                    Map<String, Boolean> pulseTypesMap = (Map<String, Boolean>) mPulsesMap.get(Constants.PULSES_28_TYPES_KEY);
+                                    if (pulseTypesMap != null) {
+                                        m28PulseTypesTextView.setVisibility(View.VISIBLE);
+                                        StringBuilder typeString = new StringBuilder();
+                                        typeString
+                                                .append(getResources().getString(R.string.pulses_28_types_value_label))
+                                                .append(" ");
+                                        for (Map.Entry<String, Boolean> entry : pulseTypesMap.entrySet()) {
+                                            typeString
+                                                    .append(entry.getKey().toUpperCase())
+                                                    .append(" / ");
+                                        }
+                                        m28PulseTypesTextView.setText(typeString);
+                                    } else {
+                                        m28PulseTypesTextView.setVisibility(View.GONE);
+                                    }
+                                }
+                                // [END - GET AND SET PULSES DATA]
                             }
-                        } else {
-                            m28PulseTypesTextView.setVisibility(View.GONE);
                         }
-
-                    } else {
-                        Log.d(LOG_TAG, "No pulses data yet!");
-                    }
-                    // [START - GET AND SET PULSES DATA]
-
-                // There is no session document
-                } else {
-                    Log.d(LOG_TAG, "Current data: null");
-                }
-            }
-        });
+                    });
+        }
     }
 
     private void onSessionSelectedInitialize(Session selectedSession) {
@@ -502,7 +485,6 @@ public class FourStepsFragment extends Fragment {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Toast.makeText(getActivity(), getString(R.string.session_update_failed), Toast.LENGTH_SHORT).show();
-                            Log.w(LOG_TAG, "error updating session: " + e);
                         }
                     });
         }
@@ -519,7 +501,6 @@ public class FourStepsFragment extends Fragment {
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        Log.d(LOG_TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
                         sSessionid = documentReference.getId();
                         isNewSession = false;
                         sessionDataHasChanged = false;
@@ -529,7 +510,7 @@ public class FourStepsFragment extends Fragment {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w(LOG_TAG, "Error adding document", e);
+                        Toast.makeText(getActivity(), R.string.generic_data_insert_failed, Toast.LENGTH_SHORT).show();
                     }
                 });
     }

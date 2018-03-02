@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -47,9 +46,6 @@ import static com.acpnctr.acpnctr.utils.Constants.INTENT_SELECTED_CLIENT;
  * {@link Fragment} to display client information.
  */
 public class InformationFragment extends Fragment {
-
-    // Log for debugging purposes
-    private static final String LOG_TAG = InformationFragment.class.getSimpleName();
 
     // Firebase instance variable
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -298,8 +294,6 @@ public class InformationFragment extends Fragment {
                 .collection(FIRESTORE_COLLECTION_CLIENTS)
                 .document(sClientid);
 
-        Log.d(LOG_TAG, "sClientid: " + sClientid);
-
         // create a hashmap with values fetched from the UI that may have been updated
         Map<String, Object> updates = new HashMap<>();
         updates.put(CLIENT_GENDER_KEY, clientGender);
@@ -323,7 +317,6 @@ public class InformationFragment extends Fragment {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w(LOG_TAG, "error updating client: " + e);
                         Toast.makeText(getActivity(), getString(R.string.client_info_update_failed), Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -338,7 +331,6 @@ public class InformationFragment extends Fragment {
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        Log.d(LOG_TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
                         Toast.makeText(getActivity(), getString(R.string.client_info_insert_successful), Toast.LENGTH_SHORT).show();
                         // update sClientid
                         sClientid = documentReference.getId();
@@ -350,7 +342,6 @@ public class InformationFragment extends Fragment {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w(LOG_TAG, "Error adding document", e);
                         Toast.makeText(getActivity(), getString(R.string.client_info_insert_failed), Toast.LENGTH_SHORT).show();
                     }
                 });

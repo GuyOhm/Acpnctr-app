@@ -61,7 +61,6 @@ public class ClientAdapter extends FirestoreRecyclerAdapter<Client, ClientAdapte
         private TextView listItemClientName;
 
         // display the timestampCreated for the client file
-        // TODO: replace this by the last session data
         private TextView listItemTimestampCreated;
 
         /**

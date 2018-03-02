@@ -18,9 +18,6 @@ import java.util.List;
 
 public class AuthenticationActivity extends AppCompatActivity {
 
-    // tag for the log messages
-    private static final String LOG_TAG = AuthenticationActivity.class.getSimpleName();
-
     // declare an arbitrary request code value for authUI
     public static final int RC_SIGN_IN = 123;
 
@@ -83,7 +80,6 @@ public class AuthenticationActivity extends AppCompatActivity {
                     return;
                 }
             }
-
             Toast.makeText(AuthenticationActivity.this, R.string.auth_ooops, Toast.LENGTH_SHORT).show();
         }
     }

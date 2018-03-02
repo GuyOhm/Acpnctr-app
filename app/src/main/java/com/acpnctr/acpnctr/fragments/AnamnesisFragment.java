@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,8 +45,6 @@ import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_USERS;
  * {@link Fragment} to display client anamnesis.
  */
 public class AnamnesisFragment extends Fragment {
-
-    private final static String LOG_TAG = AnamnesisFragment.class.getSimpleName();
 
     // Firebase instance variable
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -129,6 +126,7 @@ public class AnamnesisFragment extends Fragment {
                                 .collection(FIRESTORE_COLLECTION_ANAMNESIS);
 
                         addAnamnesisDocument(anamnesis, anamCollection);
+                        displayAnamnesisItems();
 
                     } else {
                         Toast.makeText(getActivity(), R.string.client_anam_no_history, Toast.LENGTH_SHORT).show();
@@ -178,7 +176,6 @@ public class AnamnesisFragment extends Fragment {
 
             @Override
             public void onError(FirebaseFirestoreException e) {
-                Log.d(LOG_TAG, "Error while loading data for clients list" + e);
                 if(getActivity() != null && isAdded()) {
                     Toast.makeText(getActivity(), getString(R.string.clients_list_error),
                             Toast.LENGTH_SHORT).show();
@@ -205,7 +202,6 @@ public class AnamnesisFragment extends Fragment {
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        Log.d(LOG_TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
                         editTextDate.setText("");
                         editTextHistory.setText("");
                         editTextHistory.clearFocus();
@@ -214,7 +210,6 @@ public class AnamnesisFragment extends Fragment {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w(LOG_TAG, "Error adding document", e);
                         Toast.makeText(getActivity(), R.string.generic_data_insert_failed, Toast.LENGTH_SHORT).show();
                     }
                 });

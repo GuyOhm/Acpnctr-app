@@ -14,8 +14,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class SessionActivity extends AppCompatActivity {
 
-    private static final String LOG_TAG = SessionActivity.class.getSimpleName();
-
     // Firebase instance variable
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 

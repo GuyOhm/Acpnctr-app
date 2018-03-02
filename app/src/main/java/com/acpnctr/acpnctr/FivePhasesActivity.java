@@ -4,11 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 
 import com.acpnctr.acpnctr.utils.Constants;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -30,8 +30,6 @@ import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_SESSIONS;
 import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_USERS;
 
 public class FivePhasesActivity extends AppCompatActivity {
-
-    private static final String LOG_TAG = FivePhasesActivity.class.getSimpleName();
 
     CheckBox mWoodEarth;
     CheckBox mWoodMetal;
@@ -80,11 +78,12 @@ public class FivePhasesActivity extends AppCompatActivity {
                 .collection(FIRESTORE_COLLECTION_SESSIONS)
                 .document(sSessionid);
 
-        sessionDoc.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        sessionDoc.addSnapshotListener(FivePhasesActivity.this, new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
                 if (e != null){
-                    Log.w(LOG_TAG, "Listen failed" , e);
+                    Toast.makeText(FivePhasesActivity.this,
+                            R.string.generic_data_load_failed, Toast.LENGTH_SHORT).show();
                 }
 
                 if (documentSnapshot != null && documentSnapshot.exists()){
@@ -102,8 +101,6 @@ public class FivePhasesActivity extends AppCompatActivity {
                         mWaterFire.setChecked(wuxing.get(Constants.WUXING_WATER_TO_FIRE_KEY));
                         mWaterEarth.setChecked(wuxing.get(Constants.WUXING_WATER_TO_EARTH_KEY));
                     }
-                } else {
-                    Log.d(LOG_TAG, "Current data: null");
                 }
             }
         });
@@ -348,7 +345,8 @@ public class FivePhasesActivity extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w(LOG_TAG, "error updating wuxing: " + e);
+                        Toast.makeText(FivePhasesActivity.this,
+                                R.string.generic_data_insert_failed, Toast.LENGTH_SHORT).show();
                     }
                 });
     }

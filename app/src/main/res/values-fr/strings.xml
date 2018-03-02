@@ -53,7 +53,9 @@
     <string name="client_info_update_successful">Client mis à jour</string>
     <string name="new_client_not_saved">Veuillez sauvegarder le fichier client d\'abord</string>
     <string name="client_anam_no_history">Veuillez entrer un antécédent</string>
-    <string name="generic_data_insert_failed">Erreur pendant l\'ajout de donnée</string>
+    <string name="generic_data_insert_failed">Erreur pendant l\'écriture des données</string>
+    <string name="generic_data_load_failed">Erreur pendant le chargement des données</string>
+    <string name="sessions_list_load_failed">Erreur pendant le chargement des séances</string>
     <string name="unsaved_changes_dialog_msg">Abandonner les modifications et quitter ?</string>
     <string name="discard">Abandonner</string>
     <string name="keep_editing">Continuer</string>
