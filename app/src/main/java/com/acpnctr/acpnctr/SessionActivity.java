@@ -10,12 +10,8 @@ import android.view.MenuItem;
 
 import com.acpnctr.acpnctr.adapters.SessionFragmentPageAdapter;
 import com.acpnctr.acpnctr.utils.Constants;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 public class SessionActivity extends AppCompatActivity {
-
-    // Firebase instance variable
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     // static member variables to be used by fragments
     public static String sUid;
@@ -23,10 +19,10 @@ public class SessionActivity extends AppCompatActivity {
     public static String sSessionid;
 
     // Final Strings to store state information
-    public static final String CLIENT_ID = "client_id";
-    public static final String USER_ID = "user_id";
-    public static final String SESSION_ID = "session_id";
-    public static final String IS_NEW_SESSION = "is_new_session";
+    private static final String CLIENT_ID = "client_id";
+    private static final String USER_ID = "user_id";
+    private static final String SESSION_ID = "session_id";
+    private static final String IS_NEW_SESSION = "is_new_session";
 
     // Flag to track whether or not the session has been created
     public static boolean isNewSession;

@@ -2,11 +2,13 @@ package com.acpnctr.acpnctr.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Keep;
 
 /**
  * Model POJO for a Client.
  */
 
+@Keep
 public class Client implements Parcelable{
 
     /**

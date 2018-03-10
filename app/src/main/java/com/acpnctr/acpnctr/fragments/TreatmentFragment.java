@@ -71,7 +71,7 @@ public class TreatmentFragment extends Fragment {
 
     private int mStimulation;
     public static String[] acuPoints;
-    public static String[] stimulationOptions;
+    private static String[] stimulationOptions;
 
     private ArrayList<String> mAbbreviationsList = new ArrayList<>();
 
@@ -187,7 +187,7 @@ public class TreatmentFragment extends Fragment {
             isSedationActivated= savedInstanceState.getBoolean(IS_SEDATION_ACTIVATED);
             mAbbreviationsList = savedInstanceState.getStringArrayList(ABBREVIATIONS_LIST);
         } else {
-            /** Check if this session was selected from the list at {@link SessionsListFragment} */
+            // Check if this session was selected from the list at {@link SessionsListFragment}
             Intent intent = getActivity().getIntent();
             if (intent.hasExtra(Constants.INTENT_SELECTED_SESSION_ID)) {
                 Session selectedSession = intent.getParcelableExtra(Constants.INTENT_SELECTED_SESSION);
@@ -338,7 +338,7 @@ public class TreatmentFragment extends Fragment {
      * This method update the treatmentList member variable of the Session Document
      * so that we can display a list of point abbreviations in session item list
      *
-     * @param point
+     * @param point acupuncture point
      */
     private void updateAbbreviationsList(String point) {
         mAbbreviationsList.add(abbreviatePoint(point));
@@ -355,8 +355,8 @@ public class TreatmentFragment extends Fragment {
     /**
      * This method returns an abbreviation of the selected point
      *
-     * @param point
-     * @return
+     * @param point acupuncture point
+     * @return String with the acupuncture point abbreviation
      */
     @NonNull
     private String abbreviatePoint(String point) {
@@ -366,7 +366,7 @@ public class TreatmentFragment extends Fragment {
     /**
      * This method returns the position of a given point in the array.
      *
-     * @param point
+     * @param point acupuncture point
      * @return point's position and -1 if the point doesn't exist in the array
      */
     private int getPositionFromArray(String point) {

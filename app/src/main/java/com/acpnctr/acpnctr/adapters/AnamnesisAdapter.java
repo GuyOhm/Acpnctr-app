@@ -24,7 +24,7 @@ public class AnamnesisAdapter extends FirestoreRecyclerAdapter<Anamnesis,
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See
      * {@link FirestoreRecyclerOptions} for configuration options.
      *
-     * @param options
+     * @param options for the recycler options containing firestore Query
      */
     public AnamnesisAdapter(FirestoreRecyclerOptions<Anamnesis> options) {
         super(options);

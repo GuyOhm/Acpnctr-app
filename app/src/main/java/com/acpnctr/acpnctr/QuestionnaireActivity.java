@@ -35,18 +35,18 @@ public class QuestionnaireActivity extends AppCompatActivity {
     // Firebase instance variable
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    EditText mYinyang;
-    EditText mFivephases;
-    EditText mDiet;
-    EditText mDigestion;
-    EditText mWayOfLife;
-    EditText mSleep;
-    EditText mSymptoms;
-    EditText mMedication;
-    EditText mEvents;
-    EditText mEmotional;
-    EditText mPsychological;
-    EditText mGynecological;
+    private EditText mYinyang;
+    private EditText mFivephases;
+    private EditText mDiet;
+    private EditText mDigestion;
+    private EditText mWayOfLife;
+    private EditText mSleep;
+    private EditText mSymptoms;
+    private EditText mMedication;
+    private EditText mEvents;
+    private EditText mEmotional;
+    private EditText mPsychological;
+    private EditText mGynecological;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

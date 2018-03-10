@@ -31,16 +31,16 @@ import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_USERS;
 
 public class FivePhasesActivity extends AppCompatActivity {
 
-    CheckBox mWoodEarth;
-    CheckBox mWoodMetal;
-    CheckBox mFireMetal;
-    CheckBox mFireWater;
-    CheckBox mEarthWater;
-    CheckBox mEarthWood;
-    CheckBox mMetalWood;
-    CheckBox mMetalFire;
-    CheckBox mWaterFire;
-    CheckBox mWaterEarth;
+    private CheckBox mWoodEarth;
+    private CheckBox mWoodMetal;
+    private CheckBox mFireMetal;
+    private CheckBox mFireWater;
+    private CheckBox mEarthWater;
+    private CheckBox mEarthWood;
+    private CheckBox mMetalWood;
+    private CheckBox mMetalFire;
+    private CheckBox mWaterFire;
+    private CheckBox mWaterEarth;
 
     // Firebase instance variable
     private FirebaseFirestore db = FirebaseFirestore.getInstance();

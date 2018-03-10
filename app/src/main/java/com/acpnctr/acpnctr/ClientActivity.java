@@ -31,9 +31,9 @@ public class ClientActivity extends AppCompatActivity {
     public static boolean isNewClient;
 
     // Final Strings to store state information
-    public static final String CLIENT_ID = "client_id";
-    public static final String IS_NEW_CLIENT = "is_new_client";
-    public static final String USER_ID = "user_id";
+    private static final String CLIENT_ID = "client_id";
+    private static final String IS_NEW_CLIENT = "is_new_client";
+    private static final String USER_ID = "user_id";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,7 +158,7 @@ public class ClientActivity extends AppCompatActivity {
      * @param discardButtonClickListener is the click listener for what to do when
      *                                   the user confirms they want to discard their changes
      */
-    public void showUnsavedChangesDialog(
+    private void showUnsavedChangesDialog(
             DialogInterface.OnClickListener discardButtonClickListener) {
         // Create an AlertDialog.Builder and set the message, and click listeners
         // for the positive and negative buttons on the dialog.

@@ -1,7 +1,9 @@
 package com.acpnctr.acpnctr;
 
+import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,10 +17,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -32,7 +39,6 @@ import com.acpnctr.acpnctr.models.User;
 import com.acpnctr.acpnctr.utils.AcpnctrUtil;
 import com.acpnctr.acpnctr.utils.Constants;
 import com.acpnctr.acpnctr.utils.FirebaseUtil;
-import com.acpnctr.acpnctr.utils.SingleToast;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -69,13 +75,16 @@ public class DashboardActivity extends AppCompatActivity
     private FirestoreRecyclerAdapter mAdapter;
 
     // Request code for authentication
-    public static final int AUTH_REQUEST = 101;
+    private static final int AUTH_REQUEST = 101;
 
     // Flag that indicates if the user has already signed in hence has already a document in db
     private static boolean isAlreadyInDatabase = false;
 
     // Flag to indicate if the user is making a search on client
     private boolean isSearchingClient = false;
+
+    // Flag to indicate if user has accepted ToS
+    private boolean hasAcceptedTos = false;
 
     // Member variable for search text
     private String mSearchText;
@@ -132,10 +141,11 @@ public class DashboardActivity extends AppCompatActivity
                                     if (snapshot.exists()) {
                                         // the user already exists hence has a firestore document named by uid
                                         isAlreadyInDatabase = true;
-
+                                        hasAcceptedTos = true;
                                     } else {
-                                        // the user signs in for the first time
-                                        createUserDocument(user, userDoc);
+                                        // the user signs in for the first time show tos for acceptance
+                                        hasAcceptedTos = false;
+                                        showTosDialog();
                                     }
                                 }
                             }
@@ -160,6 +170,7 @@ public class DashboardActivity extends AppCompatActivity
         // [ START - Toolbar ]
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         // [ END - Toolbar ]
 
         // [ START - FAB ]
@@ -168,12 +179,16 @@ public class DashboardActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Create a new intent to open the {@link ClientActivity} passing in uid
-                Intent newClientIntent = new Intent(DashboardActivity.this, ClientActivity.class);
-                newClientIntent.putExtra(INTENT_EXTRA_UID, mUid);
+                if (hasAcceptedTos) {
+                    // Create a new intent to open the {@link ClientActivity} passing in uid
+                    Intent newClientIntent = new Intent(DashboardActivity.this, ClientActivity.class);
+                    newClientIntent.putExtra(INTENT_EXTRA_UID, mUid);
 
-                // Start the activity
-                startActivity(newClientIntent);
+                    // Start the activity
+                    startActivity(newClientIntent);
+                } else {
+                    showTosDialog();
+                }
             }
         });
         // [ END - FAB ]
@@ -189,6 +204,54 @@ public class DashboardActivity extends AppCompatActivity
         mNavigationView.setNavigationItemSelectedListener(this);
         mNavigationView.setCheckedItem(R.id.nav_dashboard);
         // [ END - Side Navigation Drawer ]
+    }
+
+    private void showTosDialog() {
+        LayoutInflater inflater = getLayoutInflater();
+        final FirebaseUser user = mAuth.getCurrentUser();
+        final DocumentReference userDoc = db.collection(FIRESTORE_COLLECTION_USERS).document(mUid);
+        // Build AlertDialog interface
+        AlertDialog.Builder builder = new AlertDialog.Builder(DashboardActivity.this);
+        builder
+                .setTitle(getString(R.string.tos_dialog_title))
+                .setView(inflater.inflate(R.layout.dialog_legal, null))
+                .setPositiveButton(getString(R.string.tos_pos_button), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // the user signs in for the first time
+                        createUserDocument(user, userDoc);
+                        Toast.makeText(DashboardActivity.this, getString(R.string.tos_accepted),
+                                Toast.LENGTH_SHORT).show();
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setNegativeButton(getString(R.string.tos_neg_button), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // Quit app
+                        finishAndRemoveTask();
+                    }
+                });
+
+        // Create and show it
+        AlertDialog tosDialog = builder.create();
+        tosDialog.show();
+
+        // Set the message and make it clickable
+        TextView tosTextView = tosDialog.findViewById(R.id.tos_text_tv);
+        String tosMessage = getString(R.string.tos_url);
+        tosTextView.setText(Html.fromHtml(tosMessage));
+        tosTextView.setMovementMethod(LinkMovementMethod.getInstance());
+
+        // Customize the alert dialog box
+        Window alertDialogWindow = tosDialog.getWindow();
+        if (alertDialogWindow != null) {
+            alertDialogWindow.setBackgroundDrawableResource(R.color.colorAccent);
+        }
+        Button negButton = tosDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+        negButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        Button posButton = tosDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+        posButton.setTextColor(getResources().getColor(R.color.colorPrimary));
     }
 
     private void onSignedInInitializeNavHeader(FirebaseUser user) {
@@ -304,6 +367,7 @@ public class DashboardActivity extends AppCompatActivity
                     @Override
                     public void onSuccess(Void aVoid) {
                         isAlreadyInDatabase = true;
+                        hasAcceptedTos = true;
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -388,9 +452,9 @@ public class DashboardActivity extends AppCompatActivity
 
     /**
      * Handle search client
-     * @param searchView
+     * @param searchView for client search
      */
-    private void searchClient(SearchView searchView) {
+    private void searchClient(final SearchView searchView) {
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -443,18 +507,6 @@ public class DashboardActivity extends AppCompatActivity
         switch (id) {
             case R.id.nav_dashboard:
                 break;
-            case R.id.nav_account:
-                SingleToast.show(DashboardActivity.this, getString(R.string.coming_soon), Toast.LENGTH_SHORT);
-                break;
-            case R.id.nav_settings:
-                SingleToast.show(DashboardActivity.this, getString(R.string.coming_soon), Toast.LENGTH_SHORT);
-                break;
-            case R.id.nav_stats:
-                SingleToast.show(DashboardActivity.this, getString(R.string.coming_soon), Toast.LENGTH_SHORT);
-                break;
-            case R.id.nav_tools:
-                SingleToast.show(DashboardActivity.this, getString(R.string.coming_soon), Toast.LENGTH_SHORT);
-                break;
             case R.id.nav_signout:
                 signUserOut();
                 break;
@@ -471,6 +523,7 @@ public class DashboardActivity extends AppCompatActivity
             case AUTH_REQUEST:
                 if (resultCode == RESULT_OK){
                     Toast.makeText(DashboardActivity.this, R.string.auth_signed_in, Toast.LENGTH_SHORT).show();
+                    mNavigationView.setCheckedItem(R.id.nav_dashboard);
                 }
                 break;
             default:

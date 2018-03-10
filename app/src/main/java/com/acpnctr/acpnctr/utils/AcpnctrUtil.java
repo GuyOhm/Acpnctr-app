@@ -137,8 +137,8 @@ public class AcpnctrUtil {
      * This is used as a take around to implement a search with firestore as there is no native
      * solution.
      *
-     * @param searchText
-     * @return
+     * @param searchText client name to be searched
+     * @return String which is the modified text
      */
     public static String zeefyForSearch(String searchText) {
         return searchText + "z";

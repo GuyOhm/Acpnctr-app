@@ -35,9 +35,9 @@ public class PalpationActivity extends AppCompatActivity {
     // Firebase instance variable
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    EditText mAbdomen;
-    EditText mMeridian;
-    EditText mPoint;
+    private EditText mAbdomen;
+    private EditText mMeridian;
+    private EditText mPoint;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

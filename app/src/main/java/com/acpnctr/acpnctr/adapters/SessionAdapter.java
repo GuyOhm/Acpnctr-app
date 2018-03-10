@@ -34,7 +34,7 @@ public class SessionAdapter extends FirestoreRecyclerAdapter<Session, SessionAda
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See
      * {@link FirestoreRecyclerOptions} for configuration options.
      *
-     * @param options
+     * @param options recycler options with firestore Query
      */
     public SessionAdapter(FirestoreRecyclerOptions<Session> options, OnSessionSelectedListener listener) {
         super(options);

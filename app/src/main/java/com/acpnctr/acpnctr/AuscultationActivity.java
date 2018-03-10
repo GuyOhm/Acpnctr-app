@@ -35,12 +35,12 @@ public class AuscultationActivity extends AppCompatActivity {
     // Firebase instance variable
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    EditText mBloodPressure;
-    EditText mAbdomen;
-    EditText mSmell;
-    EditText mBreathing;
-    EditText mCough;
-    EditText mVoice;
+    private EditText mBloodPressure;
+    private EditText mAbdomen;
+    private EditText mSmell;
+    private EditText mBreathing;
+    private EditText mCough;
+    private EditText mVoice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

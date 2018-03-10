@@ -3,6 +3,12 @@
     <string name="date_format_not_valid">Please enter a valid date</string>
     <string name="search_client_hint">Search client</string>
     <string name="coming_soon">Coming soon!</string>
+    <!-- Terms of service related values -->
+    <string name="tos_dialog_title">Terms of service</string>
+    <string name="tos_url">&lt;a href="https://acpnctr.com/conditions-generales-utilisation/">I have read and agree to the Terms of service&lt;/a></string>
+    <string name="tos_pos_button">Confirm</string>
+    <string name="tos_neg_button">Decline</string>
+    <string name="tos_accepted">Welcome to Acpnctr!</string>
 
     <!-- Authentication messages -->
     <string name="auth_signed_in">Signed in!</string>
@@ -218,7 +224,7 @@
     <string name="pulses_28_types_che" translatable="false">Che</string>
     <string name="pulses_28_types_che_transl">Full</string>
     <string name="pulses_28_types_rong" translatable="false">Rong</string>
-    <string name="pulses_28_types_rong_transl" >Surging</string>
+    <string name="pulses_28_types_rong_transl">Surging</string>
     <string name="pulses_28_types_tsin" translatable="false">Tsin</string>
     <string name="pulses_28_types_tsin_transl">Tight</string>
     <string name="pulses_28_types_kreou" translatable="false">Kreou</string>

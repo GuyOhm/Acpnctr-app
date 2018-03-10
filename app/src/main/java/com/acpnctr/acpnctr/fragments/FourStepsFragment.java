@@ -45,7 +45,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Map;
 
-import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 import static com.acpnctr.acpnctr.SessionActivity.isNewSession;
 import static com.acpnctr.acpnctr.SessionActivity.sClientid;
@@ -110,11 +109,11 @@ public class FourStepsFragment extends Fragment {
     private static final String PALPATION_ARRAY = "palpation_array";
 
     // Request code for result from activity
-    public static final int QUESTION_REQUEST = 2;
-    public static final int OBSERVATION_REQUEST = 3;
-    public static final int AUSCULTATION_REQUEST = 4;
-    public static final int PALPATION_REQUEST = 5;
-    public static final int PULSES_REQUEST = 6;
+    private static final int QUESTION_REQUEST = 2;
+    private static final int OBSERVATION_REQUEST = 3;
+    private static final int AUSCULTATION_REQUEST = 4;
+    private static final int PALPATION_REQUEST = 5;
+    private static final int PULSES_REQUEST = 6;
 
     public FourStepsFragment() {
         // Required empty public constructor
@@ -163,7 +162,7 @@ public class FourStepsFragment extends Fragment {
             mAuscultationArray = savedInstanceState.getStringArrayList(AUSCULTATION_ARRAY);
             mPalpationArray = savedInstanceState.getStringArrayList(PALPATION_ARRAY);
         } else {
-            /** Check if this session was selected from the list at {@link SessionsListFragment} */
+            // Check if this session was selected from the list at {@link SessionsListFragment}
             Intent intent = getActivity().getIntent();
             if (intent.hasExtra(Constants.INTENT_SELECTED_SESSION_ID)) {
                 Session selectedSession = intent.getParcelableExtra(Constants.INTENT_SELECTED_SESSION);
@@ -523,18 +522,12 @@ public class FourStepsFragment extends Fragment {
                 if (resultCode == RESULT_OK){
                     Toast.makeText(getActivity(), getString(R.string.questionnaire_saved), Toast.LENGTH_SHORT).show();
                 }
-                else if (resultCode == RESULT_CANCELED){
-                    // nothing yet
-                }
                 mQuestionAdapter.clear();
                 break;
 
             case OBSERVATION_REQUEST:
                 if (resultCode == RESULT_OK){
                     Toast.makeText(getActivity(), getString(R.string.observation_saved), Toast.LENGTH_SHORT).show();
-                }
-                else if (resultCode == RESULT_CANCELED){
-                    // nothing yet
                 }
                 mObservationAdapter.clear();
                 break;
@@ -543,9 +536,6 @@ public class FourStepsFragment extends Fragment {
                 if (resultCode == RESULT_OK){
                     Toast.makeText(getActivity(), getString(R.string.auscultation_saved), Toast.LENGTH_SHORT).show();
                 }
-                else if (resultCode == RESULT_CANCELED){
-                    // nothing yet
-                }
                 mAuscultationAdapter.clear();
                 break;
 
@@ -553,18 +543,12 @@ public class FourStepsFragment extends Fragment {
                 if (resultCode == RESULT_OK){
                     Toast.makeText(getActivity(), getString(R.string.palpation_saved), Toast.LENGTH_SHORT).show();
                 }
-                else if (resultCode == RESULT_CANCELED){
-                    // nothing yet
-                }
                 mPalpationAdapter.clear();
                 break;
 
             case PULSES_REQUEST:
                 if (resultCode == RESULT_OK){
                     Toast.makeText(getActivity(), getString(R.string.pulses_saved), Toast.LENGTH_SHORT).show();
-                }
-                else if (resultCode == RESULT_CANCELED){
-                    // nothing yet
                 }
                 break;
 

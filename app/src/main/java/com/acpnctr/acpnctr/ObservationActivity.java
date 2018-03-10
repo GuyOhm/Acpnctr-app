@@ -35,17 +35,17 @@ public class ObservationActivity extends AppCompatActivity {
     // Firebase instance variable
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    EditText mBehaviour;
-    EditText mTongue;
-    EditText mLips;
-    EditText mLimb;
-    EditText mMeridian;
-    EditText mMorphology;
-    EditText mNails;
-    EditText mSkin;
-    EditText mHairiness;
-    EditText mComplexion;
-    EditText mEyes;
+    private EditText mBehaviour;
+    private EditText mTongue;
+    private EditText mLips;
+    private EditText mLimb;
+    private EditText mMeridian;
+    private EditText mMorphology;
+    private EditText mNails;
+    private EditText mSkin;
+    private EditText mHairiness;
+    private EditText mComplexion;
+    private EditText mEyes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

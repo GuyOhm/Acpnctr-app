@@ -3,7 +3,12 @@
     <string name="date_format_not_valid">Entrez une date valide</string>
     <string name="search_client_hint">Rechercher un client</string>
     <string name="coming_soon">Arrive bientôt !</string>
-    <string name="auth_signed_in">Authentifié !</string>
+    <string name="tos_dialog_title">Conditions d\'utilisation</string>
+    <string name="tos_url">&lt;a href="https://acpnctr.com/conditions-generales-utilisation/">J\'ai lu et accepté les conditions d\'utilisation&lt;/a></string>
+    <string name="tos_pos_button">Accepter</string>
+    <string name="tos_neg_button">Refuser</string>
+    <string name="tos_accepted">Bienvenue dans Acpnctr!</string>
+    <string name="auth_signed_in">Connecté !</string>
     <string name="auth_signed_out">Vous êtes déconnecté</string>
     <string name="auth_sign_in_cancelled">Authentification annulé</string>
     <string name="auth_no_network">Impossible de se connecter au réseau</string>
@@ -17,7 +22,7 @@
     <string name="nav_tools">Outils</string>
     <string name="nav_signout">Déconnecter</string>
     <string name="search_title">Rechercher</string>
-    <string name="title_activity_client">Dossier client</string>
+    <string name="title_activity_client">Client</string>
     <string name="title_activity_session">Séance</string>
     <string name="title_client_information">Informations</string>
     <string name="title_anamnesis">Anamnèse</string>
@@ -30,7 +35,7 @@
     <string name="client_information_category_gender">Sexe</string>
     <string name="client_information_category_acquisition">Acquisition</string>
     <string name="client_information_category_overview">Détails</string>
-    <string name="hint_client_information_name">nom</string>
+    <string name="hint_client_information_name">prénom nom</string>
     <string name="hint_client_information_dob">naissance (jj/mm/aaaa)</string>
     <string name="hint_client_information_phone">téléphone</string>
     <string name="hint_client_information_email">email</string>

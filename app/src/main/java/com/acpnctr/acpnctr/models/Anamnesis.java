@@ -1,9 +1,12 @@
 package com.acpnctr.acpnctr.models;
 
+import android.support.annotation.Keep;
+
 /**
  * POJO that represents a client's anamnesis
  */
 
+@Keep
 public class Anamnesis {
 
     private long timestamp;

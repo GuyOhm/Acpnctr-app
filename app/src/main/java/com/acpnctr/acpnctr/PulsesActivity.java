@@ -25,7 +25,6 @@ import com.acpnctr.acpnctr.utils.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -49,7 +48,6 @@ public class PulsesActivity extends AppCompatActivity {
 
     // Firebase instance variable
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private FirebaseAuth mAuth;
 
     // create an array of PulseType object for the 28 types of pulses
     private PulseType[] pulseTypes = AcpnctrUtil.createPulseTypesArray();
@@ -225,8 +223,8 @@ public class PulsesActivity extends AppCompatActivity {
     /**
      * Calculate and return the number of Beat per Breath for Eurythmy
      *
-     * @param beatString
-     * @param breathString
+     * @param beatString String for nb of beat per min
+     * @param breathString String for nb of breath per min
      * @return String which is the number of Beat per Breath
      */
     private String calculateBeatPerBreath(String beatString, String breathString) {

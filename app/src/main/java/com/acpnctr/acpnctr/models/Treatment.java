@@ -1,11 +1,14 @@
 package com.acpnctr.acpnctr.models;
 
+import android.support.annotation.Keep;
+
 /**
  * POJO that represents a client's treatment during a session.
  *
  * A treatment is a collection of points.
  */
 
+@Keep
 public class Treatment {
 
     // Must match the order in the corresponding R.array

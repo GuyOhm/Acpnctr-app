@@ -193,8 +193,8 @@ public class AnamnesisFragment extends Fragment {
     /**
      * Create a document in Firestore in collection anamnesis with a unique id
      *
-     * @param anamnesis
-     * @param anamCollection
+     * @param anamnesis object
+     * @param anamCollection firestore collection path
      */
     private void addAnamnesisDocument(Anamnesis anamnesis, CollectionReference anamCollection) {
         anamCollection

@@ -2,6 +2,7 @@ package com.acpnctr.acpnctr.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Keep;
 
 import java.util.ArrayList;
 
@@ -10,9 +11,8 @@ import java.util.ArrayList;
  * This firestore Document belongs to the Collection sessions in the clientid Document
  */
 
+@Keep
 public class Session implements Parcelable {
-
-    /************************************************/
 
     private long timestampCreated;
     private String goal;

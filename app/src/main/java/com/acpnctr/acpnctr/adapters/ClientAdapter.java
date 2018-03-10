@@ -31,8 +31,8 @@ public class ClientAdapter extends FirestoreRecyclerAdapter<Client, ClientAdapte
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See
      * {@link FirestoreRecyclerOptions} for configuration options.
      *
-     * @param options
-     * @param listener
+     * @param options for the recycler options containing firestore Query
+     * @param listener callback for selected client
      */
     public ClientAdapter(FirestoreRecyclerOptions<Client> options, OnClientSelectedListener listener) {
         super(options);

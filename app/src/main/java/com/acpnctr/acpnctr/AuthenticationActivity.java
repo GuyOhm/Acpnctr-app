@@ -19,7 +19,7 @@ import java.util.List;
 public class AuthenticationActivity extends AppCompatActivity {
 
     // declare an arbitrary request code value for authUI
-    public static final int RC_SIGN_IN = 123;
+    private static final int RC_SIGN_IN = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,16 +36,13 @@ public class AuthenticationActivity extends AppCompatActivity {
         );
 
         // create and launch sign in intent
-        // TODO: include a terms of service url
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
-                        .setIsSmartLockEnabled(!BuildConfig.DEBUG, true)
+                        .setIsSmartLockEnabled(false)
                         .setAvailableProviders(providers)
                         .setLogo(R.drawable.ic_logo_loginpage)
                         .setTheme(R.style.AppTheme_Login)
-                        // .setTosUrl("https://superapp.example.com/terms-of-service.html")
-                        // .setPrivacyPolicyUrl("https://superapp.example.com/privacy-policy.html")
                         .build(),
                 RC_SIGN_IN);
     }

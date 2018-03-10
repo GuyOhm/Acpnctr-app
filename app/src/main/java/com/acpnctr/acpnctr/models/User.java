@@ -1,9 +1,12 @@
 package com.acpnctr.acpnctr.models;
 
+import android.support.annotation.Keep;
+
 /**
  * Model POJO for a user i.e. a practitioner / acupuncturist
  */
 
+@Keep
 public class User {
 
     private String uid;

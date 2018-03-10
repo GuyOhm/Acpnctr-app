@@ -135,16 +135,6 @@ public class InformationFragment extends Fragment {
         clientAcquisitionSpinner.setSelection(clientAcquisition);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
     /**
      * Setup the dropdown spinner that allows the user to select the gender of the client.
      */

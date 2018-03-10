@@ -1,10 +1,12 @@
 package com.acpnctr.acpnctr.models;
 
+import android.support.annotation.Keep;
+
 /**
  * Model POJO for 28 types of pulse.
  * This model is used in FourStepsActivity and PulsesActivity
  */
-
+@Keep
 public class PulseType {
 
     private String key;

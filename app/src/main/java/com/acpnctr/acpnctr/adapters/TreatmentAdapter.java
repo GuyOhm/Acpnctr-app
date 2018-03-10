@@ -25,7 +25,7 @@ public class TreatmentAdapter extends FirestoreRecyclerAdapter<Treatment,
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See
      * {@link FirestoreRecyclerOptions} for configuration options.
      *
-     * @param options
+     * @param options recycler options with firestore query
      */
     public TreatmentAdapter(FirestoreRecyclerOptions<Treatment> options) {
         super(options);

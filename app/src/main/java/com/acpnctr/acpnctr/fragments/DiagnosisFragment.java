@@ -74,7 +74,7 @@ public class DiagnosisFragment extends Fragment {
     private boolean isBagangShown;
 
     // Request code for result from activity
-    public static final int WUXING_REQUEST = 1;
+    private static final int WUXING_REQUEST = 1;
 
     public DiagnosisFragment() {
         // Required empty public constructor
