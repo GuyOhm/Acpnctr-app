@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="date_format_not_valid">Entrez une date valide</string>
-    <string name="search_client_hint">Rechercher un client</string>
+    <string name="search_client_hint">Rechercher un(e) client(e)</string>
     <string name="coming_soon">Arrive bientôt !</string>
     <string name="tos_dialog_title">Conditions d\'utilisation</string>
     <string name="tos_url">&lt;a href="https://acpnctr.com/conditions-generales-utilisation/">J\'ai lu et accepté les conditions d\'utilisation&lt;/a></string>
@@ -10,7 +10,7 @@
     <string name="tos_accepted">Bienvenue dans Acpnctr!</string>
     <string name="auth_signed_in">Connecté !</string>
     <string name="auth_signed_out">Vous êtes déconnecté</string>
-    <string name="auth_sign_in_cancelled">Authentification annulé</string>
+    <string name="auth_sign_in_cancelled">Authentification annulée</string>
     <string name="auth_no_network">Impossible de se connecter au réseau</string>
     <string name="auth_unknown_error">Quelque chose ne s\'est pas passé comme prévu :/</string>
     <string name="navigation_drawer_open">Ouvrir la barre de navigation</string>
@@ -32,11 +32,11 @@
     <string name="title_treatment">Traitement</string>
     <string name="client_list_empty_view_title_text">Vous n\'avez pas encore de client</string>
     <string name="client_list_empty_view_subtitle_text">Créez un dossier client grâce au bouton ci-dessous</string>
-    <string name="client_information_category_gender">Sexe</string>
+    <string name="client_information_category_gender">* Sexe</string>
     <string name="client_information_category_acquisition">Acquisition</string>
     <string name="client_information_category_overview">Détails</string>
-    <string name="hint_client_information_name">prénom nom</string>
-    <string name="hint_client_information_dob">naissance (jj/mm/aaaa)</string>
+    <string name="hint_client_information_name">* prénom nom</string>
+    <string name="hint_client_information_dob">* naissance (jj/mm/aaaa)</string>
     <string name="hint_client_information_phone">téléphone</string>
     <string name="hint_client_information_email">email</string>
     <string name="gender_unknown">Non renseigné</string>
@@ -49,13 +49,13 @@
     <string name="acquisition_confrere">Confrère</string>
     <string name="acquisition_offline">Offline</string>
     <string name="action_save">Sauvegarder</string>
-    <string name="client_info_insert_failed">Erreur pendant la sauvegarde client</string>
-    <string name="client_info_insert_successful">Client sauvegardé</string>
+    <string name="client_info_insert_failed">Erreur pendant la sauvegarde client(e)</string>
+    <string name="client_info_insert_successful">Client(e) sauvegardé(e)</string>
     <string name="client_info_name_needed">Veuillez entrer un nom</string>
     <string name="client_info_gender_needed">Veuillez choisir le sexe</string>
     <string name="client_info_dob_needed">Veuillez entrer une date de naissance</string>
-    <string name="client_info_update_failed">Erreur de mise à jour du client</string>
-    <string name="client_info_update_successful">Client mis à jour</string>
+    <string name="client_info_update_failed">Erreur de mise à jour du(de la) client(e)</string>
+    <string name="client_info_update_successful">Client(e) mis(e) à jour</string>
     <string name="new_client_not_saved">Veuillez sauvegarder le fichier client d\'abord</string>
     <string name="client_anam_no_history">Veuillez entrer un antécédent</string>
     <string name="generic_data_insert_failed">Erreur pendant l\'écriture des données</string>
@@ -64,12 +64,12 @@
     <string name="unsaved_changes_dialog_msg">Abandonner les modifications et quitter ?</string>
     <string name="discard">Abandonner</string>
     <string name="keep_editing">Continuer</string>
-    <string name="clients_list_error">Erreur de chargement de clients</string>
+    <string name="clients_list_error">Erreur de chargement des clients</string>
     <string name="date_hint">date (jj/mm/aaaa)</string>
-    <string name="history_hint">antécédent</string>
+    <string name="history_hint">* antécédent</string>
     <string name="btn_add">ajouter</string>
     <string name="session_saved">Séance sauvegardée</string>
-    <string name="hint_session_goal">Objectif de séance</string>
+    <string name="hint_session_goal">* Objectif de séance</string>
     <string name="session_date_needed">Veuillez entrer une date</string>
     <string name="session_goal_needed">Veuillez entrer un objectif</string>
     <string name="session_rated_no_improvement">Séance évaluée : Pas d\'amélioration</string>
@@ -120,9 +120,9 @@
     <string name="quest_symptoms">Symptômes</string>
     <string name="quest_medication">Médication</string>
     <string name="quest_events">Evènements</string>
-    <string name="quest_emotional">Emotionnel</string>
-    <string name="quest_psychological">Psychologique</string>
-    <string name="quest_gynecological">Gynécologique</string>
+    <string name="quest_emotional">Emotions</string>
+    <string name="quest_psychological">Psychologie</string>
+    <string name="quest_gynecological">Gynécologie</string>
     <string name="questionnaire_saved">Questionnaire sauvegardé</string>
     <string name="label_observation">Observation</string>
     <string name="btn_observation">Observation</string>

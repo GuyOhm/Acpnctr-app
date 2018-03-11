@@ -9,8 +9,8 @@ android {
         applicationId "com.acpnctr.acpnctr"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 1
-        versionName '1.0.0'
+        versionCode 3
+        versionName '1.1.0'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         // ensure that we only get relevant translations as per FirebaseUI auth documentation
