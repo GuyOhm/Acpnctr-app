@@ -415,36 +415,81 @@
         <item>@string/LIV_13</item>
         <item>@string/LIV_14</item>
 
+        <!-- ###### EXTRA POINTS ###### -->
+        <!-- Head and Neck -->
+        <item>@string/EX_HN_1</item>
+        <item>@string/EX_HN_2</item>
+        <item>@string/EX_HN_3</item>
+        <item>@string/EX_HN_4</item>
+        <item>@string/EX_HN_5</item>
+        <item>@string/EX_HN_6</item>
+        <item>@string/EX_HN_7</item>
+        <item>@string/EX_HN_8</item>
+        <item>@string/EX_HN_9</item>
+        <item>@string/EX_HN_10</item>
+        <item>@string/EX_HN_11</item>
+        <item>@string/EX_HN_12</item>
+        <item>@string/EX_HN_13</item>
+        <item>@string/EX_HN_14</item>
+        <item>@string/EX_HN_15</item>
+        <item>@string/EX_HN_SHANGMING</item>
+        <item>@string/EX_HN_ANMIAN</item>
+        <item>@string/EX_HN_JIALI</item>
+        <item>@string/EX_HN_JIACHENGJIANG</item>
+        <item>@string/EX_HN_CHONGGU_ZHUIDONG</item>
+        <item>@string/EX_HN_JINGBI</item>
+        <!-- Chest and Abdomen -->
+        <item>@string/EX_CA_1</item>
+        <item>@string/EX_CA_WEISHANG</item>
+        <item>@string/EX_CA_QIZHONGSIBIAN</item>
+        <item>@string/EX_CA_YIJING</item>
+        <item>@string/EX_CA_QIMEN</item>
+        <item>@string/EX_CA_TITUO</item>
+        <item>@string/EX_CA_ZHIXIE</item>
+        <item>@string/EX_CA_SANJIAOJIU</item>
+        <!-- Back -->
+        <item>@string/EX_B_1</item>
+        <item>@string/EX_B_2</item>
+        <item>@string/EX_B_3</item>
+        <item>@string/EX_B_4</item>
+        <item>@string/EX_B_5</item>
+        <item>@string/EX_B_6</item>
+        <item>@string/EX_B_7</item>
+        <item>@string/EX_B_8</item>
+        <item>@string/EX_B_9</item>
+        <item>@string/EX_B_10</item>
+        <item>@string/EX_B_TUNZHONG</item>
+        <!-- Upper Extremities -->
+        <item>@string/EX_UE_1</item>
+        <item>@string/EX_UE_2</item>
+        <item>@string/EX_UE_3</item>
+        <item>@string/EX_UE_4</item>
+        <item>@string/EX_UE_5</item>
+        <item>@string/EX_UE_6</item>
+        <item>@string/EX_UE_7</item>
+        <item>@string/EX_UE_8</item>
+        <item>@string/EX_UE_9</item>
+        <item>@string/EX_UE_10</item>
+        <item>@string/EX_UE_11</item>
+        <item>@string/EX_UE_JIANQIAN</item>
+        <item>@string/EX_UE_BIZHONG</item>
+        <!-- Lower Extremities -->
+        <item>@string/EX_LE_1</item>
+        <item>@string/EX_LE_2</item>
+        <item>@string/EX_LE_3</item>
+        <item>@string/EX_LE_4</item>
+        <item>@string/EX_LE_5</item>
+        <item>@string/EX_LE_6</item>
+        <item>@string/EX_LE_7</item>
+        <item>@string/EX_LE_8</item>
+        <item>@string/EX_LE_9</item>
+        <item>@string/EX_LE_10</item>
+        <item>@string/EX_LE_11</item>
+        <item>@string/EX_LE_12</item>
+        <item>@string/EX_LE_HUANZHONG</item>
+        <item>@string/EX_LE_SIQIANG</item>
+        <item>@string/EX_LE_LINEITING</item>
+
     </string-array>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 </resources>

@@ -665,4 +665,78 @@
     <string name="LIV_13">LIV 13 - zhangmen</string>
     <string name="LIV_14">LIV 14 - qimen</string>
 
+    <!-- ###### EXTRA POINTS ###### -->
+    <!-- Head and Neck -->
+    <string name="EX_HN_1" translatable="false">EX HN 1 - sishencong</string>
+    <string name="EX_HN_2" translatable="false">EX HN 2 - dangyang</string>
+    <string name="EX_HN_3" translatable="false">EX HN 3 - yintang</string>
+    <string name="EX_HN_4" translatable="false">EX HN 4 - yuyao</string>
+    <string name="EX_HN_5" translatable="false">EX HN 5 - taiyang</string>
+    <string name="EX_HN_6" translatable="false">EX HN 6 - erjian</string>
+    <string name="EX_HN_7" translatable="false">EX HN 7 - qiuhou</string>
+    <string name="EX_HN_8" translatable="false">EX HN 8 - shangyingxiang</string>
+    <string name="EX_HN_9" translatable="false">EX HN 9 - neiyingxiang</string>
+    <string name="EX_HN_10" translatable="false">EX HN 10 - juquan</string>
+    <string name="EX_HN_11" translatable="false">EX HN 11 - hiaquan</string>
+    <string name="EX_HN_12" translatable="false">EX HN 12 - jinjin</string>
+    <string name="EX_HN_13" translatable="false">EX HN 13 - yuye</string>
+    <string name="EX_HN_14" translatable="false">EX HN 14 - yiming</string>
+    <string name="EX_HN_15" translatable="false">EX HN 15 - jingbailao</string>
+    <string name="EX_HN_SHANGMING" translatable="false">EX HN - shangming</string>
+    <string name="EX_HN_ANMIAN" translatable="false">EX HN - anmian</string>
+    <string name="EX_HN_JIALI" translatable="false">EX HN - jiali</string>
+    <string name="EX_HN_JIACHENGJIANG" translatable="false">EX HN - jiachengjiang</string>
+    <string name="EX_HN_CHONGGU_ZHUIDONG" translatable="false">EX HN - chonggu zhuidong</string>
+    <string name="EX_HN_JINGBI" translatable="false">EX HN - jingbi</string>
+    <!-- Chest and Abdomen -->
+    <string name="EX_CA_1" translatable="false">EX CA 1 - zigong</string>
+    <string name="EX_CA_WEISHANG" translatable="false">EX CA - weishang</string>
+    <string name="EX_CA_QIZHONGSIBIAN" translatable="false">EX CA - qizhongsibian</string>
+    <string name="EX_CA_YIJING" translatable="false">EX CA - yijing</string>
+    <string name="EX_CA_QIMEN" translatable="false">EX CA - qimen</string>
+    <string name="EX_CA_TITUO" translatable="false">EX CA - tituo</string>
+    <string name="EX_CA_ZHIXIE" translatable="false">EX CA - zhixie</string>
+    <string name="EX_CA_SANJIAOJIU" translatable="false">EX CA - sanjiaojiu</string>
+    <!-- Back -->
+    <string name="EX_B_1" translatable="false">EX B 1 - dingchuan</string>
+    <string name="EX_B_2" translatable="false">EX B 2 - huatuojiaji</string>
+    <string name="EX_B_3" translatable="false">EX B 3 - weiwanxiashu</string>
+    <string name="EX_B_4" translatable="false">EX B 4 - pigen</string>
+    <string name="EX_B_5" translatable="false">EX B 5 - xiajishu</string>
+    <string name="EX_B_6" translatable="false">EX B 6 - yaoyi</string>
+    <string name="EX_B_7" translatable="false">EX B 7 - yaoyan</string>
+    <string name="EX_B_8" translatable="false">EX B 8 - shiqizhuixia</string>
+    <string name="EX_B_9" translatable="false">EX B 9 - yaoqi</string>
+    <string name="EX_B_10" translatable="false">EX B 10 - jiehexue</string>
+    <string name="EX_B_TUNZHONG" translatable="false">EX B - tunzhong</string>
+    <!-- Upper Extremities -->
+    <string name="EX_UE_1" translatable="false">EX UE 1 - zhoujian</string>
+    <string name="EX_UE_2" translatable="false">EX UE 2 - erbai</string>
+    <string name="EX_UE_3" translatable="false">EX UE 3 - zhongquan</string>
+    <string name="EX_UE_4" translatable="false">EX UE 4 - zhongkui</string>
+    <string name="EX_UE_5" translatable="false">EX UE 5 - dagukong</string>
+    <string name="EX_UE_6" translatable="false">EX UE 6 - xiaogukong</string>
+    <string name="EX_UE_7" translatable="false">EX UE 7 - yaotongdian</string>
+    <string name="EX_UE_8" translatable="false">EX UE 8 - wailaogong/luozhen/xianqiang</string>
+    <string name="EX_UE_9" translatable="false">EX UE 9 - baxie</string>
+    <string name="EX_UE_10" translatable="false">EX UE 10 - sifeng</string>
+    <string name="EX_UE_11" translatable="false">EX UE 11 - shixuan</string>
+    <string name="EX_UE_JIANQIAN" translatable="false">EX UE - jianqian/jianneiling</string>
+    <string name="EX_UE_BIZHONG" translatable="false">EX UE - bizhong</string>
+    <!-- Lower Extremities -->
+    <string name="EX_LE_1" translatable="false">EX LE 1 - kuangu</string>
+    <string name="EX_LE_2" translatable="false">EX LE 2 - heding/xiding</string>
+    <string name="EX_LE_3" translatable="false">EX LE 3 - baichongwo</string>
+    <string name="EX_LE_4" translatable="false">EX LE 4 - neixiyan</string>
+    <string name="EX_LE_5" translatable="false">EX LE 5 - xiyan</string>
+    <string name="EX_LE_6" translatable="false">EX LE 6 - dannangxue</string>
+    <string name="EX_LE_7" translatable="false">EX LE 7 - lanweixue</string>
+    <string name="EX_LE_8" translatable="false">EX LE 8 - neihuaijian</string>
+    <string name="EX_LE_9" translatable="false">EX LE 9 - waihuaijian</string>
+    <string name="EX_LE_10" translatable="false">EX LE 10 - bafeng</string>
+    <string name="EX_LE_11" translatable="false">EX LE 11 - duyin</string>
+    <string name="EX_LE_12" translatable="false">EX LE 12 - qiduan</string>
+    <string name="EX_LE_HUANZHONG" translatable="false">EX LE - huanzhong</string>
+    <string name="EX_LE_SIQIANG" translatable="false">EX LE - siqiang</string>
+    <string name="EX_LE_LINEITING" translatable="false">EX LE - lineiting</string>
 </resources>
