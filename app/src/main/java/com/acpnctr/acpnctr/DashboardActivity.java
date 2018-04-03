@@ -1,5 +1,6 @@
 package com.acpnctr.acpnctr;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
@@ -104,7 +105,9 @@ public class DashboardActivity extends AppCompatActivity
     // Drawer Navigation View
     private NavigationView mNavigationView;
 
-    // TODO: save information state for hasAcceptedTOS...etc.
+    // Constants for state information change
+    private static final String IS_ALREADY_IN_DB = "is_already_in_db";
+    private static final String HAS_ACCEPTED_TOS = "has_accepted_tos";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +125,11 @@ public class DashboardActivity extends AppCompatActivity
 
         // initialize Firebase components
         mAuth = FirebaseAuth.getInstance();
+
+        if (savedInstanceState != null) {
+            isAlreadyInDatabase = savedInstanceState.getBoolean(IS_ALREADY_IN_DB);
+            hasAcceptedTos = savedInstanceState.getBoolean(HAS_ACCEPTED_TOS);
+        }
 
         // [ START - AuthStateListener ]
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
@@ -357,7 +365,7 @@ public class DashboardActivity extends AppCompatActivity
         // collect user's data from the user and store them
         String email = user.getEmail();
         String fullname = user.getDisplayName();
-        List<String> authProvider = user.getProviders();
+        @SuppressLint("RestrictedApi") List<String> authProvider = user.getProviders();
         String phone = user.getPhoneNumber();
         long timestampCreated = System.currentTimeMillis();
 
@@ -500,7 +508,6 @@ public class DashboardActivity extends AppCompatActivity
      * @param item that is clicked from the nav menu
      * @return true when item is clicked
      */
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation_client view item clicks here.
@@ -531,5 +538,12 @@ public class DashboardActivity extends AppCompatActivity
             default:
                 throw new IllegalArgumentException("Invalid request code, " + requestCode);
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(IS_ALREADY_IN_DB, isAlreadyInDatabase);
+        outState.putBoolean(HAS_ACCEPTED_TOS, hasAcceptedTos);
     }
 }
