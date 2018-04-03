@@ -48,12 +48,12 @@
 
     <!-- Categories for client information -->
     <string name="client_information_category_overview">Overview</string>
-    <string name="client_information_category_gender">* Gender</string>
+    <string name="client_information_category_gender">Gender*</string>
     <string name="client_information_category_acquisition">Acquisition</string>
 
     <!-- Hint for input text for client information -->
-    <string name="hint_client_information_name">* name</string>
-    <string name="hint_client_information_dob">* dob (dd/mm/yyyy)</string>
+    <string name="hint_client_information_name">name*</string>
+    <string name="hint_client_information_dob">dob (dd/mm/yyyy)*</string>
     <string name="hint_client_information_phone">phone</string>
     <string name="hint_client_information_email">email</string>
 
@@ -102,11 +102,11 @@
     <string name="clients_list_error">Error loading clients list</string>
     <string name="date_hint">date (dd/mm/yyyy)</string>
 
-    <string name="history_hint">* history</string>
+    <string name="history_hint">history*</string>
     <string name="btn_add">add</string>
     <string name="anam_empty_date" translatable="false">#</string>
     <string name="session_saved">Session saved</string>
-    <string name="hint_session_goal">* session goal</string>
+    <string name="hint_session_goal">session goal*</string>
     <string name="session_date_needed">Please enter a date</string>
     <string name="session_goal_needed">Please enter a goal</string>
     <string name="session_rated_no_improvement">Session rated: No Improvement</string>

@@ -32,11 +32,11 @@
     <string name="title_treatment">Traitement</string>
     <string name="client_list_empty_view_title_text">Vous n\'avez pas encore de client</string>
     <string name="client_list_empty_view_subtitle_text">Créez un dossier client grâce au bouton ci-dessous</string>
-    <string name="client_information_category_gender">* Sexe</string>
+    <string name="client_information_category_gender">Sexe*</string>
     <string name="client_information_category_acquisition">Acquisition</string>
     <string name="client_information_category_overview">Détails</string>
-    <string name="hint_client_information_name">* prénom nom</string>
-    <string name="hint_client_information_dob">* naissance (jj/mm/aaaa)</string>
+    <string name="hint_client_information_name">prénom nom*</string>
+    <string name="hint_client_information_dob">naissance (jj/mm/aaaa)*</string>
     <string name="hint_client_information_phone">téléphone</string>
     <string name="hint_client_information_email">email</string>
     <string name="gender_unknown">Non renseigné</string>
@@ -66,10 +66,10 @@
     <string name="keep_editing">Continuer</string>
     <string name="clients_list_error">Erreur de chargement des clients</string>
     <string name="date_hint">date (jj/mm/aaaa)</string>
-    <string name="history_hint">* antécédent</string>
+    <string name="history_hint">antécédent*</string>
     <string name="btn_add">ajouter</string>
     <string name="session_saved">Séance sauvegardée</string>
-    <string name="hint_session_goal">* Objectif de séance</string>
+    <string name="hint_session_goal">Objectif de séance*</string>
     <string name="session_date_needed">Veuillez entrer une date</string>
     <string name="session_goal_needed">Veuillez entrer un objectif</string>
     <string name="session_rated_no_improvement">Séance évaluée : Pas d\'amélioration</string>
