@@ -104,6 +104,8 @@ public class DashboardActivity extends AppCompatActivity
     // Drawer Navigation View
     private NavigationView mNavigationView;
 
+    // TODO: save information state for hasAcceptedTOS...etc.
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

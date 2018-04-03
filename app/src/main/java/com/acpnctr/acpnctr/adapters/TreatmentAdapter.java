@@ -51,18 +51,22 @@ public class TreatmentAdapter extends FirestoreRecyclerAdapter<Treatment,
 
         private TextView acuPointTextView;
         private ImageView stimulationImageView;
+        private ImageView lateralityImageView;
 
         public PointHolder(View itemView) {
             super(itemView);
             // hook my views in the item view
             acuPointTextView = itemView.findViewById(R.id.tv_treatment_point);
             stimulationImageView = itemView.findViewById(R.id.iv_stimulation_ic);
+            lateralityImageView = itemView.findViewById(R.id.iv_laterality_ic);
         }
 
         public void bind(Treatment treatment) {
             int pointPosition = treatment.getPoint();
             int stimulationPosition = treatment.getStimulation();
+            int lateralityPosition = treatment.getLaterality();
             acuPointTextView.setText(TreatmentFragment.acuPoints[pointPosition]);
+
             switch(stimulationPosition){
                 case Treatment.TREATMENT_STIMULATION_TONIFICATION:
                     stimulationImageView.setImageResource(R.drawable.ic_up_arrow_white_36dp);
@@ -72,6 +76,15 @@ public class TreatmentAdapter extends FirestoreRecyclerAdapter<Treatment,
                     break;
                 case Treatment.TREATMENT_STIMULATION_SEDATION:
                     stimulationImageView.setImageResource(R.drawable.ic_down_arrow_white_36dp);
+                    break;
+            }
+
+            switch (lateralityPosition){
+                case Treatment.TREATMENT_LATERALITY_LEFT:
+                    lateralityImageView.setImageResource(R.drawable.ic_up_arrow_white_36dp);
+                    break;
+                case Treatment.TREATMENT_LATERALITY_RIGHT:
+                    lateralityImageView.setImageResource(R.drawable.ic_down_arrow_white_36dp);
                     break;
             }
         }

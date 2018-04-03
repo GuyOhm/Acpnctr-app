@@ -36,9 +36,12 @@
     <TextView
         android:id="@+id/tv_sessions_list_goal"
         style="@style/ListItemSecondaryText"
-        android:layout_height="23dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:ellipsize="end"
         android:singleLine="true"
+        app:layout_constraintEnd_toStartOf="@+id/rb_session_rating"
         app:layout_constraintStart_toStartOf="@+id/tv_sessions_list_date"
         app:layout_constraintTop_toBottomOf="@+id/tv_sessions_list_date"
         tools:text="tendinite coude gauche" />
@@ -46,11 +49,15 @@
     <TextView
         android:id="@+id/tv_session_list_treatment"
         style="@style/ListItemSecondaryText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginTop="4dp"
         android:ellipsize="end"
         android:singleLine="true"
         app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintEnd_toStartOf="@+id/rb_session_rating"
         app:layout_constraintStart_toStartOf="@+id/tv_sessions_list_goal"
         app:layout_constraintTop_toBottomOf="@+id/tv_sessions_list_goal"
         tools:text="5TR, 10TR, 8TR, 4GI, 34VB, 3F " />

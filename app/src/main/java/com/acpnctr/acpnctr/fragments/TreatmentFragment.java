@@ -68,10 +68,16 @@ public class TreatmentFragment extends Fragment {
     private ImageButton mNeutralBtn;
     private ImageButton mSedationBtn;
     private TextView mStimulationHint;
+    // Laterality buttons
+    private ImageButton mLeftBtn;
+    private ImageButton mRightBtn;
+    private TextView mLateralityHint;
 
     private int mStimulation;
+    private int mLaterality;
     public static String[] acuPoints;
     private static String[] stimulationOptions;
+    private static String[] lateralityOptions;
 
     private ArrayList<String> mAbbreviationsList = new ArrayList<>();
 
@@ -79,6 +85,11 @@ public class TreatmentFragment extends Fragment {
     private boolean isTonificationActivated = true;
     private boolean isNeutralActivated = false;
     private boolean isSedationActivated = false;
+
+    // boolean Flag for laterality buttons
+    private boolean isBilateralityActivated = true;
+    private boolean isLeftActivated = false;
+    private boolean isRightActivated = false;
 
     // Firebase instance variable
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -88,6 +99,9 @@ public class TreatmentFragment extends Fragment {
     private static final String IS_SEDATION_ACTIVATED = "is_sedation";
     private static final String IS_NEUTRAL_ACTIVATED = "is_neutral";
     private static final String ABBREVIATIONS_LIST = "abbreviation_list";
+    private static final String IS_BILATERALITY_ACTIVATED = "is_bilaterality";
+    private static final String IS_LEFT_ACTIVATED = "is_left";
+    private static final String IS_RIGHT_ACTIVATED = "is_right";
 
     public TreatmentFragment() {
         // Required empty public constructor
@@ -114,6 +128,9 @@ public class TreatmentFragment extends Fragment {
         mSedationBtn = rootView.findViewById(R.id.ib_sedation);
         mStimulationHint = rootView.findViewById(R.id.tv_stimulation);
         Button addPointButton = rootView.findViewById(R.id.btn_add_acu_point);
+        mLeftBtn = rootView.findViewById(R.id.ib_left);
+        mRightBtn = rootView.findViewById(R.id.ib_right);
+        mLateralityHint = rootView.findViewById(R.id.tv_laterality);
 
         // [START - SET UP AUTO COMPLETION FOR ACUPUNCTURE POINTS]
         // Get a reference to the AutoCompleteTextView in the layout
@@ -131,6 +148,9 @@ public class TreatmentFragment extends Fragment {
 
         // fill stimulation array with its options
         stimulationOptions = getResources().getStringArray(R.array.array_stimulation_options);
+
+        // fill laterality array with its options
+        lateralityOptions = getResources().getStringArray(R.array.array_laterality_options);
 
         // Set onclick handler for add point to the treatment button
         addPointButton.setOnClickListener(new View.OnClickListener() {
@@ -181,11 +201,44 @@ public class TreatmentFragment extends Fragment {
             }
         });
 
+        // Set laterality button for left
+        mLeftBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!isLeftActivated) {
+                    activateLeftButton();
+                    deactivateRightButton();
+                    deactivateBilaterality();
+                } else {
+                    deactivateLeftButton();
+                    activateBilaterality();
+                }
+            }
+        });
+
+        // Set laterality button for right
+        mRightBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!isRightActivated) {
+                    activateRightButton();
+                    deactivateLeftButton();
+                    deactivateBilaterality();
+                } else {
+                    deactivateRightButton();
+                    activateBilaterality();
+                }
+            }
+        });
+
         if (savedInstanceState != null){
             isTonificationActivated = savedInstanceState.getBoolean(IS_TONIFICATION_ACTIVATED);
             isNeutralActivated = savedInstanceState.getBoolean(IS_NEUTRAL_ACTIVATED);
-            isSedationActivated= savedInstanceState.getBoolean(IS_SEDATION_ACTIVATED);
+            isSedationActivated = savedInstanceState.getBoolean(IS_SEDATION_ACTIVATED);
             mAbbreviationsList = savedInstanceState.getStringArrayList(ABBREVIATIONS_LIST);
+            isBilateralityActivated = savedInstanceState.getBoolean(IS_BILATERALITY_ACTIVATED);
+            isLeftActivated = savedInstanceState.getBoolean(IS_LEFT_ACTIVATED);
+            isRightActivated = savedInstanceState.getBoolean(IS_RIGHT_ACTIVATED);
         } else {
             // Check if this session was selected from the list at {@link SessionsListFragment}
             Intent intent = getActivity().getIntent();
@@ -198,6 +251,7 @@ public class TreatmentFragment extends Fragment {
         }
 
         initializeStimulationButtons();
+        initializeLateralityButtons();
 
         if (!isNewSession){
             mLoadingIndicator.setVisibility(View.VISIBLE);
@@ -214,6 +268,16 @@ public class TreatmentFragment extends Fragment {
             activateNeutralButton();
         } else if (isSedationActivated){
             activateSedationButton();
+        }
+    }
+
+    private void initializeLateralityButtons() {
+        if (isBilateralityActivated) {
+            activateBilaterality();
+        } else if (isLeftActivated) {
+            activateLeftButton();
+        } else if (isRightActivated) {
+            activateRightButton();
         }
     }
 
@@ -257,6 +321,44 @@ public class TreatmentFragment extends Fragment {
         ImageViewCompat.setImageTintList(mSedationBtn, ColorStateList.valueOf(ContextCompat.getColor(
                 getActivity(), R.color.white)));
         isSedationActivated = false;
+    }
+
+    private void activateLeftButton() {
+        ImageViewCompat.setImageTintList(mLeftBtn, ColorStateList.valueOf(ContextCompat.getColor(
+                getActivity(), R.color.colorAccent)));
+        isLeftActivated = true;
+        mLateralityHint.setText(lateralityOptions[1]);
+        mLaterality = Treatment.TREATMENT_LATERALITY_LEFT;
+    }
+
+    private void deactivateLeftButton() {
+        ImageViewCompat.setImageTintList(mLeftBtn, ColorStateList.valueOf(ContextCompat.getColor(
+                getActivity(), R.color.white)));
+        isLeftActivated = false;
+    }
+
+    private void activateRightButton() {
+        ImageViewCompat.setImageTintList(mRightBtn, ColorStateList.valueOf(ContextCompat.getColor(
+                getActivity(), R.color.colorAccent)));
+        isRightActivated = true;
+        mLateralityHint.setText(lateralityOptions[2]);
+        mLaterality = Treatment.TREATMENT_LATERALITY_RIGHT;
+    }
+
+    private void deactivateRightButton() {
+        ImageViewCompat.setImageTintList(mRightBtn, ColorStateList.valueOf(ContextCompat.getColor(
+                getActivity(), R.color.white)));
+        isRightActivated = false;
+    }
+
+    private void activateBilaterality() {
+        isBilateralityActivated = true;
+        mLateralityHint.setText(lateralityOptions[0]);
+        mLaterality = Treatment.TREATMENT_LATERALITY_BILATERAL;
+    }
+
+    private void deactivateBilaterality() {
+        isBilateralityActivated = false;
     }
 
     private void displayTreatment() {
@@ -309,7 +411,7 @@ public class TreatmentFragment extends Fragment {
             return;
         }
 
-        Treatment treatment = new Treatment(position, mStimulation);
+        Treatment treatment = new Treatment(position, mStimulation, mLaterality);
 
         db.collection(FIRESTORE_COLLECTION_USERS)
                 .document(sUid)
@@ -404,5 +506,8 @@ public class TreatmentFragment extends Fragment {
         outState.putBoolean(IS_NEUTRAL_ACTIVATED, isNeutralActivated);
         outState.putBoolean(IS_SEDATION_ACTIVATED, isSedationActivated);
         outState.putStringArrayList(ABBREVIATIONS_LIST, mAbbreviationsList);
+        outState.putBoolean(IS_BILATERALITY_ACTIVATED, isBilateralityActivated);
+        outState.putBoolean(IS_LEFT_ACTIVATED, isLeftActivated);
+        outState.putBoolean(IS_RIGHT_ACTIVATED, isRightActivated);
     }
 }

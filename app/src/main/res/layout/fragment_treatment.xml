@@ -11,15 +11,13 @@
         android:id="@+id/actv_treatment_point"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:completionThreshold="1"
         android:hint="@string/hint_treatment_point"
         android:inputType="textAutoComplete"
-        app:layout_constraintEnd_toStartOf="@+id/ib_tonification"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -56,11 +54,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:background="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/actv_treatment_point"
         app:srcCompat="@drawable/ic_down_arrow_white_36dp" />
 
     <Button
@@ -70,12 +67,12 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="8dp"
         android:text="@string/btn_add"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/actv_treatment_point" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_stimulation" />
 
 
     <android.support.v7.widget.RecyclerView
@@ -113,10 +110,45 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:gravity="center_horizontal"
-        tools:text="@string/stimulation_tonification"
         app:layout_constraintEnd_toEndOf="@+id/ib_sedation"
-        app:layout_constraintHorizontal_bias="0.571"
         app:layout_constraintStart_toStartOf="@+id/ib_tonification"
-        app:layout_constraintTop_toBottomOf="@+id/ib_neutral" />
+        app:layout_constraintTop_toBottomOf="@+id/ib_neutral"
+        tools:text="@string/stimulation_tonification" />
+
+    <ImageButton
+        android:id="@+id/ib_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorPrimary"
+        android:src="@drawable/ic_neutral_white_36dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/actv_treatment_point" />
+
+    <ImageButton
+        android:id="@+id/ib_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorPrimary"
+        android:src="@drawable/ic_neutral_white_36dp"
+        app:layout_constraintBottom_toBottomOf="@+id/ib_left"
+        app:layout_constraintStart_toEndOf="@+id/ib_left"
+        app:layout_constraintTop_toTopOf="@+id/ib_left"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/tv_laterality"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:gravity="center_horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/ib_right"
+        app:layout_constraintStart_toStartOf="@+id/ib_left"
+        app:layout_constraintTop_toBottomOf="@+id/ib_left"
+        tools:text="left" />
 
 </android.support.constraint.ConstraintLayout>

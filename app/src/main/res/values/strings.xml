@@ -124,6 +124,9 @@
     <string name="stimulation_tonification">tonification</string>
     <string name="stimulation_sedation">sedation</string>
     <string name="stimulation_neutral">neutral</string>
+    <string name="laterality_bilateral">bilateral</string>
+    <string name="laterality_left">left</string>
+    <string name="laterality_right">right</string>
     <string name="treatment_list_error">Error loading treatment</string>
 
     <!-- DIAGNOSIS -->

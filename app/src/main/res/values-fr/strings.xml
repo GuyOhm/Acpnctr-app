@@ -85,6 +85,9 @@
     <string name="stimulation_tonification">tonification</string>
     <string name="stimulation_sedation">dispersion</string>
     <string name="stimulation_neutral">neutre</string>
+    <string name="laterality_bilateral">bilatéral</string>
+    <string name="laterality_left">gauche</string>
+    <string name="laterality_right">droite</string>
     <string name="treatment_list_error">Erreur de chargement du traitement</string>
     <string name="btn_diag_bagang">ba gang</string>
     <string name="diag_bagang_yin">yin</string>
