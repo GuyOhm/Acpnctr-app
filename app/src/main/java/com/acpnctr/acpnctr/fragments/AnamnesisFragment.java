@@ -1,6 +1,7 @@
 package com.acpnctr.acpnctr.fragments;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,7 +22,9 @@ import android.widget.Toast;
 import com.acpnctr.acpnctr.R;
 import com.acpnctr.acpnctr.adapters.AnamnesisAdapter;
 import com.acpnctr.acpnctr.models.Anamnesis;
+import com.acpnctr.acpnctr.utils.AcpnctrUtil;
 import com.acpnctr.acpnctr.utils.DateFormatUtil;
+import com.acpnctr.acpnctr.utils.FirebaseUtil;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -44,7 +47,7 @@ import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_USERS;
 /**
  * {@link Fragment} to display client anamnesis.
  */
-public class AnamnesisFragment extends Fragment {
+public class AnamnesisFragment extends Fragment implements AnamnesisAdapter.OnAnamnesisLongClickListener {
 
     // Firebase instance variable
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -166,7 +169,7 @@ public class AnamnesisFragment extends Fragment {
                 .setQuery(query, Anamnesis.class)
                 .build();
 
-        mAdapter = new AnamnesisAdapter(options){
+        mAdapter = new AnamnesisAdapter(options, this){
 
             @Override
             public void onDataChanged() {
@@ -232,5 +235,45 @@ public class AnamnesisFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         if (mAdapter != null) mAdapter.stopListening();
+    }
+
+    @Override
+    public void onAnamnesisLongClicked(int position) {
+        final String anamnesisId = FirebaseUtil.getIdFromSnapshot(mAdapter, position);
+
+        // Create a dialog button click listener
+        DialogInterface.OnClickListener deleteButtonClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        db.collection(FIRESTORE_COLLECTION_USERS)
+                                .document(sUid)
+                                .collection(FIRESTORE_COLLECTION_CLIENTS)
+                                .document(sClientid)
+                                .collection(FIRESTORE_COLLECTION_ANAMNESIS)
+                                .document(anamnesisId)
+                                .delete()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        if (mAdapter != null) {
+                                            mAdapter.notifyDataSetChanged();
+                                        }
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        if (isAdded() && getActivity() != null) {
+                                            Toast.makeText(getActivity(), R.string.delete_data_failed, Toast.LENGTH_SHORT)
+                                                    .show();
+                                        }
+                                    }
+                                });
+                    }
+                };
+
+        // Show a dialog to confirm the user wants to delete selected data
+        AcpnctrUtil.showDeleteDataDialog(getActivity(), deleteButtonClickListener);
     }
 }

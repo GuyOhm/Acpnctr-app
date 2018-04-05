@@ -354,6 +354,42 @@ public class DashboardActivity extends AppCompatActivity
         startActivity(clientIntent);
     }
 
+    @Override
+    public void onClientLongClicked(int position) {
+        final String clientid = FirebaseUtil.getIdFromSnapshot(mAdapter, position);
+
+        // Create a dialog button click listener
+        DialogInterface.OnClickListener deleteButtonClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        db.collection(FIRESTORE_COLLECTION_USERS)
+                                .document(mUid)
+                                .collection(FIRESTORE_COLLECTION_CLIENTS)
+                                .document(clientid)
+                                .delete()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        if (mAdapter != null) {
+                                            mAdapter.notifyDataSetChanged();
+                                        }
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(DashboardActivity.this, R.string.delete_data_failed, Toast.LENGTH_SHORT)
+                                                .show();
+                                    }
+                                });
+                    }
+                };
+
+        // Show a dialog to confirm the user wants to delete selected data
+        AcpnctrUtil.showDeleteDataDialog(DashboardActivity.this, deleteButtonClickListener);
+    }
+
     /**
      * This method creates a document named by the uid in Firestore db when he signs in for
      * the first time

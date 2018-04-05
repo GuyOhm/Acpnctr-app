@@ -1,6 +1,7 @@
 package com.acpnctr.acpnctr.fragments;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,6 +21,7 @@ import com.acpnctr.acpnctr.R;
 import com.acpnctr.acpnctr.SessionActivity;
 import com.acpnctr.acpnctr.adapters.SessionAdapter;
 import com.acpnctr.acpnctr.models.Session;
+import com.acpnctr.acpnctr.utils.AcpnctrUtil;
 import com.acpnctr.acpnctr.utils.Constants;
 import com.acpnctr.acpnctr.utils.FirebaseUtil;
 import com.acpnctr.acpnctr.utils.SingleToast;
@@ -198,5 +200,45 @@ public class SessionsListFragment extends Fragment implements SessionAdapter.OnS
                         Toast.makeText(getActivity(), getString(R.string.session_rated_failed), Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    @Override
+    public void onSessionLongClicked(int position) {
+        final String sessionid = FirebaseUtil.getIdFromSnapshot(mAdapter, position);
+
+        // Create a dialog button click listener
+        DialogInterface.OnClickListener deleteButtonClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        db.collection(FIRESTORE_COLLECTION_USERS)
+                                .document(sUid)
+                                .collection(FIRESTORE_COLLECTION_CLIENTS)
+                                .document(sClientid)
+                                .collection(FIRESTORE_COLLECTION_SESSIONS)
+                                .document(sessionid)
+                                .delete()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        if (mAdapter != null) {
+                                            mAdapter.notifyDataSetChanged();
+                                        }
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        if (isAdded() && getActivity() != null) {
+                                            Toast.makeText(getActivity(), R.string.delete_data_failed, Toast.LENGTH_SHORT)
+                                                    .show();
+                                        }
+                                    }
+                                });
+                    }
+                };
+
+        // Show a dialog to confirm the user wants to delete selected data
+        AcpnctrUtil.showDeleteDataDialog(getActivity(), deleteButtonClickListener);
     }
 }

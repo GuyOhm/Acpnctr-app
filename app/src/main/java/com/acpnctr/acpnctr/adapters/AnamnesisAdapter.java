@@ -20,14 +20,21 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 public class AnamnesisAdapter extends FirestoreRecyclerAdapter<Anamnesis,
         AnamnesisAdapter.AnamnesisHolder> {
 
+    private OnAnamnesisLongClickListener mListener;
+
+    public interface OnAnamnesisLongClickListener {
+        void onAnamnesisLongClicked(int position);
+    }
+
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See
      * {@link FirestoreRecyclerOptions} for configuration options.
      *
      * @param options for the recycler options containing firestore Query
      */
-    public AnamnesisAdapter(FirestoreRecyclerOptions<Anamnesis> options) {
+    public AnamnesisAdapter(FirestoreRecyclerOptions<Anamnesis> options, OnAnamnesisLongClickListener listener) {
         super(options);
+        mListener = listener;
     }
 
     @Override
@@ -42,9 +49,8 @@ public class AnamnesisAdapter extends FirestoreRecyclerAdapter<Anamnesis,
     @Override
     protected void onBindViewHolder(AnamnesisHolder holder, int position, Anamnesis model) {
         // bind the Anamnesis object to the AnamnesisHolder
-        holder.bind(model);
+        holder.bind(model, mListener);
     }
-
 
     static class AnamnesisHolder extends RecyclerView.ViewHolder{
 
@@ -59,7 +65,7 @@ public class AnamnesisAdapter extends FirestoreRecyclerAdapter<Anamnesis,
             anamnesisHistoryTextView = itemView.findViewById(R.id.tv_anamnesis_list_history);
         }
 
-        public void bind(Anamnesis anamnesis) {
+        public void bind(final Anamnesis anamnesis, final OnAnamnesisLongClickListener listener) {
             if (anamnesis.getTimestamp() == 0) {
                 anamnesisDateTextView.setText(R.string.anam_empty_date);
             } else {
@@ -67,6 +73,19 @@ public class AnamnesisAdapter extends FirestoreRecyclerAdapter<Anamnesis,
                         DateFormatUtil.convertTimestampToString(anamnesis.getTimestamp()));
             }
             anamnesisHistoryTextView.setText(anamnesis.getHistory());
+
+            // Listen to long click to delete item
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    if (listener != null){
+                        listener.onAnamnesisLongClicked(getAdapterPosition());
+                        return true;
+                    }
+                    return false;
+                }
+            });
+
         }
     }
 }

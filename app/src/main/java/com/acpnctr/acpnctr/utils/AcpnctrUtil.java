@@ -1,5 +1,11 @@
 package com.acpnctr.acpnctr.utils;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.view.Window;
+import android.widget.Button;
+
 import com.acpnctr.acpnctr.R;
 import com.acpnctr.acpnctr.models.PulseType;
 
@@ -142,5 +148,46 @@ public class AcpnctrUtil {
      */
     public static String zeefyForSearch(String searchText) {
         return searchText + "z";
+    }
+
+    /**
+     * Show a dialog that warns the user that data are going to be deleted
+     *
+     * @param context is the current context of the running Activity
+     * @param deleteButtonClickListener is the click listener for what to do when
+     *                                   the user confirms they want to delete data
+     */
+    public static void showDeleteDataDialog(Context context, DialogInterface.OnClickListener
+            deleteButtonClickListener) {
+        // Create an AlertDialog.Builder and set the message, and click listeners
+        // for the positive and negative buttons on the dialog.
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        // Set the dialog message
+        builder.setMessage(R.string.delete_data_message);
+        // Set click listener for positive/delete button
+        builder.setPositiveButton(R.string.delete_data_confirm, deleteButtonClickListener);
+        // Set click listener for negative/cancel button
+        builder.setNegativeButton(R.string.delete_data_cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Cancel" button, so dismiss the dialog
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        // Customize the alert dialog box
+        Window alertDialogWindow = alertDialog.getWindow();
+        if (alertDialogWindow != null) {
+            alertDialogWindow.setBackgroundDrawableResource(R.color.colorAccent);
+        }
+        Button negButton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+        negButton.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+        Button posButton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+        posButton.setTextColor(context.getResources().getColor(R.color.colorPrimary));
     }
 }

@@ -23,6 +23,7 @@ public class ClientAdapter extends FirestoreRecyclerAdapter<Client, ClientAdapte
     // interface to manage how client are selected
     public interface OnClientSelectedListener {
         void onClientSelected(Client client, int position);
+        void onClientLongClicked(int position);
     }
 
     private OnClientSelectedListener mListener;
@@ -81,6 +82,7 @@ public class ClientAdapter extends FirestoreRecyclerAdapter<Client, ClientAdapte
             listItemClientName.setText(client.getClientName());
             listItemTimestampCreated.setText(DateFormatUtil.convertTimestampToString(client.getTimestampCreated()));
 
+            // Listen to click to select item
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -88,6 +90,18 @@ public class ClientAdapter extends FirestoreRecyclerAdapter<Client, ClientAdapte
                         int position = getAdapterPosition();
                         listener.onClientSelected(client, position);
                     }
+                }
+            });
+
+            // Listen to long click to delete item
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    if (listener != null){
+                        listener.onClientLongClicked(getAdapterPosition());
+                        return true;
+                    }
+                    return false;
                 }
             });
         }

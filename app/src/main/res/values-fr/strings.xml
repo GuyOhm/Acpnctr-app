@@ -8,8 +8,12 @@
     <string name="tos_pos_button">Accepter</string>
     <string name="tos_neg_button">Refuser</string>
     <string name="tos_accepted">Bienvenue dans Acpnctr!</string>
-    <string name="auth_signed_in">Connecté !</string>
-    <string name="auth_signed_out">Vous êtes déconnecté</string>
+    <string name="delete_data_failed">L\'élément n\'a pas pu être supprimé</string>
+    <string name="delete_data_message">Etes-vous sûr(e) de vouloir supprimer cet élément ?</string>
+    <string name="delete_data_confirm">Supprimer</string>
+    <string name="delete_data_cancel">Annuler</string>
+    <string name="auth_signed_in">Connecté(e) !</string>
+    <string name="auth_signed_out">Vous êtes déconnecté(e)</string>
     <string name="auth_sign_in_cancelled">Authentification annulée</string>
     <string name="auth_no_network">Impossible de se connecter au réseau</string>
     <string name="auth_unknown_error">Quelque chose ne s\'est pas passé comme prévu :/</string>

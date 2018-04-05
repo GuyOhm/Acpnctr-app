@@ -27,6 +27,7 @@ public class SessionAdapter extends FirestoreRecyclerAdapter<Session, SessionAda
     public interface OnSessionSelectedListener {
         void onSessionSelected(Session session, int position);
         void onSessionRated(float rating, int position);
+        void onSessionLongClicked(int position);
     }
 
 
@@ -101,6 +102,7 @@ public class SessionAdapter extends FirestoreRecyclerAdapter<Session, SessionAda
             }
             listItemSessionTreatment.setText(treatmentString);
 
+            // Listen for click to select item
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -110,10 +112,23 @@ public class SessionAdapter extends FirestoreRecyclerAdapter<Session, SessionAda
                 }
             });
 
+            // Listen to session rating action
             listItemSessionRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
                 @Override
                 public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
                     listener.onSessionRated(v, getAdapterPosition());
+                }
+            });
+
+            // Listen to long click to delete item
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    if (listener != null){
+                        listener.onSessionLongClicked(getAdapterPosition());
+                        return true;
+                    }
+                    return false;
                 }
             });
         }

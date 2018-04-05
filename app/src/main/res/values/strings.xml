@@ -3,12 +3,19 @@
     <string name="date_format_not_valid">Please enter a valid date</string>
     <string name="search_client_hint">Search client</string>
     <string name="coming_soon">Coming soon!</string>
+
     <!-- Terms of service related values -->
     <string name="tos_dialog_title">Terms of service</string>
     <string name="tos_url">&lt;a href="https://acpnctr.com/conditions-generales-utilisation/">I have read and agree to the Terms of service&lt;/a></string>
     <string name="tos_pos_button">Confirm</string>
     <string name="tos_neg_button">Decline</string>
     <string name="tos_accepted">Welcome to Acpnctr!</string>
+
+    <!-- Dialog box to delete data -->
+    <string name="delete_data_failed">Couldn\'t delete item</string>
+    <string name="delete_data_message">Are you sure you want to delete this item?</string>
+    <string name="delete_data_confirm">Delete</string>
+    <string name="delete_data_cancel">Cancel</string>
 
     <!-- Authentication messages -->
     <string name="auth_signed_in">Signed in!</string>
@@ -95,8 +102,6 @@
 
     <!-- Dialog button text for the option to keep editing the current client -->
     <string name="keep_editing">Keep Editing</string>
-
-    <!-- sessions list -->
 
     <!-- Dashboard clients list -->
     <string name="clients_list_error">Error loading clients list</string>

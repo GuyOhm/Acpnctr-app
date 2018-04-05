@@ -21,15 +21,23 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 public class TreatmentAdapter extends FirestoreRecyclerAdapter<Treatment,
         TreatmentAdapter.PointHolder> {
 
+    private OnTreatmentLongClickedListener mListener;
+
+    public interface OnTreatmentLongClickedListener {
+        void onTreatmentLongClicked(int position);
+    }
+
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See
      * {@link FirestoreRecyclerOptions} for configuration options.
      *
      * @param options recycler options with firestore query
      */
-    public TreatmentAdapter(FirestoreRecyclerOptions<Treatment> options) {
+    public TreatmentAdapter(FirestoreRecyclerOptions<Treatment> options, OnTreatmentLongClickedListener listener) {
         super(options);
+        this.mListener = listener;
     }
+
 
     @Override
     public PointHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
@@ -43,7 +51,7 @@ public class TreatmentAdapter extends FirestoreRecyclerAdapter<Treatment,
     @Override
     protected void onBindViewHolder(PointHolder holder, int position, Treatment treatment) {
         // bind the Anamnesis object to the AnamnesisHolder
-        holder.bind(treatment);
+        holder.bind(treatment, mListener);
     }
 
 
@@ -61,7 +69,7 @@ public class TreatmentAdapter extends FirestoreRecyclerAdapter<Treatment,
             lateralityImageView = itemView.findViewById(R.id.iv_laterality_ic);
         }
 
-        public void bind(Treatment treatment) {
+        public void bind(Treatment treatment, final OnTreatmentLongClickedListener listener) {
             int pointPosition = treatment.getPoint();
             int stimulationPosition = treatment.getStimulation();
             int lateralityPosition = treatment.getLaterality();
@@ -87,6 +95,17 @@ public class TreatmentAdapter extends FirestoreRecyclerAdapter<Treatment,
                     lateralityImageView.setImageResource(R.drawable.ic_down_arrow_white_36dp);
                     break;
             }
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    if (listener != null) {
+                        listener.onTreatmentLongClicked(getAdapterPosition());
+                        return true;
+                    }
+                    return false;
+                }
+            });
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.acpnctr.acpnctr.fragments;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
@@ -28,7 +29,9 @@ import com.acpnctr.acpnctr.R;
 import com.acpnctr.acpnctr.adapters.TreatmentAdapter;
 import com.acpnctr.acpnctr.models.Session;
 import com.acpnctr.acpnctr.models.Treatment;
+import com.acpnctr.acpnctr.utils.AcpnctrUtil;
 import com.acpnctr.acpnctr.utils.Constants;
+import com.acpnctr.acpnctr.utils.FirebaseUtil;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -53,7 +56,7 @@ import static com.acpnctr.acpnctr.utils.Constants.FIRESTORE_COLLECTION_USERS;
 /**
  * {@link Fragment} to display treatment given to a client during a specific session.
  */
-public class TreatmentFragment extends Fragment {
+public class TreatmentFragment extends Fragment implements TreatmentAdapter.OnTreatmentLongClickedListener {
 
     private AutoCompleteTextView acuPointActv;
 
@@ -379,7 +382,7 @@ public class TreatmentFragment extends Fragment {
                 .setQuery(query, Treatment.class)
                 .build();
 
-        mAdapter = new TreatmentAdapter(options) {
+        mAdapter = new TreatmentAdapter(options, this) {
 
             @Override
             public void onDataChanged() {
@@ -509,5 +512,47 @@ public class TreatmentFragment extends Fragment {
         outState.putBoolean(IS_BILATERALITY_ACTIVATED, isBilateralityActivated);
         outState.putBoolean(IS_LEFT_ACTIVATED, isLeftActivated);
         outState.putBoolean(IS_RIGHT_ACTIVATED, isRightActivated);
+    }
+
+    @Override
+    public void onTreatmentLongClicked(int position) {
+        final String treatmentId = FirebaseUtil.getIdFromSnapshot(mAdapter, position);
+
+        // Create a dialog button click listener
+        DialogInterface.OnClickListener deleteButtonClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        db.collection(FIRESTORE_COLLECTION_USERS)
+                                .document(sUid)
+                                .collection(FIRESTORE_COLLECTION_CLIENTS)
+                                .document(sClientid)
+                                .collection(FIRESTORE_COLLECTION_SESSIONS)
+                                .document(sSessionid)
+                                .collection(FIRESTORE_COLLECTION_TREATMENT)
+                                .document(treatmentId)
+                                .delete()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        if (mAdapter != null) {
+                                            mAdapter.notifyDataSetChanged();
+                                        }
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        if (isAdded() && getActivity() != null) {
+                                            Toast.makeText(getActivity(), R.string.delete_data_failed, Toast.LENGTH_SHORT)
+                                                    .show();
+                                        }
+                                    }
+                                });
+                    }
+                };
+
+        // Show a dialog to confirm the user wants to delete selected data
+        AcpnctrUtil.showDeleteDataDialog(getActivity(), deleteButtonClickListener);
     }
 }
