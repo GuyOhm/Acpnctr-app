@@ -54,6 +54,6 @@
         app:layout_constraintEnd_toStartOf="@+id/iv_stimulation_ic"
         app:layout_constraintTop_toTopOf="@+id/iv_stimulation_ic"
         app:layout_constraintVertical_bias="1.0"
-        tools:srcCompat="@drawable/ic_neutral_white_36dp" />
+        tools:srcCompat="@drawable/ic_right_arrow_white_36dp" />
 
 </android.support.constraint.ConstraintLayout>

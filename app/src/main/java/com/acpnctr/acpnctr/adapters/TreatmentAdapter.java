@@ -89,10 +89,10 @@ public class TreatmentAdapter extends FirestoreRecyclerAdapter<Treatment,
 
             switch (lateralityPosition){
                 case Treatment.TREATMENT_LATERALITY_LEFT:
-                    lateralityImageView.setImageResource(R.drawable.ic_up_arrow_white_36dp);
+                    lateralityImageView.setImageResource(R.drawable.ic_left_arrow_white_36dp);
                     break;
                 case Treatment.TREATMENT_LATERALITY_RIGHT:
-                    lateralityImageView.setImageResource(R.drawable.ic_down_arrow_white_36dp);
+                    lateralityImageView.setImageResource(R.drawable.ic_right_arrow_white_36dp);
                     break;
             }
 
