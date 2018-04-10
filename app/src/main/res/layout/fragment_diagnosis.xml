@@ -22,12 +22,13 @@
 
         <!-- yin yang -->
         <RadioGroup
+            android:id="@+id/rg_diag_bagang_yin_yang"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/rb_bagang_yin"
+                android:id="@+id/rb_bagang_yin_value"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/activity_margin"
@@ -37,7 +38,7 @@
                 android:textAlignment="center" />
 
             <RadioButton
-                android:id="@+id/rb_bagang_yang"
+                android:id="@+id/rb_bagang_yang_value"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -48,12 +49,13 @@
 
         <!-- deficiency excess  -->
         <RadioGroup
+            android:id="@+id/rg_diag_bagang_def_excess"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/rb_bagang_deficiency"
+                android:id="@+id/rb_bagang_deficiency_value"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/activity_margin"
@@ -63,7 +65,7 @@
                 android:textAlignment="center" />
 
             <RadioButton
-                android:id="@+id/rb_bagang_excess"
+                android:id="@+id/rb_bagang_excess_value"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -74,12 +76,13 @@
 
         <!-- cold heat -->
         <RadioGroup
+            android:id="@+id/rg_diag_bagang_cold_heat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/rb_bagang_cold"
+                android:id="@+id/rb_bagang_cold_value"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/activity_margin"
@@ -89,7 +92,7 @@
                 android:textAlignment="center" />
 
             <RadioButton
-                android:id="@+id/rb_bagang_heat"
+                android:id="@+id/rb_bagang_heat_value"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -100,12 +103,13 @@
 
         <!-- interior exterior -->
         <RadioGroup
+            android:id="@+id/rg_diag_bagang_int_ext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/rb_bagang_interior"
+                android:id="@+id/rb_bagang_interior_value"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/activity_margin"
@@ -115,7 +119,7 @@
                 android:textAlignment="center" />
 
             <RadioButton
-                android:id="@+id/rb_bagang_exterior"
+                android:id="@+id/rb_bagang_exterior_value"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

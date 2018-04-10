@@ -53,7 +53,8 @@
         </activity>
         <activity
             android:name=".FivePhasesActivity"
-            android:label="@string/label_five_phases">
+            android:label="@string/label_five_phases"
+            android:parentActivityName=".SessionActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
@@ -62,7 +63,8 @@
         </activity>
         <activity
             android:name=".QuestionnaireActivity"
-            android:label="@string/label_questionnaire">
+            android:label="@string/label_questionnaire"
+            android:parentActivityName=".SessionActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
@@ -71,7 +73,8 @@
         </activity>
         <activity
             android:name=".ObservationActivity"
-            android:label="@string/label_observation">
+            android:label="@string/label_observation"
+            android:parentActivityName=".SessionActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
@@ -80,7 +83,8 @@
         </activity>
         <activity
             android:name=".AuscultationActivity"
-            android:label="@string/label_auscultation">
+            android:label="@string/label_auscultation"
+            android:parentActivityName=".SessionActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
@@ -89,7 +93,8 @@
         </activity>
         <activity
             android:name=".PalpationActivity"
-            android:label="@string/label_palpation">
+            android:label="@string/label_palpation"
+            android:parentActivityName=".SessionActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
@@ -98,13 +103,18 @@
         </activity>
         <activity
             android:name=".PulsesActivity"
-            android:label="@string/label_pulses">
+            android:label="@string/label_pulses"
+            android:parentActivityName=".SessionActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".SessionActivity" />
         </activity>
+        <activity
+            android:name=".BagangActivity"
+            android:label="@string/diag_bagang_label"
+            android:parentActivityName=".SessionActivity" />
     </application>
 
 </manifest>

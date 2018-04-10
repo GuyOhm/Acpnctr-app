@@ -93,6 +93,7 @@
     <string name="laterality_left">gauche</string>
     <string name="laterality_right">droite</string>
     <string name="treatment_list_error">Erreur de chargement du traitement</string>
+    <string name="diag_bagang_label">Ba Gang</string>
     <string name="btn_diag_bagang">ba gang</string>
     <string name="diag_bagang_yin">yin</string>
     <string name="diag_bagang_yang">yang</string>
@@ -102,6 +103,7 @@
     <string name="diag_bagang_heat">chaleur</string>
     <string name="diag_bagang_interior">intérieur</string>
     <string name="diag_bagang_exterior">extérieur</string>
+    <string name="diag_bagang_saved">Ba Gang sauvegardés</string>
     <string name="label_five_phases">5 éléments</string>
     <string name="btn_diag_wu_xing">5 éléments</string>
     <string name="diag_5_phases_wood_earth">bois attaque terre (ko)</string>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    tools:context=".BagangActivity">
+
+    <!-- yin yang -->
+    <RadioGroup
+        android:id="@+id/rg_bagang_yin_yang"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rb_bagang_yin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/activity_margin"
+            android:layout_weight="1"
+            android:layoutDirection="rtl"
+            android:text="@string/diag_bagang_yin"
+            android:textAlignment="center" />
+
+        <RadioButton
+            android:id="@+id/rb_bagang_yang"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/diag_bagang_yang"
+            android:textAlignment="center" />
+
+    </RadioGroup>
+
+    <!-- deficiency excess  -->
+    <RadioGroup
+        android:id="@+id/rg_bagang_def_excess"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rb_bagang_deficiency"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/activity_margin"
+            android:layout_weight="1"
+            android:layoutDirection="rtl"
+            android:text="@string/diag_bagang_deficiency"
+            android:textAlignment="center" />
+
+        <RadioButton
+            android:id="@+id/rb_bagang_excess"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/diag_bagang_excess"
+            android:textAlignment="center" />
+
+    </RadioGroup>
+
+    <!-- cold heat -->
+    <RadioGroup
+        android:id="@+id/rg_bagang_cold_heat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rb_bagang_cold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/activity_margin"
+            android:layout_weight="1"
+            android:layoutDirection="rtl"
+            android:text="@string/diag_bagang_cold"
+            android:textAlignment="center" />
+
+        <RadioButton
+            android:id="@+id/rb_bagang_heat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/diag_bagang_heat"
+            android:textAlignment="center" />
+
+    </RadioGroup>
+
+    <!-- interior exterior -->
+    <RadioGroup
+        android:id="@+id/rg_bagang_int_ext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rb_bagang_interior"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/activity_margin"
+            android:layout_weight="1"
+            android:layoutDirection="rtl"
+            android:text="@string/diag_bagang_interior"
+            android:textAlignment="center" />
+
+        <RadioButton
+            android:id="@+id/rb_bagang_exterior"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/diag_bagang_exterior"
+            android:textAlignment="center" />
+
+    </RadioGroup>
+
+    <!-- Reset button -->
+    <Button
+        android:id="@+id/btn_reset_bagang"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:text="@string/diag_bagang_reset_btn" />
+
+</LinearLayout>
