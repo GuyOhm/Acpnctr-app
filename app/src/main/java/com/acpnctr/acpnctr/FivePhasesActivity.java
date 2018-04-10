@@ -307,6 +307,7 @@ public class FivePhasesActivity extends AppCompatActivity {
                 .document(sClientid)
                 .collection(FIRESTORE_COLLECTION_SESSIONS)
                 .document(sSessionid);
+
         // create a hashmap and put data to be send to firestore
         Map<String, Boolean> wuxingMap = new HashMap<>();
         wuxingMap.put(Constants.WUXING_WOOD_TO_EARTH_KEY, mWoodEarth.isChecked());
@@ -325,19 +326,6 @@ public class FivePhasesActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Intent returnIntent = new Intent();
-                        // store checkboxes' state into a bundle
-                        Bundle wuxingBundle = new Bundle();
-                        wuxingBundle.putBoolean(Constants.WUXING_WOOD_TO_EARTH_KEY, mWoodEarth.isChecked());
-                        wuxingBundle.putBoolean(Constants.WUXING_WOOD_TO_METAL_KEY, mWoodMetal.isChecked());
-                        wuxingBundle.putBoolean(Constants.WUXING_FIRE_TO_METAL_KEY, mFireMetal.isChecked());
-                        wuxingBundle.putBoolean(Constants.WUXING_FIRE_TO_WATER_KEY, mFireWater.isChecked());
-                        wuxingBundle.putBoolean(Constants.WUXING_EARTH_TO_WATER_KEY, mEarthWater.isChecked());
-                        wuxingBundle.putBoolean(Constants.WUXING_EARTH_TO_WOOD_KEY, mEarthWood.isChecked());
-                        wuxingBundle.putBoolean(Constants.WUXING_METAL_TO_WOOD_KEY, mMetalWood.isChecked());
-                        wuxingBundle.putBoolean(Constants.WUXING_METAL_TO_FIRE_KEY, mMetalFire.isChecked());
-                        wuxingBundle.putBoolean(Constants.WUXING_WATER_TO_FIRE_KEY, mWaterFire.isChecked());
-                        wuxingBundle.putBoolean(Constants.WUXING_WATER_TO_EARTH_KEY, mWaterEarth.isChecked());
-                        returnIntent.putExtras(wuxingBundle);
                         setResult(RESULT_OK, returnIntent);
                         finish();
                     }
