@@ -46,6 +46,9 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-firestore:3.3.0'
     // Picasso to handle image downloading
     implementation 'com.squareup.picasso:picasso:2.5.2'
+    // Butterknife
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 }
 
 apply plugin: 'com.google.gms.google-services'
