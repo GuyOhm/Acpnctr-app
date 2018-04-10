@@ -427,7 +427,8 @@ public class TreatmentFragment extends Fragment implements TreatmentAdapter.OnTr
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        updateAbbreviationsList(point);
+                        mAbbreviationsList.add(abbreviatePoint(point));
+                        updateAbbreviationsList();
                         acuPointActv.setText("");
                     }
                 })
@@ -442,11 +443,8 @@ public class TreatmentFragment extends Fragment implements TreatmentAdapter.OnTr
     /**
      * This method update the treatmentList member variable of the Session Document
      * so that we can display a list of point abbreviations in session item list
-     *
-     * @param point acupuncture point
      */
-    private void updateAbbreviationsList(String point) {
-        mAbbreviationsList.add(abbreviatePoint(point));
+    private void updateAbbreviationsList() {
 
         db.collection(FIRESTORE_COLLECTION_USERS)
                 .document(sUid)
@@ -515,8 +513,12 @@ public class TreatmentFragment extends Fragment implements TreatmentAdapter.OnTr
     }
 
     @Override
-    public void onTreatmentLongClicked(int position) {
+    public void onTreatmentLongClicked(final int position) {
         final String treatmentId = FirebaseUtil.getIdFromSnapshot(mAdapter, position);
+
+        // Get the Treatment object at that position hence the point that might be deleted
+        Treatment treatment = (Treatment) mAdapter.getItem(position);
+        final String pointToDelete = acuPoints[treatment.getPoint()];
 
         // Create a dialog button click listener
         DialogInterface.OnClickListener deleteButtonClickListener =
@@ -537,6 +539,14 @@ public class TreatmentFragment extends Fragment implements TreatmentAdapter.OnTr
                                     public void onSuccess(Void aVoid) {
                                         if (mAdapter != null) {
                                             mAdapter.notifyDataSetChanged();
+                                            // Get the abbreviation of the deleted point
+                                            String abbreviation = abbreviatePoint(pointToDelete);
+                                            // Find index of the point abbreviation
+                                            int index = mAbbreviationsList.indexOf(abbreviation);
+                                            // and delete it from the list
+                                            mAbbreviationsList.remove(index);
+                                            // Update modified abbreviation list
+                                            updateAbbreviationsList();
                                         }
                                     }
                                 })
